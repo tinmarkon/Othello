@@ -1,19 +1,32 @@
 package logika;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import logika.Polje.Stanje;
 import splosno.Poteza;
 
 public class Igra {
+	// ustvari desko, t. j. 8 x 8 seznam Polj
+	// nova deska ima privzeto nastavljene zaƒçetno STANJE polj na PRAZNO
+	private final Deska deska;
+	private Stanje naPotezi; //ne vem ali potrebujemo posebej class igralec, ali lahko samo shranjujemo katera vrednost je na potezi
 	
 	public Igra() {
+		deska = new Deska();
+		//zacetno stanje; to bi se lahko izvedlo tudi v konstruktorju class-a Deska
+		deska.getPolje(3, 3).setStanje(Stanje.BLACK);
+		deska.getPolje(4, 4).setStanje(Stanje.BLACK);
+		deska.getPolje(4, 3).setStanje(Stanje.WHITE);
+		deska.getPolje(3, 4).setStanje(Stanje.WHITE);
 		
-	// TODO ustvari mreûo 8x8, s kakönim tipom jo predstaviti?
-	// TODO nastavi zaËetno postavitev in da zaËne Ërni
+		//this.naPotezi = Stanje.BLACK;
 	}
 	
 	
 	public boolean odigraj(Poteza poteza) {
-		// TODO metoda vraËa true/false Ëe je poteza veljavna
-		// Poteza(0,0) je Ëisto levo zgoraj in Poteza(7,7) je Ëisto desno spodaj
+		// TODO metoda vraÔøΩa true/false ÔøΩe je poteza veljavna
+		// Poteza(0,0) je ÔøΩisto levo zgoraj in Poteza(7,7) je ÔøΩisto desno spodaj
 		return false;
 	}
 

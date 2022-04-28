@@ -1,14 +1,21 @@
 package logika;
 
+//Nisem prepricana, ce potrebujemo tak class, zaenkrat naj bo
 public enum Igralec {
-	B, W;
+	BLACK, WHITE;
 	
 	public Igralec nasprotnik() {
-		return (this == B ? W : B);
+		return (this == BLACK ? WHITE : BLACK);
 	}
 	
+	//Zakaj že to potrebujemo ...
 	public Polje getPolje() {
-		return (this == B ? Polje.B : Polje.W);
+		return (this == BLACK ? Polje.BLACK : Polje.WHITE);
 	}
 
+	@Override
+	public String toString() {
+		// Izpiši kateri igralec je na potezi.
+		return (this == BLACK ? "BLACK" : "WHITE");
+	}
 }
