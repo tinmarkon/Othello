@@ -1,6 +1,8 @@
 package inteligenca;
 
+import logika.Igra;
 import splosno.KdoIgra;
+import splosno.Poteza;
 
 public class Inteligenca extends splosno.KdoIgra {
 	

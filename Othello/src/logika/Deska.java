@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 public class Deska {
 	// Deska je seznam 8 x 8 Polj
-	// Vsako polje ima koordinati x in y ter STANJE, ki je lahko BLACK, WHITE ali PRAZNO
+	// Vsako polje ima koordinati x in y ter Vrednost, ki je lahko BLACK, WHITE ali PRAZNO
 	private final List<List<Polje>> deska;
 	
 	public Deska() {
