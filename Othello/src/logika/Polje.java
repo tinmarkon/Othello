@@ -37,7 +37,7 @@ public class Polje {
 	public Vrednost obrniVrednost() {
     // vrne obrnjeno vrednost: črno spremeni v belo in obratno.
 	// morda bolje ce kar obrne this.vrednost = novoVrednost in nic ne vrne?;
-	return (this.vrednost == Vrednost.BLACK ? Vrednost.BLACK : Vrednost.WHITE);
+	return (this.vrednost == Vrednost.BLACK ? Vrednost.WHITE : Vrednost.BLACK);
     // se izjema, ce je vrednost prazno in se ga ne da obrnit
 	}
 }
