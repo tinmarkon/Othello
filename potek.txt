@@ -1,0 +1,12 @@
+class Polje
+class Deska: 8 x 8 Polj
+class Igra:
+    nova deska
+    začetni pogoji
+    metode:
+    •	moznaPoteza: Preveri katere poteze lahko tisti, ki je na vrsti naredi in jih vrni (moras za vsako prazno polje preverit, ce je to mozna poteza?) - Tin
+    •	odigraj(Poteza poteza): Funkcija, da narediš potezo, ce je ta mozna.
+    •	obrniZetone: Funkcija da po odigrani potezi obrnes vse zetone, ki se morjo obrnit. - Katarina
+    •	jeKoncana: Vsa polja polna ali ni možnih potez.
+    *   prestejZetone: Preštej črne in bele žetone.
+    •	Zmagovalec: Vrni neodločeno, bel ali črn.
