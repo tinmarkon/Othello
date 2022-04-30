@@ -30,7 +30,7 @@ public class Igra {
 		if (poteza == null) return true;
 		int xPoteza = poteza.getX();
 		int yPoteza = poteza.getY();
-		if (deska.getPolje(xPoteza, yPoteza).getVrednost() != Vrednost.PRAZNO && !poljaPotez.contains(deska.getPolje(xPoteza, yPoteza))) return false;
+		if (deska.getPolje(xPoteza, yPoteza).getVrednost() != Vrednost.PRAZNO || !poljaPotez.contains(deska.getPolje(xPoteza, yPoteza))) return false;
 		deska.getPolje(xPoteza, yPoteza).setVrednost(naPotezi);
 		return true;
 		
