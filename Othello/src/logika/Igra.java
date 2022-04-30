@@ -27,7 +27,10 @@ public class Igra {
 	
 	public boolean odigraj(Poteza poteza) {
 		List<Polje> poljaPotez = moznePoteze();
-		if (poteza == null) return true;
+		if (poteza == null) {
+			this.naPotezi = this.naPotezi == Vrednost.BLACK ? Vrednost.WHITE : Vrednost.BLACK;
+			return true;
+		}
 		int xPoteza = poteza.getX();
 		int yPoteza = poteza.getY();
 		if (deska.getPolje(xPoteza, yPoteza).getVrednost() != Vrednost.PRAZNO || !poljaPotez.contains(deska.getPolje(xPoteza, yPoteza))) return false;
