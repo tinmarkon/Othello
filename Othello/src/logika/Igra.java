@@ -1,5 +1,6 @@
 package logika;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,9 +26,32 @@ public class Igra {
 	
 	
 	public boolean odigraj(Poteza poteza) {
-		// TODO metoda vra�a true/false �e je poteza veljavna
-		// Poteza(0,0) je �isto levo zgoraj in Poteza(7,7) je �isto desno spodaj
 		return false;
+	}
+	
+	
+	public List<Polje> moznePoteze() {
+		Vrednost barvaNasprotnika = naPotezi == Vrednost.BLACK ? Vrednost.WHITE : Vrednost.BLACK;
+		ArrayList<Polje> veljavnePoteze = new ArrayList<>();
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (deska.getPolje(i, j).getVrednost() == barvaNasprotnika && !veljavnePoteze.contains(deska.getPolje(j, i))) {
+					if (i - 1 >= 0 && deska.getPolje(i - 1, j).getVrednost() == Vrednost.PRAZNO) {
+						veljavnePoteze.add(deska.getPolje(i - 1, j));
+					}
+					else if (i + 1 <= 7 && deska.getPolje(i + 1, j).getVrednost() == Vrednost.PRAZNO) {
+						veljavnePoteze.add(deska.getPolje(i + 1, j));
+					}
+					else if (j - 1 >= 0 && deska.getPolje(i, j - 1).getVrednost() == Vrednost.PRAZNO) {
+						veljavnePoteze.add(deska.getPolje(i, j - 1));
+					}
+					else if (j + 1 <= 7 && deska.getPolje(i, j + 1).getVrednost() == Vrednost.PRAZNO) {
+						veljavnePoteze.add(deska.getPolje(i, j + 1));
+					}
+				}
+			}
+		}
+		return veljavnePoteze;
 	}
 
 }
