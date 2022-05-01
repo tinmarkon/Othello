@@ -35,6 +35,7 @@ public class Igra {
 		int yPoteza = poteza.getY();
 		if (deska.getPolje(xPoteza, yPoteza).getVrednost() != Vrednost.PRAZNO || !poljaPotez.contains(deska.getPolje(xPoteza, yPoteza))) return false;
 		deska.getPolje(xPoteza, yPoteza).setVrednost(naPotezi);
+		this.naPotezi = this.naPotezi == Vrednost.BLACK ? Vrednost.WHITE : Vrednost.BLACK;
 		return true;
 		
 	}
