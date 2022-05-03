@@ -24,10 +24,80 @@ public class Igra {
 		//this.naPotezi = Vrednost.BLACK;
 	}
 	
+	public boolean jeVeljavenInt(int x) {
+		return x >= 0 && x < 8;
+	}
+	
+	public boolean jePraznoPolje(Polje polje) {
+		return polje.getVrednost() == Vrednost.PRAZNO;
+	}
+
+	public boolean jeVeljavnaPoteza(Polje polje, int smerX, int smerY) {
+		int trenutniX = polje.getX();
+		int trenutniY = polje.getY();
+		Vrednost barvaNasprotnika = (naPotezi == Vrednost.BLACK) ? Vrednost.WHITE : Vrednost.BLACK;
+		Vrednost barvaIgralca = (naPotezi == Vrednost.BLACK) ? Vrednost.BLACK : Vrednost.WHITE;
+		if (polje.getVrednost() == barvaNasprotnika) {
+			while(jeVeljavenInt(trenutniX) && jeVeljavenInt(trenutniY)) {
+				trenutniX += smerX;
+				trenutniY += smerY;
+				if(deska.getPolje(trenutniX, trenutniY).getVrednost() == Vrednost.PRAZNO) {
+					return false;
+				}
+				if(deska.getPolje(trenutniX, trenutniY).getVrednost() == barvaIgralca) {
+					return true;
+				}
+				else 
+				{
+					
+				}
+				
+			}
+		}
+		return false;
+	}
+	
+
+	public List<Polje> moznePoteze() {
+		Vrednost barvaNasprotnika = naPotezi == Vrednost.BLACK ? Vrednost.WHITE : Vrednost.BLACK;
+		ArrayList<Polje> veljavnePoteze = new ArrayList<>();
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (deska.getPolje(i, j).getVrednost() == barvaNasprotnika && !veljavnePoteze.contains(deska.getPolje(i, j))) {
+					if (jeVeljavnaPoteza(deska.getPolje(i, j), 1, 0) && jePraznoPolje(deska.getPolje(i - 1, j))) {
+						veljavnePoteze.add(deska.getPolje(i - 1, j));
+					}
+					if (jeVeljavnaPoteza(deska.getPolje(i, j), 0, 1) && jePraznoPolje(deska.getPolje(i, j - 1))) {
+						veljavnePoteze.add(deska.getPolje(i, j - 1));
+					}
+					if (jeVeljavnaPoteza(deska.getPolje(i, j), -1, 0)  && jePraznoPolje(deska.getPolje(i + 1, j))) {
+						veljavnePoteze.add(deska.getPolje(i + 1, j));
+					}
+					if (jeVeljavnaPoteza(deska.getPolje(i, j), 0, -1) && jePraznoPolje(deska.getPolje(i, j + 1))) {
+						veljavnePoteze.add(deska.getPolje(i, j + 1));
+					}
+					if (jeVeljavnaPoteza(deska.getPolje(i, j), 1, 1)  && jePraznoPolje(deska.getPolje(i - 1, j - 1))) {
+						veljavnePoteze.add(deska.getPolje(i - 1, j - 1));
+					}
+					if (jeVeljavnaPoteza(deska.getPolje(i, j), 1, - 1)  && jePraznoPolje(deska.getPolje(i - 1, j + 1))) {
+						veljavnePoteze.add(deska.getPolje(i - 1, j + 1));
+					}
+					if (jeVeljavnaPoteza(deska.getPolje(i, j), -1, 1)  && jePraznoPolje(deska.getPolje(i + 1, j - 1))) {
+						veljavnePoteze.add(deska.getPolje(i + 1, j - 1));
+					}
+					if (jeVeljavnaPoteza(deska.getPolje(i, j), -1, - 1)  && jePraznoPolje(deska.getPolje(i + 1, j + 1))) {
+						veljavnePoteze.add(deska.getPolje(i + 1, j + 1));
+					}
+				}
+			}
+		}
+		return veljavnePoteze;
+	}
+	
 	
 	public boolean odigraj(Poteza poteza) {
 		List<Polje> poljaPotez = moznePoteze();
-		if (poteza == null) {
+		if (poljaPotez.size() == 0) {
 			this.naPotezi = this.naPotezi == Vrednost.BLACK ? Vrednost.WHITE : Vrednost.BLACK;
 			return true;
 		}
@@ -41,28 +111,5 @@ public class Igra {
 	}
 	
 	
-	public List<Polje> moznePoteze() {
-		Vrednost barvaNasprotnika = naPotezi == Vrednost.BLACK ? Vrednost.WHITE : Vrednost.BLACK;
-		ArrayList<Polje> veljavnePoteze = new ArrayList<>();
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				if (deska.getPolje(i, j).getVrednost() == barvaNasprotnika && !veljavnePoteze.contains(deska.getPolje(j, i))) {
-					if (i - 1 >= 0 && deska.getPolje(i - 1, j).getVrednost() == Vrednost.PRAZNO) {
-						veljavnePoteze.add(deska.getPolje(i - 1, j));
-					}
-					else if (i + 1 <= 7 && deska.getPolje(i + 1, j).getVrednost() == Vrednost.PRAZNO) {
-						veljavnePoteze.add(deska.getPolje(i + 1, j));
-					}
-					else if (j - 1 >= 0 && deska.getPolje(i, j - 1).getVrednost() == Vrednost.PRAZNO) {
-						veljavnePoteze.add(deska.getPolje(i, j - 1));
-					}
-					else if (j + 1 <= 7 && deska.getPolje(i, j + 1).getVrednost() == Vrednost.PRAZNO) {
-						veljavnePoteze.add(deska.getPolje(i, j + 1));
-					}
-				}
-			}
-		}
-		return veljavnePoteze;
-	}
-
+	
 }
