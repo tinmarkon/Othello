@@ -10,5 +10,9 @@ class Igra:
     •	jeKoncana: Vsa polja polna ali ni možnih potez.
     *   prestejZetone: Preštej črne in bele žetone.
     •	Zmagovalec: Vrni neodločeno, bel ali črn.
-    *   .getPolje(x, y) ---> deska[x][y]
-    *   this.naPotezi
+        *   SPREMENI POLJE --> POLJE in POTEZA
+        *   .getPolje(x, y) ---> deska[x][y]
+        *   this.naPotezi
+    *   a rabim class Igralec: igralec ima svoje ime
+    *   Tin: kk bom prikazovala potek igre brez grafičnega vmesnika
+    *   So metode v ustreznih razredih?
