@@ -107,7 +107,13 @@ public class Igra {
 	public boolean jeKoncana() {
 		if (moznePoteze().size() == 0) {
 			naPotezi = (this.naPotezi == Vrednost.BLACK) ? Vrednost.WHITE : Vrednost.BLACK;
-			if (moznePoteze().size() == 0) return true;
+			if (moznePoteze().size() == 0) {
+				if (prestejZetone()[0] > prestejZetone()[1]) System.out.println("Zmagovalec je èrni");
+				else if (prestejZetone()[0] < prestejZetone()[1]) System.out.println("Zmagovalec je bel");
+				else System.out.println("Izenaèeno");
+				return true;
+			}
+				
 		}
 		return false;
 	}
@@ -121,12 +127,13 @@ public class Igra {
 				if (deska.getPolje(i, j).getVrednost() == Vrednost.WHITE) white++;
 				else if (deska.getPolje(i, j).getVrednost() == Vrednost.BLACK) black++;
 			}
+		}
 		zetoni[0] = black;
 		zetoni[1] = white;
 		return zetoni;
-		}
 	}
 }
+
 	
 	
  
