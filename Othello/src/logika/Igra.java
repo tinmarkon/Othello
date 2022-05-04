@@ -11,7 +11,9 @@ public class Igra {
 	// ustvari desko, t. j. 8 x 8 seznam Polj
 	// nova deska ima privzeto nastavljene začetno STANJE polj na PRAZNO
 	private final Deska deska;
-	private Vrednost naPotezi; //ne vem ali potrebujemo posebej class igralec, ali lahko samo shranjujemo katera vrednost je na potezi
+	private Vrednost naPotezi;
+	public final int[][] smeri = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+	
 	
 	public Igra() {
 		deska = new Deska();
@@ -20,8 +22,7 @@ public class Igra {
 		deska.getPolje(4, 4).setVrednost(Vrednost.BLACK);
 		deska.getPolje(4, 3).setVrednost(Vrednost.WHITE);
 		deska.getPolje(3, 4).setVrednost(Vrednost.WHITE);
-		
-		//this.naPotezi = Vrednost.BLACK;
+		this.naPotezi = Vrednost.BLACK;
 	}
 	
 	public boolean jeVeljavenInt(int x) {
@@ -32,63 +33,33 @@ public class Igra {
 		return polje.getVrednost() == Vrednost.PRAZNO;
 	}
 
-	public boolean jeVeljavnaPoteza(Polje polje, int smerX, int smerY) {
-		int trenutniX = polje.getX();
-		int trenutniY = polje.getY();
-		Vrednost barvaNasprotnika = (naPotezi == Vrednost.BLACK) ? Vrednost.WHITE : Vrednost.BLACK;
-		Vrednost barvaIgralca = (naPotezi == Vrednost.BLACK) ? Vrednost.BLACK : Vrednost.WHITE;
-		if (polje.getVrednost() == barvaNasprotnika) {
-			while(jeVeljavenInt(trenutniX) && jeVeljavenInt(trenutniY)) {
-				trenutniX += smerX;
-				trenutniY += smerY;
-				if(deska.getPolje(trenutniX, trenutniY).getVrednost() == Vrednost.PRAZNO) {
-					return false;
+	public boolean jeVeljavnaPoteza(Polje polje) {
+		int i = polje.getX();
+		int j = polje.getY();
+		if (deska.getPolje(i, j).getVrednost() == Vrednost.PRAZNO) {
+			for (int k = 0; k < 8; k++) {
+				boolean zastavica = false;
+				i += smeri[k][0];
+				j += smeri[k][1];
+				while (jeVeljavenInt(i) && jeVeljavenInt(j)) {
+					if (deska.getPolje(i, j).getVrednost() == Vrednost.PRAZNO) break;
+					if (deska.getPolje(i, j).getVrednost() == this.naPotezi && !zastavica) break;
+					if (deska.getPolje(i, j).getVrednost() == this.naPotezi && zastavica) return true;
+					i += smeri[k][0];
+					j += smeri[k][1];
+					zastavica = true;
 				}
-				if(deska.getPolje(trenutniX, trenutniY).getVrednost() == barvaIgralca) {
-					return true;
-				}
-				else 
-				{
-					
-				}
-				
 			}
 		}
 		return false;
 	}
 	
 
-	public List<Polje> moznePoteze() {
-		Vrednost barvaNasprotnika = naPotezi == Vrednost.BLACK ? Vrednost.WHITE : Vrednost.BLACK;
+	public ArrayList<Polje> moznePoteze() {
 		ArrayList<Polje> veljavnePoteze = new ArrayList<>();
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				if (deska.getPolje(i, j).getVrednost() == barvaNasprotnika && !veljavnePoteze.contains(deska.getPolje(i, j))) {
-					if (jeVeljavnaPoteza(deska.getPolje(i, j), 1, 0) && jePraznoPolje(deska.getPolje(i - 1, j))) {
-						veljavnePoteze.add(deska.getPolje(i - 1, j));
-					}
-					if (jeVeljavnaPoteza(deska.getPolje(i, j), 0, 1) && jePraznoPolje(deska.getPolje(i, j - 1))) {
-						veljavnePoteze.add(deska.getPolje(i, j - 1));
-					}
-					if (jeVeljavnaPoteza(deska.getPolje(i, j), -1, 0)  && jePraznoPolje(deska.getPolje(i + 1, j))) {
-						veljavnePoteze.add(deska.getPolje(i + 1, j));
-					}
-					if (jeVeljavnaPoteza(deska.getPolje(i, j), 0, -1) && jePraznoPolje(deska.getPolje(i, j + 1))) {
-						veljavnePoteze.add(deska.getPolje(i, j + 1));
-					}
-					if (jeVeljavnaPoteza(deska.getPolje(i, j), 1, 1)  && jePraznoPolje(deska.getPolje(i - 1, j - 1))) {
-						veljavnePoteze.add(deska.getPolje(i - 1, j - 1));
-					}
-					if (jeVeljavnaPoteza(deska.getPolje(i, j), 1, - 1)  && jePraznoPolje(deska.getPolje(i - 1, j + 1))) {
-						veljavnePoteze.add(deska.getPolje(i - 1, j + 1));
-					}
-					if (jeVeljavnaPoteza(deska.getPolje(i, j), -1, 1)  && jePraznoPolje(deska.getPolje(i + 1, j - 1))) {
-						veljavnePoteze.add(deska.getPolje(i + 1, j - 1));
-					}
-					if (jeVeljavnaPoteza(deska.getPolje(i, j), -1, - 1)  && jePraznoPolje(deska.getPolje(i + 1, j + 1))) {
-						veljavnePoteze.add(deska.getPolje(i + 1, j + 1));
-					}
-				}
+				if (jeVeljavnaPoteza(deska.getPolje(i, j))) veljavnePoteze.add(deska.getPolje(i, j));
 			}
 		}
 		return veljavnePoteze;
@@ -96,20 +67,66 @@ public class Igra {
 	
 	
 	public boolean odigraj(Poteza poteza) {
-		List<Polje> poljaPotez = moznePoteze();
-		if (poljaPotez.size() == 0) {
-			this.naPotezi = this.naPotezi == Vrednost.BLACK ? Vrednost.WHITE : Vrednost.BLACK;
+		int i = poteza.getX();
+		int j = poteza.getY();
+		ArrayList<Polje> poteze = moznePoteze();
+		if (poteze.contains(poteza)) {
+			deska.getPolje(i, j).setVrednost(naPotezi);
+			obrniZa(deska.getPolje(i, j));
+			this.naPotezi = (this.naPotezi == Vrednost.BLACK) ? Vrednost.WHITE : Vrednost.BLACK;
 			return true;
 		}
-		int xPoteza = poteza.getX();
-		int yPoteza = poteza.getY();
-		if (deska.getPolje(xPoteza, yPoteza).getVrednost() != Vrednost.PRAZNO || !poljaPotez.contains(deska.getPolje(xPoteza, yPoteza))) return false;
-		deska.getPolje(xPoteza, yPoteza).setVrednost(naPotezi);
-		this.naPotezi = this.naPotezi == Vrednost.BLACK ? Vrednost.WHITE : Vrednost.BLACK;
-		return true;
-		
+		return false;
 	}
 	
 	
+	public void obrniZa(Polje polje) {
+		int i = polje.getX();
+		int j = polje.getY();
+			for (int k = 0; k < 8; k++) {
+				ArrayList<Polje> trenutnaPolja = new ArrayList<>();
+				i += smeri[k][0];
+				j += smeri[k][1];
+				while (jeVeljavenInt(i) && jeVeljavenInt(j)) {
+					if (deska.getPolje(i, j).getVrednost() == Vrednost.PRAZNO) break;
+					if (deska.getPolje(i, j).getVrednost() == this.naPotezi) {
+						obrniZetone(trenutnaPolja);
+						break;
+					}
+					trenutnaPolja.add(deska.getPolje(i, j));
+					i += smeri[k][0];
+					j += smeri[k][1];
+				}
+			}
+	}
 	
+	public void obrniZetone(ArrayList<Polje> trenutnaPolja) {
+		for (Polje p: trenutnaPolja) p.obrniVrednost();
+	}
+	
+	public boolean jeKoncana() {
+		if (moznePoteze().size() == 0) {
+			naPotezi = (this.naPotezi == Vrednost.BLACK) ? Vrednost.WHITE : Vrednost.BLACK;
+			if (moznePoteze().size() == 0) return true;
+		}
+		return false;
+	}
+	
+	public int[] prestejZetone() {
+		int white = 0;
+		int black = 0; 
+		int[] zetoni = new int[2];
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (deska.getPolje(i, j).getVrednost() == Vrednost.WHITE) white++;
+				else if (deska.getPolje(i, j).getVrednost() == Vrednost.BLACK) black++;
+			}
+		zetoni[0] = black;
+		zetoni[1] = white;
+		return zetoni;
+		}
+	}
 }
+	
+	
+ 
