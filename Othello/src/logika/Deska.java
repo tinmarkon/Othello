@@ -1,5 +1,5 @@
 package logika;
-
+//TA RAZRED JE ZDAJ NEUPORABLJEN
 import java.util.ArrayList;
 import java.util.List;
 public class Deska {
