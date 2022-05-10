@@ -1,18 +1,86 @@
-class Polje
-class Deska: 8 x 8 Polj
-class Igra:
-    nova deska
-    začetni pogoji
-    metode:
-    •	moznaPoteza: Preveri katere poteze lahko tisti, ki je na vrsti naredi in jih vrni (moras za vsako prazno polje preverit, ce je to mozna poteza?) - Tin
-    •	odigraj(Poteza poteza): Funkcija, da narediš potezo, ce je ta mozna.
-    •	obrniZetone: Funkcija da po odigrani potezi obrnes vse zetone, ki se morjo obrnit. - Katarina
-    •	jeKoncana: Vsa polja polna ali ni možnih potez.
-    *   prestejZetone: Preštej črne in bele žetone.
-    •	Zmagovalec: Vrni neodločeno, bel ali črn.
-        *   SPREMENI POLJE --> POLJE in POTEZA
-        *   .getPolje(x, y) ---> deska[x][y]
-        *   this.naPotezi
-    *   a rabim class Igralec: igralec ima svoje ime
+TO-DO:
     *   Tin: kk bom prikazovala potek igre brez grafičnega vmesnika
+
     *   So metode v ustreznih razredih?
+    *   naMeji, moznePoteze (glej spodaj)
+    *   BLOCKED POSITIONS (glej spodaj)
+
+    *   INTELIGENCA:
+    - funkcija, ki ustvari kopijo igre
+    - funkcija, ki na tej kopiji igre od podanega začetnega stanja igra naprej igro do konca, tako da
+    naključno izbira poteze iz moznihPotez
+    - kako implementirat drevo ...
+
+ZAPISKI IZ PREDAVANJ:
+> Extend Class Igra with two fields:
+
+1) Set<Poteza> meja = new Hashset<Poteza> : vsa prazna polja, ki se dotikajo polnega polja
+* na zacetku: {{2, 2}, {2, 3}, {2, 4}, {2, 5}, {3, 2}, {3, 5}, {4, 2}, {4, 5}, {{5, 2}, {5, 3}, {5, 4}, {5, 5}}
+* po vsake potezi posodobi set meja (glede na odigrano potezo)
+* za mozne poteze zdaj iteriras le skozi set meja
+- set, ker ne sme imeti ponovitev
+
+2) List<Poteze> moznePoteze
+* dinamično se izračunajo iz seta meja po vsaki odigrani potezi
+- list, ker glede na implementacijo nikoli ne bo prislo do ponovljenih elementov
+
+> How to deal with Blocked Positions
+- trenutni naPotezi nima moznih potez, nasprotnik pa (ni še konec igre)
+ali) dodaj novo Stanje igre: WHITE WON, BLACK WON, IN PROGRESS, BLOCKED
+ali) predstavi z dummy potezo: npr. def, da Poteza(-1, -1) ne naredi ničesar
+
+> How to do position evaluation --> uporabno le za minimax oz. alphabeta
+- kako ocenit katera poteza je dobra zate
+- on na predavanju uporavi kar #mojih - #nasprotnikovih; to ne upošteva dejstva, da je najbolje imeti žetone v vogalu
+    - to lahko sproti shranjuješ v spremenljivki in ju posodobiš po vsaki odigrani potezi
+
+uporabit moraš alphabeta; maksimalno globine 9
+
+ali MONTE CARLO TREE SEARCH:
+* ne potrebuješ evalvacijske funkcije
+
+1 naključno izberemo eno izmed moznihPotez in jo igramo
+2 popolnoma naključno zaigramo to igro do konca:
+    - igri damo oceno glede na to kdo je zmagal in štejemo kolikokrat smo igrali
+    - za vsako moznoPotezo ocena (STEVILO ZMAG NASPROTNIKA / VSEH NAKLJUCNIH IGER s to moznoPotezo) = (STEVILO ZMAG NASPROTNIKA / 1)
+3 to sproti za vsako moznoPotezo posodabljamo na vrhu drevesa (STEVILO MOJIH ZMAG / VSEH NAKLJUCNIH IGER = vse moznePoteze)
+
+4 izberemo moznoPotezo ki najbolj obeta (kjer smo zmagali)
+5 nakljucno igramo naslednjo potezo in posodabljamo (STEVILO MOJIH ZMAG / VSEH NAKLJUCNIH IGER) na vrhu drevesa
+
+Vsak zagon MCTS ima 4 korake:
+1) SELECTION STAGE:
+* naključno igramo za vseh N moznih potez: { (w_1/n_1) , (w_2/n_2) , (w_3/n_3) ... (w_k/n_k) }
+* izberemo vejo, ki maksimizira izraz (W_i / n_i) + C * sqrt { ln(N)/n_i}
+- kjer W_i = kolikokrat je začetni zmagal izmed vseh naključnih iger z i-to mozno potezo: W_i = n_i - w_i
+- konstanta C >= sqrt{2}
+    - večji C: bolj uravnoteženo iskanje po vseh vejah
+    - manjši C: osredotočimo se na čim manj vej --> teorija predlaga C = sqrt{2}; v praksi lahko prilagajamo
+- n = n_1 + ... + n_k ... št. vseh zaigranih naključnih iger
+
+* izenačenje ocenimo z 0,5
+
+2) EXPANSION:
+* iz non-fully expanded node naključno izberi otroka, ki ga še nismo obiskali in ga dodaj k drevesu
+
+3) SIMULATION:
+* odigraj naključno igro do konca
+
+4) BACK PROPAGATION:
+* pojdi nazaj do začetka drevesa in posodabljaj ocene
+
+6 Poganjamo M iteracij oz. določen čas (5 sekund)
+7 Izberemo node i (mozno potezo), ki je za nas najbolj optimalen. --> Makismiziraš (W_i / n_i)
+Za veliko število ponovitev bo to (glede na algoritem) kar tista z največ obiski.
+
+> IMPLEMENTACIJA DREVESA MCTS V JAVI
+
+* HashMap<TreeIndex, TreeEntry>
+--> List<Poteza> TreeIndex
+    = seznam potez, ki vodijo do tega mesta v drevesu; ti indeksi morajo biti immutable, sicer se HashMap izgubi
+    = to je tudi pot za BACKPROPAGATION --> vsakič ko delaš kaj na TreeIndexu moraš ustvariti kopijo, tega specifičnega ne smeš spreminjat
+--> TreeEntry:
+    * Igra gamePosition
+    * int visits
+    * double wins (ker izenačenje = 0,5)
+
