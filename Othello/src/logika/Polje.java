@@ -1,6 +1,6 @@
-packpackage logika;
+package logika;
 public enum Polje {
-	BLACK, WHITE, PRAZNO
+	BLACK, WHITE, PRAZNO;
 
 	public Polje nasprotno() { //deluje samo, če je polje belo ali crno!!!
 		if (this == PRAZNO) {
