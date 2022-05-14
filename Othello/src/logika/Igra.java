@@ -3,8 +3,7 @@ package logika;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import logika.Polje.Vrednost;
+import java.util.Set;
 import splosno.Poteza;
 
 public class Igra {
@@ -12,24 +11,29 @@ public class Igra {
 
 	private Polje[][] deska;
 	private ArrayList<Poteza> moznePoteze = new ArrayList<>(); //to more bit morda public, ce rabiva v inteligenci? al kako ze to deluje ...
-	private Set<Poteza> naMeji = new Hashset<Poteza>; //sem shranjujemo prazna polja, ki mejijo na vsaj eno polno
+	private Set<Poteza> naMeji = new HashSet<Poteza>; //sem shranjujemo prazna polja, ki mejijo na vsaj eno polno
 	private Igralec naPotezi;
 
 	public final int[][] smeri = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+	public final int[][] zacetnaMeja = {{2, 2}, {2, 3}, {2, 4}, {2, 5}, {3, 2}, {3, 5}, {4, 2}, {4, 5}, {5, 2}, {5, 3}, {5, 4}, {5, 5}};
 
 	public Igra() {
 		this.deska = new Polje[8][8];
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
 				deska[i][j] = Polje.PRAZNO;
 			}
+		}
 		deska[3][3] = Polje.BLACK;
 		deska[4][4] = Polje.BLACK;
 		deska[4][3] = Polje.WHITE;
 		deska[3][4] = Polje.WHITE;
 
 		naPotezi = Igralec.BLACK;
-		//TODO poteze za dodat v naMeji (lahk bi ble prave, lahko pa tut ne): {{2, 2}, {2, 3}, {2, 4}, {2, 5}, {3, 2}, {3, 5}, {4, 2}, {4, 5}, {{5, 2}, {5, 3}, {5, 4}, {5, 5}}
+		for (int[] koordinate : zacetnaMeja) {
+			Poteza trenutnaPoteza = new Poteza(koordinate[0], koordinate[1]);
+			naMeji.add(trenutnaPoteza);
+		}
 	}
 	
 	public boolean jeVeljavenInt(int x) {
@@ -68,20 +72,19 @@ public class Igra {
 		/* Sprejme potezo, ki smo jo pravkar igrali.
 		To potezo izbriše iz naMeji ter v seznam doda vsa prazna polja, ki mejijo na to potezo in še niso v naMeji.
 		*/
-		//TODO
+		naMeji.remove(poteza);
+		for (int[] smer: smeri) {
+			Poteza potencialnaPoteza = new Poteza(poteza.getX() + smer[0], poteza.getY() + smer[1]);
+			if (jePraznoPolje(potencialnaPoteza.getX(), potencialnaPoteza.getY()) && jeVeljavenInt(potencialnaPoteza.getX()) && jeVeljavenInt(potencialnaPoteza.getY())) naMeji.add(poteza); 
+		}
 	}
 	public void posodobiMoznePoteze() {
 		/* Za vsako polje na deski preveri, če je to možna poteza.
 		To je treba optimizirat tako, da išče samo po potezah v setu naMeji: prazna polja, ki mejijo na vsaj eno polno.
 		*/
-		//TODO for(Poteza p: naMeji)
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				Poteza poteza = new Poteza(i, j);
+			for(Poteza poteza: naMeji) {
+				if (jeVeljavnaPoteza(poteza)) moznePoteze.add(poteza);
 			}
-				if (jeVeljavnaPoteza(poteza) moznePoteze.add(poteza);
-			}
-		}
 	}
 
 	public boolean odigraj(Poteza poteza) {
