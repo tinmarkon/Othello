@@ -1,6 +1,7 @@
 package logika;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -11,7 +12,7 @@ public class Igra {
 
 	private Polje[][] deska;
 	private ArrayList<Poteza> moznePoteze = new ArrayList<>(); //to more bit morda public, ce rabiva v inteligenci? al kako ze to deluje ...
-	private Set<Poteza> naMeji = new HashSet<Poteza>; //sem shranjujemo prazna polja, ki mejijo na vsaj eno polno
+	private Set<Poteza> naMeji = new HashSet<Poteza>(); //sem shranjujemo prazna polja, ki mejijo na vsaj eno polno
 	private Igralec naPotezi;
 
 	public final int[][] smeri = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
@@ -95,8 +96,8 @@ public class Igra {
 		int i = poteza.getX();
 		int j = poteza.getY();
 		if (moznePoteze.contains(poteza)) {
-			deska[i][j] = naPotezi;
-			posodobiNaMeji;
+			deska[i][j] = naPotezi.getPolje();
+			posodobiNaMeji(poteza);
 			obrniZa(new Poteza(i, j));
 			naPotezi = naPotezi.nasprotnik();
 			posodobiMoznePoteze(); //kje točno je najbolje to izvest? tu, v jeKoncana, v kodi za samo izvedbo igre ...
@@ -155,8 +156,8 @@ public class Igra {
 			posodobiMoznePoteze();
 			if (moznePoteze.size() == 0) {
 				int[] st = prestejZetone();
-				black = st[0];
-				white = st[1];
+				int black = st[0];
+				int white = st[1];
 				if (black > white) System.out.println("Slavo in cast crnemu igralcu.");
 				else if (black < white) System.out.println("Slavo in cast belemu igralcu.");
 				else System.out.println("Izenaceno");
