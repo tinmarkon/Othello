@@ -21,14 +21,13 @@ public class Vodja {
 	}
 	
 	public static void igramo () {
-		okno.osveziGUI();
-		switch (igra.stanje()) {
-		case ZMAGA_O: 
-		case ZMAGA_X: 
+		switch (igra.stanje) {
+		case ZMAGA_B:
+		case ZMAGA_W:
 		case NEODLOCENO: 
 			return; // odhajamo iz metode igramo
 		case V_TEKU: 
-			Igralec igralec = igra.naPotezi();
+			Igralec igralec = igra.naPotez;
 			VrstaIgralca vrstaNaPotezi = vrstaIgralca.get(igralec);
 			switch (vrstaNaPotezi) {
 			case C: 
