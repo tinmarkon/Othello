@@ -4,16 +4,12 @@ import logika.Igra;
 import splosno.KdoIgra;
 import splosno.Poteza;
 
-public class Inteligenca extends splosno.KdoIgra {
+public abstract class Inteligenca extends splosno.KdoIgra {
 	
-	public Inteligenca() {
-		KdoIgra team = new KdoIgra("FIZFIN");
-		// TODO konstruktor za razred kdo igra?
+	public Inteligenca(String ime) {
+		super(ime);
 	}
 	
-	public Poteza izberiPotezo(Igra igra) {
-		// TODO implementacija inteligentnega igralca igre Othello
-		// MAKS 5sec
-	}
+	public abstract Poteza izberiPotezo(Igra igra);
 
 }
