@@ -1,15 +1,20 @@
 package inteligenca;
 
+import java.util.Random;
+
 import logika.Igra;
 import splosno.KdoIgra;
 import splosno.Poteza;
 
-public abstract class Inteligenca extends splosno.KdoIgra {
+public class Inteligenca extends splosno.KdoIgra {
 	
-	public Inteligenca(String ime) {
-		super(ime);
+	public Inteligenca() {
+		super("FIZFIN!");
+		KdoIgra team = new KdoIgra("FIZFIN");
 	}
 	
-	public abstract Poteza izberiPotezo(Igra igra);
-
-}
+	public Poteza izberiPotezo(Igra igra) {
+		Poteza prvaPoteza = igra.poteze().get(0);
+		return prvaPoteza;
+	}
+} 
