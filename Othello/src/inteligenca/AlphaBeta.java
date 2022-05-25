@@ -53,7 +53,7 @@ public class AlphaBeta extends Inteligenca {
 				ocenap = NEODLOCENO;
 				break;
 			default:
-				if (globina == 1)
+				if (globina == 0)
 					ocenap = OceniPozicijo.oceniPozicijo(kopijaIgre, jaz);
 				else
 					ocenap = alphabetaPoteze(kopijaIgre, globina - 1, alpha, beta, jaz).ocena;
