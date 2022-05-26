@@ -16,11 +16,11 @@ public class AlphaBeta extends Inteligenca {
 	private int alpha;
 	private int beta;
 
-	public AlphaBeta(int globina, int alpha, int beta) {
+	public AlphaBeta(int globina) {
 		// super("minimax globina " + globina + ",alpha " + alpha + ",beta " + beta);
 		this.globina = globina;
-		this.alpha = alpha;
-		this.beta = beta;
+		this.alpha = PORAZ;
+		this.beta = ZMAGA;
 	}
 
 	@Override
