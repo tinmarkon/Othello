@@ -47,10 +47,10 @@ public class Vodja {
 				clovekNaVrsti = true;
 				break;
 			case R1:
-				igrajRacunalnikovoPotezo(racunalnikovaInteligenca1);
+				igrajRacunalnikovoPotezo(racunalnikovaInteligenca1); //igra BLACK v R-R
 				break;
 			case R2:
-				igrajRacunalnikovoPotezo(racunalnikovaInteligenca2);
+				igrajRacunalnikovoPotezo(racunalnikovaInteligenca2); //igra WHITE v R-R
 				break;
 			}
 		}
