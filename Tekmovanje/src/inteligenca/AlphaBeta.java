@@ -7,6 +7,7 @@ import logika.Igralec;
 import splosno.Poteza;
 
 public class AlphaBeta extends Inteligenca {
+	//System.out.print(igra.naPotezi() + " Izbiram MCTS potezo. ");
 
 	private static final int ZMAGA = 100;
 	private static final int PORAZ = -ZMAGA;
