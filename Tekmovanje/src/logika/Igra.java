@@ -2,15 +2,11 @@ package logika;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 import splosno.Poteza;
 
 public class Igra {
-
 	private Polje[][] deska;
-	private ArrayList<Poteza> moznePoteze = new ArrayList<>(); //to more bit morda public, ce rabiva v inteligenci? al kako ze to deluje ...
 	private Set<Poteza> naMeji = new HashSet<Poteza>(); //sem shranjujemo prazna polja, ki mejijo na vsaj eno polno
 	private Igralec naPotezi;
 
@@ -36,7 +32,7 @@ public class Igra {
 			naMeji.add(trenutnaPoteza);
 		}
 	}
-	
+
 	public Igra(Igra igra) {
 		/* Ustvari kopijo igre */
 		this.deska = new Polje[8][8];
@@ -48,7 +44,7 @@ public class Igra {
 		this.naPotezi = igra.naPotezi;
 		this.naMeji.addAll(igra.naMeji);
 	}
-	// ---------- ZA POTREBE UPORABNIŠKEGA VMESNIKA --------------
+
 	public Polje[][] getDeska () {
 		return deska;
 	}
@@ -60,11 +56,11 @@ public class Igra {
 	public Igralec naPotezi() {
 		return naPotezi;
 	}
-	// ----------------------------------------------------------
-    public boolean jeVeljavenInt(int x) {
-    return x >= 0 && x < 8;
+
+	public boolean jeVeljavenInt(int x) {
+		return x >= 0 && x < 8;
 	}
-	
+
 	public boolean jePraznoPolje(int i, int j) {
 		return deska[i][j] == Polje.PRAZNO;
 	}
@@ -86,7 +82,7 @@ public class Igra {
 		/* Prešteje črne in bele žetone na deski. Vrne seznam {#crni, #beli}.
 		 */
 		int white = 0;
-		int black = 0; 
+		int black = 0;
 		int[] zetoni = new int[2];
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
@@ -99,22 +95,22 @@ public class Igra {
 		return zetoni;
 	}
 
-    public boolean jeVeljavnaPoteza(Poteza poteza) {
-        if (deska[poteza.getX()][poteza.getY()] == Polje.PRAZNO) {
-            for (int[] smer: smeri) {
-                boolean zastavica = false;
-                int i = poteza.getX() + smer[0];
-                int j = poteza.getY() + smer[1];
-                while (jeVeljavenInt(i) && jeVeljavenInt(j)) {
-                    if (deska[i][j] == Polje.PRAZNO) break;
-                    if (deska[i][j] == naPotezi.getPolje() && !zastavica) break;
-                    if (deska[i][j] == naPotezi.getPolje() && zastavica) return true;
-                    i += smer[0];
-                    j += smer[1];
-                    zastavica = true;
-                }
-            }
-        }
+	public boolean jeVeljavnaPoteza(Poteza poteza) {
+		if (deska[poteza.getX()][poteza.getY()] == Polje.PRAZNO) {
+			for (int[] smer: smeri) {
+				boolean zastavica = false;
+				int i = poteza.getX() + smer[0];
+				int j = poteza.getY() + smer[1];
+				while (jeVeljavenInt(i) && jeVeljavenInt(j)) {
+					if (deska[i][j] == Polje.PRAZNO) break;
+					if (deska[i][j] == naPotezi.getPolje() && !zastavica) break;
+					if (deska[i][j] == naPotezi.getPolje() && zastavica) return true;
+					i += smer[0];
+					j += smer[1];
+					zastavica = true;
+				}
+			}
+		}
 		return false;
 	}
 
@@ -123,9 +119,9 @@ public class Igra {
 		To je treba optimizirat tako, da išče samo po potezah v setu naMeji: prazna polja, ki mejijo na vsaj eno polno.
 		*/
 		ArrayList<Poteza> moznePoteze = new ArrayList<>();
-			for(Poteza poteza: naMeji) {
-				if (jeVeljavnaPoteza(poteza)) moznePoteze.add(poteza);
-			}
+		for(Poteza poteza: naMeji) {
+			if (jeVeljavnaPoteza(poteza)) moznePoteze.add(poteza);
+		}
 		return moznePoteze;
 	}
 	public ArrayList<Poteza> nasprotnikovePoteze() {
@@ -134,7 +130,7 @@ public class Igra {
 		moznePoteze = poteze();
 		naPotezi = naPotezi.nasprotnik();
 		return moznePoteze;
-		
+
 	}
 
 	public boolean odigraj(Poteza poteza) {
@@ -160,26 +156,26 @@ public class Igra {
 		Če se serija nasprotnikovih polj v neki smeri zaključi s poljem igralca naPotezi,
 		potem vsa trenutnaPolja nabrana v tej smeri obrnejo barvo.
 		 */
-			for (int[] smer: smeri) {
-				ArrayList<Poteza> trenutnaPolja = new ArrayList<>();
-				int i = poteza.getX() + smer[0];
-				int j = poteza.getY() + smer[1];
-				while (jeVeljavenInt(i) && jeVeljavenInt(j)) {
-					if (deska[i][j] == Polje.PRAZNO) break;
-					if (deska[i][j] == naPotezi.getPolje()) {
-						obrniZetone(trenutnaPolja);
-						break;
-					}
-					trenutnaPolja.add(new Poteza(i, j));
-					i += smer[0];
-					j += smer[1];
+		for (int[] smer: smeri) {
+			ArrayList<Poteza> trenutnaPolja = new ArrayList<>();
+			int i = poteza.getX() + smer[0];
+			int j = poteza.getY() + smer[1];
+			while (jeVeljavenInt(i) && jeVeljavenInt(j)) {
+				if (deska[i][j] == Polje.PRAZNO) break;
+				if (deska[i][j] == naPotezi.getPolje()) {
+					obrniZetone(trenutnaPolja);
+					break;
 				}
+				trenutnaPolja.add(new Poteza(i, j));
+				i += smer[0];
+				j += smer[1];
 			}
+		}
 	}
-	
+
 	public void obrniZetone(ArrayList<Poteza> trenutnaPolja) {
 		/* Spremeni barvo žetonov na poljih iz vhodnega seznama v barvo igralca naPotezi.
-		*  Morda bolje, če spremeni v nasprotno barvo. Lahko kar: deska[i][j] = (deska[i][j] == Polje.BLACK) itd. ? */
+		 *  Morda bolje, če spremeni v nasprotno barvo. Lahko kar: deska[i][j] = (deska[i][j] == Polje.BLACK) itd. ? */
 		for (Poteza p: trenutnaPolja) {
 			int i = p.getX();
 			int j = p.getY();
@@ -187,7 +183,7 @@ public class Igra {
 			deska[i][j] = polje.nasprotno();
 		}
 	}
-	
+
 	public Stanje stanje() {
 		if (poteze().size() == 0) {
 			naPotezi = naPotezi.nasprotnik();
@@ -196,11 +192,11 @@ public class Igra {
 				int black = st[0];
 				int white = st[1];
 				if (black > white) {
-					System.out.println("Slavo in cast crnemu igralcu.");
+					//System.out.println("Slavo in cast crnemu igralcu.");
 					return Stanje.ZMAGA_B;
 				}
 				else if (black < white) {
-					System.out.println("Slavo in cast belemu igralcu.");
+					//System.out.println("Slavo in cast belemu igralcu.");
 					return Stanje.ZMAGA_W;
 				}
 				else return Stanje.NEODLOCENO;
@@ -209,9 +205,9 @@ public class Igra {
 		return Stanje.V_TEKU;
 	}
 
-	
-// ------------------- FUNKCIJE ZA IZPIS
+
 	public void printIgra() {
+		/* Izriše trenutno stanje igralne plošče */
 		ArrayList<Poteza> moznePoteze = this.poteze();
 		System.out.println("Stanje igre je: " + stanje());
 		System.out.print(" --- --- --- --- --- --- --- ---");
@@ -221,7 +217,7 @@ public class Igra {
 			for (int j = 0; j < 8; j++) {
 				if (deska[i][j] == Polje.BLACK) System.out.print("B | ");
 				else if (deska[i][j] == Polje.WHITE) System.out.print("W | ");
-				
+
 				else if (naMeji.contains(new Poteza(i, j)) && (moznePoteze.contains(new Poteza(i, j)))) System.out.print("ox| ");
 				else if (naMeji.contains(new Poteza(i, j)) && (!moznePoteze.contains(new Poteza(i, j)))) System.out.print("o | ");
 				else if (deska[i][j] == Polje.PRAZNO) System.out.print("  | ");
@@ -229,31 +225,25 @@ public class Igra {
 			System.out.println();
 			System.out.print(" --- --- --- --- --- --- --- ---");
 		}
-	System.out.println();
-	System.out.print("Mozne poteze: ");
-	
-	for (Poteza p: moznePoteze) {
-		int i = p.getX();
-		int j = p.getY();
-		System.out.print("(" + i + ", " +  j + ")");
-	}
-	System.out.println();
-	System.out.print("Mejne poteze: ");
-	
-	for (Poteza p: naMeji) {
-		int i = p.getX();
-		int j = p.getY();
-		System.out.print("(" + i + ", " +  j + ")");
-	}
-	System.out.println();
-	System.out.println("Na potezi je: " + naPotezi);
-	System.out.println(". . . . . . . . . . . . . . . . . . . . .");
-	System.out.println();
-	}
+		System.out.println();
+		System.out.print("Mozne poteze: ");
 
+		for (Poteza p: moznePoteze) {
+			int i = p.getX();
+			int j = p.getY();
+			System.out.print("(" + i + ", " +  j + ")");
+		}
+		System.out.println();
+		System.out.print("Mejne poteze: ");
 
+		for (Poteza p: naMeji) {
+			int i = p.getX();
+			int j = p.getY();
+			System.out.print("(" + i + ", " +  j + ")");
+		}
+		System.out.println();
+		System.out.println("Na potezi je: " + naPotezi);
+		System.out.println(". . . . . . . . . . . . . . . . . . . . .");
+		System.out.println();
+	}
 }
-
-	
-	
- 
