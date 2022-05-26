@@ -4,9 +4,10 @@ Projektna naloga pri predmetu Programiranje 2. V programskem jeziku Java impleme
 ## Setup
 V trenutni verziji zaženemo datoteko `Othello.java`, da odpremo uporabniški vmesnik. V meniju `Nova igra` lahko izbiramo tip igralcev: človek proti človeku, človek proti računalniku ali računalnik proti računalniku.
 Trenutno so implementirane tri različice računalnikove inteligence:
-0. neinteligenten igralec, ki izbira naključno potezo,
-1. algoritem **minimax z alfa-beta rezi**, ki mu lahko nastavimo globino, ter
-2. **Monte Carlo Tree Search** algoritem.
+1. **neumen igralec**, ki izbira naključno potezo,
+2. algoritem **minimax z alfa-beta rezi**, ki mu lahko določimo globino, ter
+3. **Monte Carlo Tree Search** algoritem.
+
 Inteligenco računalnika nastavimo v datoteki `Vodja.java` v spremenljivko `racunalnikovaInteligenca`.
 
 
