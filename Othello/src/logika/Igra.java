@@ -128,6 +128,14 @@ public class Igra {
 			}
 		return moznePoteze;
 	}
+	public ArrayList<Poteza> nasprotnikovePoteze() {
+		ArrayList<Poteza> moznePoteze = new ArrayList<>();
+		naPotezi = naPotezi.nasprotnik();
+		moznePoteze = poteze();
+		naPotezi = naPotezi.nasprotnik();
+		return moznePoteze;
+		
+	}
 
 	public boolean odigraj(Poteza poteza) {
 		/* Če je poteza v seznamu možnih potez:
