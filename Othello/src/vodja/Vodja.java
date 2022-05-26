@@ -56,7 +56,7 @@ public class Vodja {
 		}
 	}
 	
-	public static Inteligenca racunalnikovaInteligenca1 = new AlphaBeta(9, -64, 64); //igra proti človeku, igra ČRNO proti računalnikoviInteligenci
+	public static Inteligenca racunalnikovaInteligenca1 = new AlphaBeta(5); //igra proti človeku, igra ČRNO proti računalnikoviInteligenci
 	public static Inteligenca racunalnikovaInteligenca2 = new NeumenIgralec();
 	
 	public static void igrajRacunalnikovoPotezo(Inteligenca racunalnikovaInteligenca) {
