@@ -16,4 +16,7 @@ public enum Igralec {
 		// Izpiši kateri igralec je na potezi.
 		return (this == BLACK ? "BLACK" : "WHITE");
 	}
+	public Stanje getStanje() {
+		return (this == WHITE ? Stanje.ZMAGA_W : Stanje.ZMAGA_B);
+	}
 }
