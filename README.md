@@ -6,7 +6,7 @@ V trenutni verziji zaženemo datoteko `Othello.java`, da odpremo uporabniški vm
 Trenutno so implementirane tri različice računalnikove inteligence:
 1. **neumen igralec**, ki izbira naključno potezo,
 2. algoritem **minimax z alfa-beta rezi**, ki mu lahko določimo globino, ter
-3. **Monte Carlo Tree Search** algoritem.
+3. **Monte Carlo Tree Search** algoritem z nastavljivo časovno omejitvijo.
 
 Inteligenco računalnika nastavimo v datoteki `Vodja.java` v spremenljivko `racunalnikovaInteligenca`.
 
@@ -19,5 +19,8 @@ Uporabniški vmesnik in inteligenten igralec delujeta, a projekt še ni zaključ
    * Izbira imena igralcev.
    * Poenotenje izpisov v statusni vrstici.
    * Izris možnih potez.
-2. Izpopolniti Monte Carlo Tree Search algoritem, da se izogiba slabim potezam (ki nasprotniku dovolijo, da vzame kot).
+2. Izpopolniti Monte Carlo Tree Search algoritem:
+   * Naj se izogiba slabim potezam (ki nasprotniku dovolijo, da vzame kot).
+   * Izpopolni časovno učinkovitost: da ne presega časovne omejitve brez `try` in `catch TimeoutException`.
+   * Funkcija igra.stanje() je časovno naporna - se da to optimizirati?
 3. Namigi za človeškega igralca: ponudimo mu najboljšo izmed možnih potez izbrano s poljubnim algoritmom.
