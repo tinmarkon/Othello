@@ -1,7 +1,4 @@
 package inteligenca;
-
-import java.util.Random;
-
 import logika.Igra;
 import splosno.KdoIgra;
 import splosno.Poteza;
@@ -14,7 +11,7 @@ public class Inteligenca extends splosno.KdoIgra {
 	}
 	
 	public Poteza izberiPotezo(Igra igra) {
-		Poteza prvaPoteza = igra.poteze().get(0);
-		return prvaPoteza;
+		Inteligenca inteligenca = new MonteCarlo();
+		return inteligenca.izberiPotezo(igra);
 	}
 } 

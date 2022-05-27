@@ -42,7 +42,7 @@ public class Vozlisce {
 	}
 
 	public Vozlisce(Status status) {
-		this.status = status;
+		this.status = new Status(status);
 		this.slovarOtrok = new HashMap<Vozlisce, Poteza>();
 	}
 
@@ -63,7 +63,7 @@ public class Vozlisce {
 		List<Vozlisce> otroci = new ArrayList<Vozlisce>(slovarOtrok.keySet());
 		for (int i = 0; i < vozlisce.slovarOtrok.size(); i++) {
 			this.slovarOtrok.put(otroci.get(i), slovarOtrok.get(otroci.get(i))); //moram tu ustvarit novo vozlišče?
-			//this.slovarOtrok.put(new Vozlisce (otroci.get(i)), slovarOtrok.get(otroci.get(i)));
+			//this.slovarOtrok.put(new Vozlisce(otroci.get(i)), slovarOtrok.get(otroci.get(i)));
 		}
 	}
 
@@ -155,8 +155,8 @@ public class Vozlisce {
 		if ((st[0] + st[1]) > 50) return this.UCTocena();
 
 		else {
-			if (minmax == "min") return this.UCTocena() * (1 - this.notranjePoteze() - this.ocenaPoteze() + this.kaznujPozresnost());
-			else return this.UCTocena() * (1 + this.notranjePoteze() + this.ocenaPoteze() - this.kaznujPozresnost());
+			if (minmax == "min") return this.UCTocena() * (1 - this.notranjePoteze() - this.ocenaPoteze());
+			else return this.UCTocena() * (1 + this.notranjePoteze() + this.ocenaPoteze());
 		}
 	}
 }

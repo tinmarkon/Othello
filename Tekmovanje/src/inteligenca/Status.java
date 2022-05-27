@@ -23,9 +23,9 @@ public class Status {
     }
 
     public Status(Status status) {
-        this.gamePosition = new Igra(status.getGamePosition());
-        this.obiski = status.getObiski();
-        this.zmage = status.getZmage();
+        this.gamePosition = new Igra(status.gamePosition);
+        this.obiski = status.obiski;
+        this.zmage = status.zmage;
     }
 
     public Status(Igra igra) {
@@ -62,14 +62,14 @@ public class Status {
 
     public Map<Status, Poteza> getMozniStatusi() {
         /* Za dano vozlišče vrne slovar možnih stanj vozlišč povezanih s potezami. */
-        Map<Status, Poteza> moznaStatus = new HashMap<Status, Poteza>();
+        Map<Status, Poteza> mozniStatusi = new HashMap<Status, Poteza>();
         ArrayList<Poteza> moznePoteze = this.gamePosition.poteze();
         for (Poteza p: moznePoteze) {
             Status newStatus = new Status(this.gamePosition);
             newStatus.getGamePosition().odigraj(p);
-            moznaStatus.put(newStatus, p);
+            mozniStatusi.put(newStatus, p);
         };
-        return moznaStatus;
+        return mozniStatusi;
     }
 
     void povecajObiske() {
@@ -96,7 +96,7 @@ public class Status {
     }
 
     public void igrajDelnoNakljucno() {
-        /* Skuša se izogibati zelo slabim potezam, ki nasprotniku podarijo kote.*/
+        /* Skuša se izogibati zelo slabim potezam, ki nasprotniku podarijo kote. */
         Poteza poteza = this.izberiNakljucnoPotezo();
         if (Arrays.asList(zeloSlabePoteze).contains(poteza)) {
             poteza = this.izberiNakljucnoPotezo();

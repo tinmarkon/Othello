@@ -1,6 +1,5 @@
 import logika.Igra;
 import splosno.Poteza;
-
 import gui.GlavnoOkno;
 import inteligenca.Vozlisce;
 import vodja.Vodja;

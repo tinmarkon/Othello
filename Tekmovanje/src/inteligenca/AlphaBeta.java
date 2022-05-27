@@ -26,6 +26,7 @@ public class AlphaBeta extends Inteligenca {
 
 	@Override
 	public Poteza izberiPotezo(Igra igra) {
+		System.out.print(igra.naPotezi() + " Izbiram ALFABETA potezo. ");
 		OcenjenaPoteza najboljsaPoteza = alphabetaPoteze(igra, this.globina, this.alpha, this.beta, igra.naPotezi());
 		return najboljsaPoteza.poteza;
 	}

@@ -8,6 +8,8 @@ import javax.swing.SwingWorker;
 import gui.GlavnoOkno;
 import inteligenca.AlphaBeta;
 import inteligenca.Inteligenca;
+import inteligenca.MonteCarlo;
+import inteligenca.MonteCarloTreeSearch;
 import inteligenca.NeumenIgralec;
 import logika.Igra;
 import logika.Igralec;
@@ -32,7 +34,7 @@ public class Vodja {
 	
 	public static void igramo () {
 		okno.osveziGUI();
-		igra.printIgra();
+		//igra.printIgra();
 
 		switch (igra.stanje()) {
 		case ZMAGA_B:
@@ -56,15 +58,19 @@ public class Vodja {
 		}
 	}
 	
-	public static Inteligenca racunalnikovaInteligenca1 = new AlphaBeta(7); //igra proti človeku, igra ČRNO proti računalnikoviInteligenci
-	public static Inteligenca racunalnikovaInteligenca2 = new NeumenIgralec();
+	public static Inteligenca racunalnikovaInteligenca1 = new  AlphaBeta(7); //NeumenIgralec(); //
+	public static Inteligenca racunalnikovaInteligenca2 = new Inteligenca();
 	
 	public static void igrajRacunalnikovoPotezo(Inteligenca racunalnikovaInteligenca) {
 		Igra zacetnaIgra = igra;
 		SwingWorker<Poteza, Void> worker = new SwingWorker<Poteza, Void> () {
 			@Override
 			protected Poteza doInBackground() {
+				long start = System.currentTimeMillis();
 				Poteza poteza = racunalnikovaInteligenca.izberiPotezo(igra);
+				long trajanje = (System.currentTimeMillis() - start);
+				System.out.println("Trajalo je " + trajanje + " ms. ");
+				if (trajanje > 5000) System.out.println("--> Presegel sem časovno omejitev.");
 				try {TimeUnit.SECONDS.sleep(1);} catch (Exception e) {};
 				return poteza;
 			}
