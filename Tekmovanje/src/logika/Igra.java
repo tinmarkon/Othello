@@ -21,10 +21,10 @@ public class Igra {
 				deska[i][j] = Polje.PRAZNO;
 			}
 		}
-		deska[3][3] = Polje.BLACK;
 		deska[4][4] = Polje.BLACK;
-		deska[4][3] = Polje.WHITE;
+		deska[3][3] = Polje.BLACK;
 		deska[3][4] = Polje.WHITE;
+		deska[4][3] = Polje.WHITE;
 
 		naPotezi = Igralec.BLACK;
 		for (int[] koordinate : zacetnaMeja) {
