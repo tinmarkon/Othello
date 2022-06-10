@@ -14,7 +14,7 @@ import logika.Igralec;
 import splosno.Poteza;
 
 public class Vozlisce {
-    /* Objekt vozlisce predstavlja razvejišče (angl. Node) v drevesu.
+    /* Objekt vozlisce predstavlja razvejišče (angl. Node) v drevesu za implementacijo Monte Carlo Tree Search algoritma.
     Vozlišče ima
     (1) stanje -- predstavlja ga class Status (da ne mešamo z razredom logika.Stanje,
         ki predstavlja stanje igre) in ima 3 polja:
