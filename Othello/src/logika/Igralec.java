@@ -14,6 +14,6 @@ public enum Igralec {
 	@Override
 	public String toString() {
 		// Izpiši kateri igralec je na potezi.
-		return (this == BLACK ? "BLACK" : "WHITE");
+		return (this == BLACK ? "črni" : "beli");
 	}
 }
