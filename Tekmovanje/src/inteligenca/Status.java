@@ -12,6 +12,7 @@ import logika.Igralec;
 import splosno.Poteza;
 
 public class Status {
+    /* Status vozlišča v drevesu za implementacijo Monte Carlo Tree Search algoritma. */
     private Igra gamePosition; //stanje na plošči, ki ga predstavlja to vozlišče
     private int obiski; //kolikokrat smo obiskali to vozlišče in potem odigrali naključno igro
     private double zmage; //kolikokrat smo v naključnih igrah iz tega vozlišča zmagali
