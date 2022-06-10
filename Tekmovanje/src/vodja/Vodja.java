@@ -2,14 +2,12 @@ package vodja;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
 import javax.swing.SwingWorker;
 
 import gui.GlavnoOkno;
 import inteligenca.AlphaBeta;
 import inteligenca.Inteligenca;
 import inteligenca.MonteCarlo;
-import inteligenca.MonteCarloTreeSearch;
 import inteligenca.NeumenIgralec;
 import logika.Igra;
 import logika.Igralec;
@@ -26,21 +24,24 @@ public class Vodja {
 	public static Igra igra = null;
 	
 	public static boolean clovekNaVrsti = false;
+	public static Poteza namig;
+	public static boolean pokaziPoteze;
 
 	public static void igramoNovoIgro () {
 		igra = new Igra ();
+		namig = null;
+		pokaziPoteze = false;
 		igramo ();
 	}
 	
 	public static void igramo () {
 		okno.osveziGUI();
-		//igra.printIgra();
 
 		switch (igra.stanje()) {
 		case ZMAGA_B:
 		case ZMAGA_W:
 		case NEODLOCENO: 
-			return; // odhajamo iz metode igramo
+			return;
 		case V_TEKU: 
 			Igralec igralec = igra.naPotezi();
 			VrstaIgralca vrstaNaPotezi = vrstaIgralca.get(igralec);
@@ -49,28 +50,30 @@ public class Vodja {
 				clovekNaVrsti = true;
 				break;
 			case R1:
-				igrajRacunalnikovoPotezo(racunalnikovaInteligenca1); //igra BLACK v R-R
+				igrajRacunalnikovoPotezo(racunalnikovaInteligenca1);
 				break;
 			case R2:
-				igrajRacunalnikovoPotezo(racunalnikovaInteligenca2); //igra WHITE v R-R
+				igrajRacunalnikovoPotezo(racunalnikovaInteligenca2);
+				break;
+			case R3:
+				igrajRacunalnikovoPotezo(racunalnikovaInteligenca3);
 				break;
 			}
 		}
 	}
-	
-	public static Inteligenca racunalnikovaInteligenca1 = new  AlphaBeta(7); //NeumenIgralec(); //
-	public static Inteligenca racunalnikovaInteligenca2 = new Inteligenca();
+;
+	public static Inteligenca racunalnikovaInteligenca1 = new AlphaBeta(3); // Povprečen nasprotnik.
+	public static Inteligenca racunalnikovaInteligenca2 = new AlphaBeta(7); // Pameten nasprotnik.
+	public static Inteligenca racunalnikovaInteligenca3 = new MonteCarlo(); // Genialen nasprotnik.
+
+	public static Inteligenca namigInteligenca = new AlphaBeta(7); // Poišče namig.
 	
 	public static void igrajRacunalnikovoPotezo(Inteligenca racunalnikovaInteligenca) {
 		Igra zacetnaIgra = igra;
 		SwingWorker<Poteza, Void> worker = new SwingWorker<Poteza, Void> () {
 			@Override
 			protected Poteza doInBackground() {
-				long start = System.currentTimeMillis();
 				Poteza poteza = racunalnikovaInteligenca.izberiPotezo(igra);
-				long trajanje = (System.currentTimeMillis() - start);
-				System.out.println("Trajalo je " + trajanje + " ms. ");
-				if (trajanje > 5000) System.out.println("--> Presegel sem časovno omejitev.");
 				try {TimeUnit.SECONDS.sleep(1);} catch (Exception e) {};
 				return poteza;
 			}
@@ -90,10 +93,22 @@ public class Vodja {
 	public static void igrajClovekovoPotezo(Poteza poteza) {
 		if (igra.odigraj(poteza)) {
 			clovekNaVrsti = false;
+			//ce smo igralcu prikazali ("vklopili") namig, naj se po njegovi potezi "izklopijo"
+			namig = null;
 			igramo ();
 		}
-		else System.out.println("Izbrana poteza ni veljavna!");
+		else {
+			//TODO Izpis v statusni vrstici, da je izbrana poteza neveljavna.
+		}
 		
+	}
+
+	public static void pokaziNamig() {
+		namig = namigInteligenca.izberiPotezo(igra);
+	}
+
+	public static void pokaziPoteze() {
+		pokaziPoteze = !pokaziPoteze;
 	}
 	
 	
