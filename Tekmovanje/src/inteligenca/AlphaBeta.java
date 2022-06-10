@@ -1,13 +1,10 @@
 package inteligenca;
-
 import java.util.List;
-
 import logika.Igra;
 import logika.Igralec;
 import splosno.Poteza;
 
 public class AlphaBeta extends Inteligenca {
-	//System.out.print(igra.naPotezi() + " Izbiram MCTS potezo. ");
 
 	private static final int ZMAGA = 100;
 	private static final int PORAZ = -ZMAGA;
@@ -18,7 +15,6 @@ public class AlphaBeta extends Inteligenca {
 	private int beta;
 
 	public AlphaBeta(int globina) {
-		// super("minimax globina " + globina + ",alpha " + alpha + ",beta " + beta);
 		this.globina = globina;
 		this.alpha = PORAZ;
 		this.beta = ZMAGA;
@@ -26,7 +22,7 @@ public class AlphaBeta extends Inteligenca {
 
 	@Override
 	public Poteza izberiPotezo(Igra igra) {
-		System.out.print(igra.naPotezi() + " Izbiram ALFABETA potezo. ");
+		//System.out.print(igra.naPotezi() + " Izbiram ALFABETA potezo. ");
 		OcenjenaPoteza najboljsaPoteza = alphabetaPoteze(igra, this.globina, this.alpha, this.beta, igra.naPotezi());
 		return najboljsaPoteza.poteza;
 	}
@@ -78,5 +74,4 @@ public class AlphaBeta extends Inteligenca {
 		}
 		return new OcenjenaPoteza(kandidat, ocena);
 	}
-
 }
