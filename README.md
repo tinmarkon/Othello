@@ -1,14 +1,16 @@
 # Othello
-Projektna naloga pri predmetu Programiranje 2. V programskem jeziku Java implementiramo igro za dva igralca [Othello](https://www.worldothello.org/about/about-othello/othello-rules/official-rules/english).
+Projektna naloga pri predmetu Programiranje 2. V programskem jeziku Java implementiramo logiko, inteligenco in uporabniški vmesnik za igro za dva igralca [Othello](https://www.worldothello.org/about/about-othello/othello-rules/official-rules/english).
 
-## Setup
-V trenutni verziji zaženemo datoteko `Othello.java`, da odpremo uporabniški vmesnik. V meniju `Nova igra` lahko izbiramo tip igralcev: človek proti človeku, človek proti računalniku ali računalnik proti računalniku.
 Trenutno so implementirane tri različice računalnikove inteligence:
-1. **neumen igralec** (`new NeumenIgralec()`), ki izbira naključno potezo ,
+1. **neumen igralec** (`new NeumenIgralec()`), ki izbira naključno potezo,
 2. algoritem **minimax z alfa-beta rezi** (`new AlphaBeta(globina)`), ki mu lahko določimo globino, ter
 3. **Monte Carlo Tree Search** (`new MonteCarlo()`) algoritem z nastavljivo časovno omejitvijo.
 
-Inteligenco računalnika nastavimo v datoteki `Vodja.java` v spremenljivko `racunalnikovaInteligenca`.
+## Setup
+V trenutni verziji zaženemo datoteko `Tekmovanje/Othello.java`, da odpremo uporabniški vmesnik. V orodni vrstici na vrhu strani izberemo
+tip črnega in belega igralca. Na voljo so: `Človek`, `Povprečen nasprotnik` (`AlphaBeta(globina: 3)`), `Pameten nasprotnik` (`AlphaBeta(globina: 7)`) in `Genialen nasprotnik` (`MonteCarlo()`, `MAX_TIME = 3,5 s`).
+
+Klik na gumb `Začni igro` zažene novo igro, igramo s klikom na ustrezno polje na igralni plošči.
 
 ## Blokirane pozicije
 Blokirane pozicije so pozicije v katerih igralec na potezi nima možnih potez, njegov nasprotnik pa. V takih primerih je dvakrat zaporedoma na vrsti nasprotnik. 
@@ -24,15 +26,17 @@ Uporabniški vmesnik in inteligenten igralec delujeta, a nista izpopolnjena - pr
 
 **Naslednji koraki:**
 1. Izpopolniti uporabniški vmesnik:
-   * Možnost, da človek igra proti različnim zahtevnostim računalnikove inteligence.
-   * Izbira imena igralcev.
-   * Poenotenje izpisov v statusni vrstici.
-   * Izris možnih potez.
-   * Prilagodljiva velikost okna.
+   * Možnost, da človek igra proti različnim zahtevnostim računalnikove inteligence. X
+   * Poenotenje izpisov v statusni vrstici. X
+     * TODO: Opozori človeka, da izbrana poteza ni veljavna!
+   * Izris možnih potez. X
+   * Namigi za človeškega igralca: ponudimo mu najboljšo izmed možnih potez izbrano s poljubnim algoritmom. X 
+   * TODO: Gumb `Razveljavi potezo` za človeškega igralca: Zapomni si prejšnje stanje na deski. 
+   * TODO: Polepšanje gumbov, orodnih vrstic, menijev itd ... morda uporabiti kak lep LookAndFeel?
 2. Izpopolniti Monte Carlo Tree Search algoritem:
    * Naj se izogiba slabim potezam (ki nasprotniku dovolijo, da vzame kot).
-   * Izpopolni časovno učinkovitost: da ne presega časovne omejitve brez `try` in `catch TimeoutException`. Za potrebe tekmovanja smo bili posebej pozorni, da metoda ne bi močno presegla časovne omejitve. V osnovi je dovolj štiri korake MCTS algoritma zapreti v preprosto zanko `while (System.currentTimeMillis() < end)` ter opustiti metodo `preveriCas()`.
+   * Izpopolni časovno učinkovitost: da ne presega časovne omejitve brez `try` in `catch TimeoutException`. Za potrebe tekmovanja smo bili posebej pozorni, da metoda ne bi močno presegla časovne omejitve. V osnovi je dovolj štiri korake MCTS algoritma zapreti v preprosto zanko `while (System.currentTimeMillis() < end)` ter opustiti metodo `preveriCas()`. X
+3. Izpopolniti logiko igre:
    * Funkcija `igra.stanje()` je časovno naporna - se da to optimizirati?
-3. Namigi za človeškega igralca: ponudimo mu najboljšo izmed možnih potez izbrano s poljubnim algoritmom.
-4. Gumb `Razveljavi potezo` za človeškega igralca: Zapomni si prejšnje stanje na deski.
-5. Morda: izbira večje ali manjše (NxN) igralne deske.
+   * TODO: Kako se soočamo z BLOKIRANIMI POZICIJAMI?
+4. Dopolniti README z osnovnimi opisi metod in funkcij ter viri in literaturo.
