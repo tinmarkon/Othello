@@ -15,10 +15,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import java.awt.Container;  
+import java.awt.Container;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;  
 import javax.swing.JComboBox;  
 import javax.swing.JToolBar;
+import javax.swing.JTextField;
+import java.awt.Color;
+
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
@@ -37,9 +42,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	// Polje na katerem igramo igro.
 	private IgralnoPolje polje;
 
-	// Orodna vrstica
-	private JToolBar tb; // na vrhu okna
-	private JToolBar tb2; // na dnu okna
+	// Vrstici z gumbi na vrhu in dnu okna
+	private JPanel p1, p2;
  
     // Gumbi.
     private JButton zacniIgro, namig, razveljavi;
@@ -108,23 +112,26 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 		status.setText(START_STATUS);
 
-		// ---------- Zgornja orodna vrstica: [crni igralec], [beli igralec], [zacni igro] ----------------
-		tb = new JToolBar();
-		tb.setFont(mojFont);
+		// ---------- Zgornja vrstica z gumbi: [crni igralec], [beli igralec], [zacni igro] ----------------
+		p1 = new JPanel();
+		p1.setFont(mojFont);
 
-		GridBagConstraints panel_layout = new GridBagConstraints();
-		panel_layout.gridx = 0;
-		panel_layout.gridy = 0;
-		panel_layout.anchor = GridBagConstraints.NORTH;
-		panel_layout.fill = GridBagConstraints.NORTH;
+		GridBagConstraints panel1_layout = new GridBagConstraints();
+		panel1_layout.gridx = 0;
+		panel1_layout.gridy = 0;
+		panel1_layout.anchor = GridBagConstraints.NORTH;
+		panel1_layout.fill = GridBagConstraints.NORTH;
 
-		pane.add(tb, panel_layout);
+		pane.add(p1, panel1_layout);
 
-		// create a panel
-		JPanel p = new JPanel();
+		// labels
+		/** Returns an ImageIcon, or null if the path was invalid. */
+		ImageIcon icon_beli = createImageIcon("images/beli_small.png", "beli zeton");
+		ImageIcon icon_crni = createImageIcon("images/crni_small.png", "beli zeton");
 
-		JLabel lab1 = new JLabel("Črni igralec:", JLabel.LEFT);
-		JLabel lab2 = new JLabel("Beli igralec:", JLabel.LEFT);
+								 
+		JLabel lab1 = new JLabel("Črni igralec:", icon_crni, JLabel.LEFT);
+		JLabel lab2 = new JLabel("Beli igralec:", icon_beli, JLabel.LEFT);
 
 		// create a combobox
 		igralecCrni = new JComboBox<>(new String[] {IGRALEC_C, IGRALEC_R1, IGRALEC_R2, IGRALEC_R3});
@@ -135,19 +142,18 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		zacniIgro.addActionListener(startGumbAL);
 		
 		// add buttons and labels to panel
-		p.add(lab1);
-		p.add(igralecCrni);
-		p.add(lab2);
-		p.add(igralecBeli);
-		p.add(zacniIgro);
-		tb.add(p);
+		p1.add(lab1);
+		p1.add(igralecCrni);
+		p1.add(lab2);
+		p1.add(igralecBeli);
+		p1.add(zacniIgro);
 
 		igralecCrni.addActionListener(igralecCrniAL);
 
 		igralecBeli.addActionListener(igralecBeliAL);
 
-		// ---------- Spodnja orodna vrstica: [namig], [mozne poteze], [razveljavi potezo] ----------------
-		tb2 = new JToolBar();
+		// ---------- Spodnja vrstica z gumbi: [namig], [mozne poteze], [razveljavi potezo] ----------------
+		p2 = new JPanel();
 
 		GridBagConstraints panel2_layout = new GridBagConstraints();
 		panel2_layout.gridx = 0;
@@ -155,17 +161,14 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		panel2_layout.weightx = 0.5;
 		panel2_layout.fill = GridBagConstraints.HORIZONTAL;
 
-		pane.add(tb2, panel2_layout);
-
-		JPanel p2 = new JPanel();
+		pane.add(p2, panel2_layout);
 
 		namig = new JButton(NAMIG_GUMB);
 		namig.addActionListener(namigGumbAL);
-		// namig.setVisible(false); // radi bi, da se gumba namig in moznePoteze vidita le, kadar je na potezi človek
+		namig.setVisible(false); // radi bi, da se gumb namig (morda tudi moznePoteze) vidi le, kadar je na potezi človek
 
 		poteze = new JToggleButton(POTEZE_GUMB);
 		poteze.addActionListener(potezeGumbAL);
-		// poteze.setVisible(false);
 
 		razveljavi = new JButton(RAZVELJAVI_GUMB);
 		razveljavi.addActionListener(razveljaviGumbAL);
@@ -173,8 +176,19 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		p2.add(namig);
 		p2.add(poteze);
 		p2.add(razveljavi);
-		tb2.add(p2);
+		p2.setVisible(false);
 	}
+
+	protected ImageIcon createImageIcon(String path, String description) {
+		java.net.URL imgURL = getClass().getResource(path);
+		if (imgURL != null) {
+			return new ImageIcon(imgURL, description);
+		} 
+		else {
+		System.err.println("Couldn't find file: " + path);
+		return null;
+		}
+		}
 
 	// spodaj so definirani ActionListener-ji za posamezne gumbe
 	ActionListener igralecCrniAL = new ActionListener() {
@@ -224,6 +238,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.vrstaIgralca.put(Igralec.BLACK, izbira_igralecCrni); 
 			Vodja.vrstaIgralca.put(Igralec.WHITE, izbira_igralecBeli); 
 			Vodja.igramoNovoIgro();
+			p2.setVisible(true);
 		}
 	};
 
@@ -259,8 +274,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			status.setText("Igra ni v teku.");
 		}
 		else {
-			// namig.setVisible(false);
-			// poteze.setVisible(false);
+			namig.setVisible(false);
 			switch(Vodja.igra.stanje()) {
 			case NEODLOCENO:
 				status.setText("Igra je zaključena!");
@@ -272,8 +286,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 				Igralec naPotezi = Vodja.igra.naPotezi();
 				if (Vodja.vrstaIgralca.get(naPotezi) == VrstaIgralca.C) {
 					status.setText("Na potezi je " + naPotezi + "."); 
-					// namig.setVisible(true);
-					// poteze.setVisible(true);
+					namig.setVisible(true);
 					}
 				else status.setText("Potezo izbira " + naPotezi + " igralec."); 
 				break;
