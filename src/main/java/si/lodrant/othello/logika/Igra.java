@@ -9,6 +9,7 @@ public class Igra {
 	private Polje[][] deska;
 	private Set<Poteza> naMeji = new HashSet<Poteza>(); //sem shranjujemo prazna polja, ki mejijo na vsaj eno polno
 	private Igralec naPotezi;
+	private Igra prejsnjeStanje;
 
 	public final int[][] smeri = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 	public final int[][] zacetnaMeja = {{2, 2}, {2, 3}, {2, 4}, {2, 5}, {3, 2}, {3, 5}, {4, 2}, {4, 5}, {5, 2}, {5, 3}, {5, 4}, {5, 5}};
@@ -31,6 +32,7 @@ public class Igra {
 			Poteza trenutnaPoteza = new Poteza(koordinate[0], koordinate[1]);
 			naMeji.add(trenutnaPoteza);
 		}
+		prejsnjeStanje = null;
 	}
 
 	public Igra(Igra igra) {
@@ -43,6 +45,7 @@ public class Igra {
 		}
 		this.naPotezi = igra.naPotezi;
 		this.naMeji.addAll(igra.naMeji);
+		this.prejsnjeStanje = igra.prejsnjeStanje;
 	}
 
 	public Polje[][] getDeska () {
@@ -63,6 +66,13 @@ public class Igra {
 
 	public boolean jePraznoPolje(int i, int j) {
 		return deska[i][j] == Polje.PRAZNO;
+	}
+	
+	public void odstraniZadnjoPotezo() {
+		Igra predZadnjoPotezo = prejsnjeStanje;
+		this.deska = predZadnjoPotezo.deska;
+		this.naPotezi = predZadnjoPotezo.naPotezi;
+		this.naMeji = predZadnjoPotezo.naMeji;
 	}
 
 	private void posodobiMejo(Poteza poteza) {
@@ -137,6 +147,7 @@ public class Igra {
 		Če ne: Vrne false.
 		 */
 		if (poteze().contains(poteza)) {
+			prejsnjeStanje = new Igra(this);
 			deska[poteza.getX()][poteza.getY()] = naPotezi.getPolje();
 			posodobiMejo(poteza);
 			obrniZa(poteza);
