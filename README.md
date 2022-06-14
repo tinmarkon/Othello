@@ -1,5 +1,5 @@
-# Othello
-Projektna naloga pri predmetu Programiranje 2. V programskem jeziku Java implementiramo logiko, inteligenco in uporabniški vmesnik za igro za dva igralca [Othello](https://www.worldothello.org/about/about-othello/othello-rules/official-rules/english).
+# si.lodrant.othello.Othello
+Projektna naloga pri predmetu Programiranje 2. V programskem jeziku Java implementiramo logiko, inteligenco in uporabniški vmesnik za igro za dva igralca [si.lodrant.othello.Othello](https://www.worldothello.org/about/about-othello/othello-rules/official-rules/english).
 
 Trenutno so implementirane tri različice računalnikove inteligence:
 1. **neumen igralec** (`new NeumenIgralec()`), ki izbira naključno potezo,
@@ -7,7 +7,7 @@ Trenutno so implementirane tri različice računalnikove inteligence:
 3. **Monte Carlo Tree Search** (`new MonteCarlo()`) algoritem z nastavljivo časovno omejitvijo.
 
 ## Setup
-V trenutni verziji zaženemo datoteko `Tekmovanje/Othello.java`, da odpremo uporabniški vmesnik. V orodni vrstici na vrhu strani izberemo
+V trenutni verziji zaženemo datoteko `Tekmovanje/si.lodrant.othello.Othello.java`, da odpremo uporabniški vmesnik. V orodni vrstici na vrhu strani izberemo
 tip črnega in belega igralca. Na voljo so: `Človek`, `Povprečen nasprotnik` (`AlphaBeta(globina: 3)`), `Pameten nasprotnik` (`AlphaBeta(globina: 7)`) in `Genialen nasprotnik` (`MonteCarlo()`, `MAX_TIME = 3,5 s`).
 
 Klik na gumb `Začni igro` zažene novo igro, igramo s klikom na ustrezno polje na igralni plošči.

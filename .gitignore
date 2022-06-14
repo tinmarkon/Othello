@@ -26,5 +26,15 @@ hs_err_pid*
 *.iml
 .idea
 
+# Eclipse
+.classpath
+.project
+.settings
+
+# Output
+out
+bin
+target
+
 # Stupid MAc
 **/.DS_Store
