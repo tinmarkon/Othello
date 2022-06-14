@@ -15,38 +15,16 @@ import si.lodrant.othello.splosno.KdoIgra;
 import si.lodrant.othello.splosno.Poteza;
 
 public class Vodja {
-	
 	public static Map<Igralec, VrstaIgralca> vrstaIgralca; //računalnik ali človek
 	public static Map<Igralec, KdoIgra> kdoIgra; //ime igralca
-	public static Map<VrstaIgralca, KdoIgra> vsiBeliIgralci = new HashMap<VrstaIgralca, KdoIgra>(); //ime igralca
-	public static Map<VrstaIgralca, KdoIgra> vsiCrniIgralci = new HashMap<VrstaIgralca, KdoIgra>(); //ime igralca
-	protected final static String IGRALEC_C = "Človek";
-	protected final static String IGRALEC_R1 = "Povprečen nasprotnik";
-	protected final static String IGRALEC_R2 = "Pameten nasprotnik";
-	protected final static String IGRALEC_R3 = "Genialen nasprotnik";
-
 	public static GlavnoOkno okno;
-	
 	public static Igra igra = null;
-	
 	public static boolean clovekNaVrsti = false;
 	public static Poteza namig;
 	public static boolean pokaziPoteze;
 	public static boolean neveljavnaPoteza = false;
 
-	public static void nastaviIgralce () {
-		vsiBeliIgralci.put(VrstaIgralca.C, new KdoIgra(IGRALEC_C));
-		vsiBeliIgralci.put(VrstaIgralca.R1, new KdoIgra(IGRALEC_R1));
-		vsiBeliIgralci.put(VrstaIgralca.R2, new KdoIgra(IGRALEC_R2));
-		vsiBeliIgralci.put(VrstaIgralca.R3, new KdoIgra(IGRALEC_R3));
-		vsiCrniIgralci.put(VrstaIgralca.C, new KdoIgra(IGRALEC_C));
-		vsiCrniIgralci.put(VrstaIgralca.R1, new KdoIgra(IGRALEC_R1));
-		vsiCrniIgralci.put(VrstaIgralca.R2, new KdoIgra(IGRALEC_R2));
-		vsiCrniIgralci.put(VrstaIgralca.R3, new KdoIgra(IGRALEC_R3));
-	}
-
 	public static void igramoNovoIgro () {
-
 		igra = new Igra ();
 		namig = null;
 		pokaziPoteze = false;
@@ -55,7 +33,6 @@ public class Vodja {
 	
 	public static void igramo () {
 		okno.osveziGUI();
-
 		switch (igra.stanje()) {
 		case ZMAGA_B:
 			return;
@@ -72,22 +49,13 @@ public class Vodja {
 			Igralec igralec = igra.naPotezi();
 			VrstaIgralca vrstaNaPotezi = vrstaIgralca.get(igralec);
 			switch (vrstaNaPotezi) {
-			case C: 
-				clovekNaVrsti = true; // IgralnoPolje začne poskušati za mouseClicked dogodek
-				break;
-			case R1:
-				igrajRacunalnikovoPotezo(racunalnikovaInteligenca1);
-				break;
-			case R2:
-				igrajRacunalnikovoPotezo(racunalnikovaInteligenca2);
-				break;
-			case R3:
-				igrajRacunalnikovoPotezo(racunalnikovaInteligenca3);
-				break;
+				case C -> clovekNaVrsti = true; // IgralnoPolje začne poskušati za mouseClicked dogodek
+				case R1 -> igrajRacunalnikovoPotezo(racunalnikovaInteligenca1);
+				case R2 -> igrajRacunalnikovoPotezo(racunalnikovaInteligenca2);
+				case R3 -> igrajRacunalnikovoPotezo(racunalnikovaInteligenca3);
 			}
 		}
-	}
-;
+	};
 	public static Inteligenca racunalnikovaInteligenca1 = new AlphaBeta(3); // Povprečen nasprotnik.
 	public static Inteligenca racunalnikovaInteligenca2 = new AlphaBeta(7); // Pameten nasprotnik.
 	public static Inteligenca racunalnikovaInteligenca3 = new MonteCarlo(1500); // Genialen nasprotnik.
@@ -133,7 +101,6 @@ public class Vodja {
 			neveljavnaPoteza = true;
 			okno.osveziGUI();
 		}
-		
 	}
 
 	public static void pokaziNamig() {
@@ -149,6 +116,4 @@ public class Vodja {
 		izrišejo, če je pokaziPoteze = true. */
 		pokaziPoteze = !pokaziPoteze;
 	}
-	
-	
 }
