@@ -1,4 +1,4 @@
-# si.lodrant.othello.Othello
+# Othello
 Projektna naloga pri predmetu Programiranje 2. V programskem jeziku Java implementiramo logiko, inteligenco in uporabniški vmesnik za igro za dva igralca [si.lodrant.othello.Othello](https://www.worldothello.org/about/about-othello/othello-rules/official-rules/english).
 
 Trenutno so implementirane tri različice računalnikove inteligence:
