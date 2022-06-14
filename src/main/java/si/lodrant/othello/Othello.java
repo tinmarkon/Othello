@@ -2,7 +2,6 @@ package si.lodrant.othello;
 
 import si.lodrant.othello.gui.GlavnoOkno;
 import si.lodrant.othello.gui.SwingUtils;
-import si.lodrant.othello.gui.ZacetnoOkno;
 import si.lodrant.othello.vodja.Vodja;
 
 public class Othello {
@@ -11,6 +10,5 @@ public class Othello {
 		GlavnoOkno glavno_okno = new GlavnoOkno();
 		glavno_okno.prikazi();
 		Vodja.okno = glavno_okno;
-		Vodja.igramoNovoIgro();
 	}
 }
