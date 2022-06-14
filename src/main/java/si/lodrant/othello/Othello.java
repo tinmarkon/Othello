@@ -1,17 +1,16 @@
 package si.lodrant.othello;
 
+import si.lodrant.othello.gui.GlavnoOkno;
+import si.lodrant.othello.gui.SwingUtils;
 import si.lodrant.othello.gui.ZacetnoOkno;
+import si.lodrant.othello.vodja.Vodja;
 
 public class Othello {
 	public static void main(String[] args) {
-		
-		ZacetnoOkno zacetno_okno = new ZacetnoOkno();
-		zacetno_okno.pack();
-		zacetno_okno.setVisible(true);
-		/* 
+		SwingUtils.nastaviLookAndFeel();
 		GlavnoOkno glavno_okno = new GlavnoOkno();
-    	glavno_okno.pack();
-		glavno_okno.setVisible(true);
-		Vodja.okno = glavno_okno;*/
-	}   
+		glavno_okno.prikazi();
+		Vodja.okno = glavno_okno;
+		Vodja.igramoNovoIgro();
+	}
 }
