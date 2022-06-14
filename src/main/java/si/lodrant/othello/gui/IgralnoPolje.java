@@ -31,7 +31,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(900, 550);
+		return new Dimension(900, 500);
 	}
 
 	// Relativna širina črte
@@ -137,14 +137,12 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 			}
 		}	
 
-		if (Vodja.pokaziPoteze) {
-			/* Nariše možne poteze za igralca naPotezi. */
-			ArrayList<Poteza> moznePoteze = Vodja.igra.poteze();
-			Color barvaPoteze = new Color(255, 255, 255, 130);
-			if (Vodja.igra.naPotezi() == Igralec.BLACK) barvaPoteze = new Color(0, 0, 0, 100);
-			for (Poteza p: moznePoteze) {
-				paintZeton(g2, p.getX(), p.getY(), barvaPoteze, false);
-			}
+		/* Nariše možne poteze za igralca naPotezi. */
+		ArrayList<Poteza> moznePoteze = Vodja.igra.poteze();
+		Color barvaPoteze = new Color(255, 255, 255, 100);
+		if (Vodja.igra.naPotezi() == Igralec.BLACK) barvaPoteze = new Color(0, 0, 0, 80);
+		for (Poteza p: moznePoteze) {
+			paintZeton(g2, p.getX(), p.getY(), barvaPoteze, false);
 		}
 
 		if (Vodja.namig != null) {
