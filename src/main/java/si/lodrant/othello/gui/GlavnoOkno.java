@@ -27,21 +27,17 @@ import java.awt.Container;
  */
 
 public class GlavnoOkno extends JFrame implements ActionListener {
-    private final JPanel igralnoPolje;
-    private final JPanel zacetniMeni;
-    private final JPanel zahtevnostMeni;
+    private final JPanel igralnoPolje, zacetniMeni, zahtevnostMeni, navodilaMeni;
 
     private String imeBeli;
     private String imeCrni;
-
     // Polje na katerem igramo igro.
     private IgralnoPolje polje;
     // Vrstici z gumbi na vrhu in dnu okna
     private JPanel zgornja_vrstica, p2;
     // Gumbi.
-    private JButton zacniIgro, namig, razveljavi;
+    private JButton enIgralec, dvaIgralca, navodila, zacniIgro, namig, razveljavi;
     private JToggleButton poteze;
-
 
     // Spremenljivki za JComboBox za izbiro igralca.
     protected JComboBox<VrstaIgralca> igralecCrni, igralecBeli;
@@ -58,10 +54,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
     final static boolean RIGHT_TO_LEFT = false;
     Font mojFont = new Font("Dialog", Font.PLAIN, 15);
 
-
-    /**
-     * Ustvari novo glavno okno in prični igrati igro.
-     */
     public GlavnoOkno() {
         this.setTitle(Strings.TITLE);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -71,31 +63,82 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         this.igralnoPolje = ustvariIgralnoPolje();
         this.zacetniMeni = ustvariZacetniMeni();
         this.zahtevnostMeni = ustvariZahtevnostMeni();
+        this.navodilaMeni = ustvariNavodilaMeni();
+
         pane.add(igralnoPolje);
         pane.add(zacetniMeni);
         pane.add(zahtevnostMeni);
+        pane.add(navodilaMeni);
         izberiPogled(0);
     }
 
     private void izberiPogled(int i) {
+        /* Preklaplja med možnimi meniji. */
         this.zacetniMeni.setVisible(i == 0);
         this.zahtevnostMeni.setVisible(i == 1);
-        this.igralnoPolje.setVisible(i == 2);
+        this.navodilaMeni.setVisible(i == 2);
+        this.igralnoPolje.setVisible(i == 3);
         this.pack();
     }
 
 
     private JPanel ustvariZacetniMeni() {
+        /* Štirje gumbi: OTHELLO
+                         [En igralec]
+                         [Dva igralca]
+                         [Navodila]
+                         [Izhod]
+        */
         JPanel panel = new JPanel();
-        JButton label = new JButton("hahaah");
-        label.addActionListener((e) -> {
+        GridBagConstraints c = new GridBagConstraints();
+
+        enIgralec = new JButton(Strings.EN_IGRALEC);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.ipady = 40;      //make this component tall
+        c.weightx = 0.0;
+        c.gridwidth = 3;
+        c.gridx = 0;
+        c.gridy = 0;
+
+        enIgralec.addActionListener((e) -> {
             izberiPogled(1);
         });
-        panel.add(label);
+        panel.add(enIgralec, c);
+
+        dvaIgralca = new JButton(Strings.DVA_IGRALCA);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.ipady = 40;      //make this component tall
+        c.weightx = 0.0;
+        c.gridwidth = 3;
+        c.gridx = 0;
+        c.gridy = 1;
+
+        dvaIgralca.addActionListener((e) -> {
+            izberiPogled(3);
+        });
+        panel.add(dvaIgralca, c);
+
+        navodila = new JButton(Strings.NAVODILA);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.ipady = 40;      //make this component tall
+        c.weightx = 0.0;
+        c.gridwidth = 3;
+        c.gridx = 0;
+        c.gridy = 2;
+
+        navodila.addActionListener((e) -> {
+            izberiPogled(2);
+        });
+        panel.add(navodila, c);
         return panel;
     }
 
     private JPanel ustvariZahtevnostMeni() {
+        /* Igral bom: [Črnega igralca] [Belega igralca]
+           Inteligenca nasprotnika: [Povprečen] [Pameten] [Genialen]
+           [Začni igro]
+           [Izhod]
+        */
         JPanel panel = new JPanel();
         JButton label = new JButton("Polje");
         label.addActionListener((e) -> {
@@ -106,7 +149,26 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         return panel;
     }
 
+    private JPanel ustvariNavodilaMeni() {
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel(Strings.NAVODILA);
+        panel.add(label);
+
+        JButton izhodGumb = new JButton(Strings.IZHOD);
+        izhodGumb.addActionListener((e) -> {
+            izberiPogled(0);
+        });
+        panel.add(izhodGumb);
+
+        return panel;
+    }
+
     private JPanel ustvariIgralnoPolje() {
+        /* [Črni igralec] [zeton count] [Beli igralec] [zeton count]
+           [IGRALNO POLJE]
+           [namig][razveljavi]
+           [statusna vrstica]
+        */
         JPanel panel = new JPanel();
         JButton label = new JButton("Izhod");
         label.addActionListener((e) -> {
@@ -301,12 +363,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         this.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        SwingUtils.nastaviLookAndFeel();
-        GlavnoOkno glavno_okno = new GlavnoOkno();
-        glavno_okno.prikazi();
-        Vodja.igramoNovoIgro();
-    }
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
