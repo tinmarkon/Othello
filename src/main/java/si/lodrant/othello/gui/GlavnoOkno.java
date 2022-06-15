@@ -125,9 +125,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         JButton enIgralec = new HoverButton("<html><font color=#2c90a9><b>" + Strings.EN_IGRALEC + "</b></font>", "big");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.ipady = 40;      //make this component tall
-        c.weightx = 0.0;
+        c.insets = new Insets(5, 5, 5, 0);
         c.gridwidth = 3;
-        c.gridx = 0;
         c.gridy = 1;
 
         enIgralec.addActionListener((e) -> {
@@ -136,11 +135,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         panel.add(enIgralec, c);
 
         JButton dvaIgralca = new HoverButton("<html><font color=#028bb5><b>" + Strings.DVA_IGRALCA + "</b></font>",  "big");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.ipady = 40;      //make this component tall
-        c.weightx = 0.0;
-        c.gridwidth = 3;
-        c.gridx = 0;
         c.gridy = 2;
 
         dvaIgralca.addActionListener((e) -> {
@@ -150,11 +144,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         panel.add(dvaIgralca, c);
 
         JButton navodila = new HoverButton("<html><font color=#0874c2><b>" + Strings.NAVODILA + "</b></font>",  "big");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.ipady = 40;      //make this component tall
-        c.weightx = 0.0;
-        c.gridwidth = 3;
-        c.gridx = 0;
         c.gridy = 3;
 
         navodila.addActionListener((e) -> {
@@ -164,10 +153,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 
         JButton exit = new HoverButton("<html><font color=#06528a><b>" + Strings.IZHOD + "</b></font>",  "big");
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.ipady = 40;      //make this component tall
-        c.weightx = 0.0;
-        c.gridwidth = 3;
-        c.gridx = 0;
         c.gridy = 4;
 
         exit.addActionListener((e) -> {
@@ -177,9 +162,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 
         JLabel podpis = new JLabel("<html><font color=#ffffff>" + "by Katka & Tin" + "</font>", JLabel.CENTER);
         Font podpisFont = new Font("Dialog", Font.PLAIN, 10);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 3;
-        c.gridx = 0;
         c.gridy = 5;
         podpis.setFont(podpisFont);
         panel.add(podpis, c);
