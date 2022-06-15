@@ -26,6 +26,7 @@ import static si.lodrant.othello.gui.SwingUtils.createImageIcon;
 
 public class GlavnoOkno extends JFrame implements ActionListener {
     private final JPanel igralnoPolje, zacetniMeni, zahtevnostMeni, navodilaMeni;
+    private Color barvaOzadja;
 
     private JLabel status;
 
@@ -35,9 +36,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
     protected static VrstaIgralca izbira_igralecCrni;
     protected static VrstaIgralca izbira_igralecBeli;
 
-    final static boolean shouldFill = true;
-    final static boolean shouldWeightX = true;
-    final static boolean RIGHT_TO_LEFT = false;
     Font mojFont = new Font("Dialog", Font.PLAIN, 15);
 
     public GlavnoOkno() {
@@ -50,6 +48,9 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         this.zacetniMeni = ustvariZacetniMeni();
         this.zahtevnostMeni = ustvariZahtevnostMeni();
         this.navodilaMeni = ustvariNavodilaMeni();
+        barvaOzadja = new Color(206, 234, 237);
+        pane.setBackground(new Color(208, 233, 242));
+
 
         pane.add(igralnoPolje);
         pane.add(zacetniMeni);
@@ -89,12 +90,15 @@ public class GlavnoOkno extends JFrame implements ActionListener {
                          [Izhod]
         */
         JPanel panel = new JPanel();
+        panel.setBackground(barvaOzadja);
         //panel.setPreferredSize(getPreferredSize());
         panel.setLayout(new GridBagLayout());
 
         // ------------------ naslovna slika ----------------------
 
         JPanel p0 = new JPanel();
+        p0.setBackground(barvaOzadja);
+
 
         GridBagConstraints panel0_layout = new GridBagConstraints();
         panel0_layout.gridx = 0;
@@ -106,8 +110,10 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 
         panel.add(p0, panel0_layout);
 
-        ImageIcon naslov = SwingUtils.createImageIcon("images/naslov.png", "naslov");
-        JLabel lab0 = new JLabel(naslov, JLabel.CENTER);
+        //ImageIcon naslov = SwingUtils.createImageIcon("images/naslov.png", "naslov");
+        JLabel lab0 = new JLabel("<html><font color=#11aed1><b>" + "Othello" + "</b></font>", JLabel.CENTER);
+        Font naslovFont = new Font("Dialog", Font.PLAIN, 80);
+        lab0.setFont(naslovFont);
 
         p0.add(lab0);
         
@@ -116,7 +122,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 
         GridBagConstraints c = new GridBagConstraints();
 
-        JButton enIgralec = new JButton(Strings.EN_IGRALEC);
+        JButton enIgralec = new HoverButton("<html><font color=#2c90a9><b>" + Strings.EN_IGRALEC + "</b></font>", "big");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.ipady = 40;      //make this component tall
         c.weightx = 0.0;
@@ -129,7 +135,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         });
         panel.add(enIgralec, c);
 
-        JButton dvaIgralca = new JButton(Strings.DVA_IGRALCA);
+        JButton dvaIgralca = new HoverButton("<html><font color=#028bb5><b>" + Strings.DVA_IGRALCA + "</b></font>",  "big");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.ipady = 40;      //make this component tall
         c.weightx = 0.0;
@@ -143,7 +149,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         });
         panel.add(dvaIgralca, c);
 
-        JButton navodila = new JButton(Strings.NAVODILA);
+        JButton navodila = new HoverButton("<html><font color=#0874c2><b>" + Strings.NAVODILA + "</b></font>",  "big");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.ipady = 40;      //make this component tall
         c.weightx = 0.0;
@@ -155,6 +161,28 @@ public class GlavnoOkno extends JFrame implements ActionListener {
             izberiPogled(2);
         });
         panel.add(navodila, c);
+
+        JButton exit = new HoverButton("<html><font color=#06528a><b>" + Strings.IZHOD + "</b></font>",  "big");
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.ipady = 40;      //make this component tall
+        c.weightx = 0.0;
+        c.gridwidth = 3;
+        c.gridx = 0;
+        c.gridy = 4;
+
+        exit.addActionListener((e) -> {
+            this.dispose();
+        });
+        panel.add(exit, c);
+
+        JLabel podpis = new JLabel("<html><font color=#ffffff>" + "by Katka & Tin" + "</font>", JLabel.CENTER);
+        Font podpisFont = new Font("Dialog", Font.PLAIN, 10);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 3;
+        c.gridx = 0;
+        c.gridy = 5;
+        podpis.setFont(podpisFont);
+        panel.add(podpis, c);
         return panel;
     }
 
