@@ -116,4 +116,12 @@ public class Vodja {
 		izrišejo, če je pokaziPoteze = true. */
 		pokaziPoteze = !pokaziPoteze;
 	}
+	
+	public static void razveljaviPoteze() {
+		
+	}
+	
+	
+	
+	
 }

@@ -51,8 +51,9 @@ public class AlphaBeta extends Inteligenca {
 			case NEODLOCENO:
 				ocenap = NEODLOCENO;
 				break;
-			case BLOKIRANO: 
-				System.out.println("Alfabeta je dobil blokirano igro! Not cool!");
+			case BLOKIRANO:
+				// Ce sem jaz oddigral potezo in je prislo do blokiranega stanja, ali je potem na vrsti ta drug?
+				ocenap = (jaz == igra.naPotezi() ? igra.poteze().size() : -igra.poteze().size());
 			default:
 				if (globina == 0)
 					ocenap = OceniPozicijo.oceniPozicijo(kopijaIgre, jaz);
