@@ -60,7 +60,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
     /*@Override
     public Dimension getPreferredSize() {
         return new Dimension(900, 500);
-    }*/
+    } */
 
     public static GridBagConstraints EnostavenLayout(int vrstica, int stolpec) {
         GridBagConstraints layout = new GridBagConstraints();
@@ -89,6 +89,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
                          [Izhod]
         */
         JPanel panel = new JPanel();
+        //panel.setPreferredSize(getPreferredSize());
+        panel.setLayout(new GridBagLayout());
 
         // ------------------ naslovna slika ----------------------
 
@@ -100,6 +102,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         panel0_layout.anchor = GridBagConstraints.NORTH;
         panel0_layout.fill = GridBagConstraints.CENTER;
         panel0_layout.gridwidth = 2;
+        
 
         panel.add(p0, panel0_layout);
 
@@ -107,6 +110,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         JLabel lab0 = new JLabel(naslov, JLabel.CENTER);
 
         p0.add(lab0);
+        
 
         // ------------------ Izberi igralce: ----------------------
 
@@ -118,7 +122,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         c.weightx = 0.0;
         c.gridwidth = 3;
         c.gridx = 0;
-        c.gridy = 0;
+        c.gridy = 1;
 
         enIgralec.addActionListener((e) -> {
             izberiPogled(1);
@@ -131,7 +135,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         c.weightx = 0.0;
         c.gridwidth = 3;
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 2;
 
         dvaIgralca.addActionListener((e) -> {
             Vodja.igramoNovoIgro(VrstaIgralca.C, VrstaIgralca.C);
@@ -145,7 +149,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         c.weightx = 0.0;
         c.gridwidth = 3;
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 3;
 
         navodila.addActionListener((e) -> {
             izberiPogled(2);
@@ -278,8 +282,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         JTextField igralec1 = new JTextField("Igralec 1");
         JTextField igralec2 = new JTextField("Igralec 2");
 
-        ImageIcon icon_beli = createImageIcon("src/main/resources/images/beli_small.png", "beli zeton");
-        ImageIcon icon_crni = createImageIcon("src/main/resources/images/crni_small.png", "crni zeton");
+        ImageIcon icon_beli = createImageIcon("images/beli_small.png", "beli zeton");
+        ImageIcon icon_crni = createImageIcon("images/crni_small.png", "crni zeton");
 
         JLabel lab1 = new JLabel("Črni igralec:", icon_crni, JLabel.LEFT);
         JLabel lab2 = new JLabel("Beli igralec:", icon_beli, JLabel.LEFT);
