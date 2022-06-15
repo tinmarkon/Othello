@@ -1,8 +1,6 @@
 package si.lodrant.othello.gui;
 
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
@@ -15,7 +13,7 @@ import si.lodrant.othello.splosno.KdoIgra;
 
 import javax.swing.*;
 
-import java.awt.Container;
+import static si.lodrant.othello.gui.SwingUtils.createImageIcon;
 
 /*
  * Glavno okno aplikacije hrani trenutno stanje igre in nadzoruje potek
@@ -29,25 +27,13 @@ import java.awt.Container;
 public class GlavnoOkno extends JFrame implements ActionListener {
     private final JPanel igralnoPolje, zacetniMeni, zahtevnostMeni, navodilaMeni;
 
-    private String imeBeli;
-    private String imeCrni;
-    // Polje na katerem igramo igro.
-    private IgralnoPolje polje;
-    // Vrstici z gumbi na vrhu in dnu okna
-    private JPanel zgornja_vrstica, p2;
-    // Gumbi.
-    private JButton enIgralec, dvaIgralca, navodila, zacniIgro, namig, razveljavi;
-    private JToggleButton poteze;
-
-    // Spremenljivki za JComboBox za izbiro igralca.
-    protected JComboBox<VrstaIgralca> igralecCrni, igralecBeli;
-
-    // Statusna vrstica v spodnjem delu okna.
     private JLabel status;
 
-    // Izbrana vrsta črnega in belega igralca. Privzeto igra človek proti človeku.
-    protected static VrstaIgralca izbira_igralecCrni = VrstaIgralca.C;
-    protected static VrstaIgralca izbira_igralecBeli = VrstaIgralca.C;
+    // Gumbi, ki jim spreminjamo visibility.
+    private JButton namig;
+    private IgralnoPolje polje;
+    protected static VrstaIgralca izbira_igralecCrni;
+    protected static VrstaIgralca izbira_igralecBeli;
 
     final static boolean shouldFill = true;
     final static boolean shouldWeightX = true;
@@ -71,6 +57,19 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         pane.add(navodilaMeni);
         izberiPogled(0);
     }
+    /*@Override
+    public Dimension getPreferredSize() {
+        return new Dimension(900, 500);
+    }*/
+
+    public static GridBagConstraints EnostavenLayout(int vrstica, int stolpec) {
+        GridBagConstraints layout = new GridBagConstraints();
+        layout.gridx = stolpec;
+        layout.gridy = vrstica;
+        layout.fill = GridBagConstraints.BOTH;
+        layout.anchor = GridBagConstraints.HORIZONTAL;
+        return layout;
+    }
 
     private void izberiPogled(int i) {
         /* Preklaplja med možnimi meniji. */
@@ -90,9 +89,30 @@ public class GlavnoOkno extends JFrame implements ActionListener {
                          [Izhod]
         */
         JPanel panel = new JPanel();
+
+        // ------------------ naslovna slika ----------------------
+
+        JPanel p0 = new JPanel();
+
+        GridBagConstraints panel0_layout = new GridBagConstraints();
+        panel0_layout.gridx = 0;
+        panel0_layout.gridy = 0;
+        panel0_layout.anchor = GridBagConstraints.NORTH;
+        panel0_layout.fill = GridBagConstraints.CENTER;
+        panel0_layout.gridwidth = 2;
+
+        panel.add(p0, panel0_layout);
+
+        ImageIcon naslov = SwingUtils.createImageIcon("images/naslov.png", "naslov");
+        JLabel lab0 = new JLabel(naslov, JLabel.CENTER);
+
+        p0.add(lab0);
+
+        // ------------------ Izberi igralce: ----------------------
+
         GridBagConstraints c = new GridBagConstraints();
 
-        enIgralec = new JButton(Strings.EN_IGRALEC);
+        JButton enIgralec = new JButton(Strings.EN_IGRALEC);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.ipady = 40;      //make this component tall
         c.weightx = 0.0;
@@ -105,7 +125,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         });
         panel.add(enIgralec, c);
 
-        dvaIgralca = new JButton(Strings.DVA_IGRALCA);
+        JButton dvaIgralca = new JButton(Strings.DVA_IGRALCA);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.ipady = 40;      //make this component tall
         c.weightx = 0.0;
@@ -114,11 +134,12 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         c.gridy = 1;
 
         dvaIgralca.addActionListener((e) -> {
+            Vodja.igramoNovoIgro(VrstaIgralca.C, VrstaIgralca.C);
             izberiPogled(3);
         });
         panel.add(dvaIgralca, c);
 
-        navodila = new JButton(Strings.NAVODILA);
+        JButton navodila = new JButton(Strings.NAVODILA);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.ipady = 40;      //make this component tall
         c.weightx = 0.0;
@@ -140,11 +161,91 @@ public class GlavnoOkno extends JFrame implements ActionListener {
            [Izhod]
         */
         JPanel panel = new JPanel();
-        JButton label = new JButton("Polje");
-        label.addActionListener((e) -> {
-            izberiPogled(2);
+
+        // ----------------- izbira igralca ------------------------
+        JPanel izbiraIgralca = new JPanel();
+        GridBagConstraints izbiraIgralca_layout = EnostavenLayout(0, 0);
+        panel.add(izbiraIgralca, izbiraIgralca_layout);
+
+        JLabel label1 = new JLabel("Jaz bom: ");
+
+        JToggleButton crniIgralec = new JToggleButton(Strings.CRNI);
+        JToggleButton beliIgralec = new JToggleButton(Strings.BELI);
+        crniIgralec.setSelected(true);
+        beliIgralec.setSelected(false);
+
+        crniIgralec.addActionListener((e) -> {
+            beliIgralec.setSelected(!crniIgralec.isSelected());
         });
-        panel.add(label);
+
+        beliIgralec.addActionListener((e) -> {
+            crniIgralec.setSelected(!beliIgralec.isSelected());
+        });
+
+        izbiraIgralca.add(label1);
+        izbiraIgralca.add(crniIgralec);
+        izbiraIgralca.add(beliIgralec);
+
+        // ----------------- izbira tezavnosti ------------------------
+        JPanel izbiraTezavnosti = new JPanel();
+        GridBagConstraints izbiraTezavnosti_layout = EnostavenLayout(1, 0);
+        panel.add(izbiraTezavnosti, izbiraTezavnosti_layout);
+
+        JLabel label2 = new JLabel("Inteligenca nasprotnika: ");
+
+        JToggleButton tezavnost1 = new JToggleButton(Strings.IGRALEC_R1);
+        JToggleButton tezavnost2 = new JToggleButton(Strings.IGRALEC_R2);
+        JToggleButton tezavnost3 = new JToggleButton(Strings.IGRALEC_R3);
+        tezavnost1.setSelected(true);
+
+        tezavnost1.addActionListener((e) -> {
+            tezavnost1.setSelected(true);
+            tezavnost2.setSelected(false);
+            tezavnost3.setSelected(false);
+        });
+
+        tezavnost2.addActionListener((e) -> {
+            tezavnost1.setSelected(false);
+            tezavnost2.setSelected(true);
+            tezavnost3.setSelected(false);
+        });
+
+        tezavnost3.addActionListener((e) -> {
+            tezavnost1.setSelected(false);
+            tezavnost2.setSelected(false);
+            tezavnost3.setSelected(true);
+        });
+
+        izbiraTezavnosti.add(label2);
+        izbiraTezavnosti.add(tezavnost1);
+        izbiraTezavnosti.add(tezavnost2);
+        izbiraTezavnosti.add(tezavnost3);
+
+        // ----------------- zacni igro ------------------------
+        GridBagConstraints zacniIgro_layout = EnostavenLayout(2, 0);
+
+        JButton zacniIgro = new JButton(Strings.START_GUMB);
+        zacniIgro.addActionListener((e) -> {
+            VrstaIgralca vrstaRacunalnika = VrstaIgralca.R1;
+            if (tezavnost2.isSelected()) vrstaRacunalnika = VrstaIgralca.R2;
+            else if (tezavnost3.isSelected()) vrstaRacunalnika = VrstaIgralca.R3;
+            izbira_igralecCrni = (crniIgralec.isSelected() ? VrstaIgralca.C : vrstaRacunalnika);
+            izbira_igralecBeli = (!crniIgralec.isSelected() ? VrstaIgralca.C : vrstaRacunalnika);
+
+            Vodja.igramoNovoIgro(izbira_igralecCrni, izbira_igralecBeli);
+            izberiPogled(3);
+        });
+
+        panel.add(zacniIgro, zacniIgro_layout);
+
+        // ----------------- izhod ------------------------
+        //GridBagConstraints izhod_layout = EnostavenLayout(3, 0);
+
+        JButton izhod = new JButton(Strings.IZHOD);
+        izhod.addActionListener((e) -> {
+            izberiPogled(0);
+        });
+        panel.add(izhod);
 
         return panel;
     }
@@ -164,142 +265,76 @@ public class GlavnoOkno extends JFrame implements ActionListener {
     }
 
     private JPanel ustvariIgralnoPolje() {
-        /* [Črni igralec] [zeton count] [Beli igralec] [zeton count]
+        /* [Črni igralec] [?zeton count?] [Beli igralec] [?zeton count?] [Vrsta nasprotnika]
            [IGRALNO POLJE]
-           [namig][razveljavi]
+           [namig][razveljavi][izhod] oz.. [ustavi igro][izhod]
            [statusna vrstica]
         */
         JPanel panel = new JPanel();
-        JButton label = new JButton("Izhod");
-        label.addActionListener((e) -> {
-            izberiPogled(0);
-        });
-        panel.add(label);
+        JPanel igralci_panel = new JPanel();
+        GridBagConstraints igralci_layout = EnostavenLayout(0, 0);
+        panel.add(igralci_panel);
 
-        // ------------- igralno polje ----------------------
+        JTextField igralec1 = new JTextField("Igralec 1");
+        JTextField igralec2 = new JTextField("Igralec 2");
+
+        ImageIcon icon_beli = createImageIcon("src/main/resources/images/beli_small.png", "beli zeton");
+        ImageIcon icon_crni = createImageIcon("src/main/resources/images/crni_small.png", "crni zeton");
+
+        JLabel lab1 = new JLabel("Črni igralec:", icon_crni, JLabel.LEFT);
+        JLabel lab2 = new JLabel("Beli igralec:", icon_beli, JLabel.LEFT);
+
+        igralci_panel.add(lab1);
+        igralci_panel.add(igralec1);
+        igralci_panel.add(lab2);
+        igralci_panel.add(igralec2);
+
+        // --------------------------------- igralno polje ----------------------------------------------
         polje = new IgralnoPolje();
-        GridBagConstraints polje_layout = new GridBagConstraints();
-        polje_layout.gridx = 0;
-        polje_layout.gridy = 1;
-        polje_layout.fill = GridBagConstraints.BOTH;
-        polje_layout.anchor = GridBagConstraints.CENTER;
-        polje_layout.weightx = 2.0;
-        polje_layout.weighty = 2.0;
-        panel.add(polje, polje_layout);
+        GridBagConstraints polje_layout = EnostavenLayout(1, 0);
+        panel.add(polje);
 
-        // ---------- Spodnja vrstica z gumbi: [namig], [mozne poteze], [razveljavi potezo] ----------------
-        p2 = new JPanel();
+        // ------ Spodnja vrstica z gumbi: [namig], [mozne poteze], [razveljavi potezo], [izhod] ----------------
+        JPanel spodnjiGumbi = new JPanel();
 
-        GridBagConstraints panel2_layout = new GridBagConstraints();
-        panel2_layout.gridx = 0;
-        panel2_layout.gridy = 2;
-        panel2_layout.weightx = 0.5;
-        panel2_layout.fill = GridBagConstraints.HORIZONTAL;
-
-        panel.add(p2, panel2_layout);
+        GridBagConstraints spodnjiGumbi_layout = EnostavenLayout(2, 0);
+        panel.add(spodnjiGumbi);
 
         namig = new JButton(Strings.NAMIG_GUMB);
-        namig.addActionListener(namigGumbAL);
+        namig.addActionListener((e) -> {
+            Vodja.pokaziNamig();
+            polje.repaint();
+        });
         namig.setToolTipText(
                 "<html><font face=\"sansserif\" color=\"black\" >Prikaži najboljšo možno potezo, kot jo<br>izbere algoritem Monte Carlo Tree Search.<br>Iskanje traja 5 sekund!</font></html>");
-        namig.setVisible(false); // radi bi, da se gumb namig (morda tudi moznePoteze) vidi le, kadar je na potezi človek
 
-        poteze = new JToggleButton(Strings.POTEZE_GUMB);
-        poteze.addActionListener(potezeGumbAL);
+        JButton razveljavi = new JButton(Strings.RAZVELJAVI_GUMB);
+        razveljavi.addActionListener((e) -> {
+            //Vodja.razveljaviPotezo();
+            polje.repaint();
+        });
 
-        razveljavi = new JButton(Strings.RAZVELJAVI_GUMB);
-        razveljavi.addActionListener(razveljaviGumbAL);
-
-        p2.add(namig);
-        p2.add(poteze);
-        p2.add(razveljavi);
-        p2.setVisible(true);
+        JButton izhod = new JButton(Strings.IZHOD);
+        izhod.addActionListener((e) -> {
+                    izberiPogled(0);
+                });
+        spodnjiGumbi.add(namig);
+        spodnjiGumbi.add(razveljavi);
+        spodnjiGumbi.add(izhod);
 
         // ------- statusna vrstica za sporočila ------------
         status = new JLabel();
 
         status.setFont(mojFont);
-        GridBagConstraints status_layout = new GridBagConstraints();
-        status_layout.gridx = 0;
-        status_layout.gridy = 3;
-        status_layout.anchor = GridBagConstraints.CENTER;
-        panel.add(status, status_layout);
+        GridBagConstraints status_layout = EnostavenLayout(3, 0);
+        panel.add(spodnjiGumbi, spodnjiGumbi_layout);
+
+        panel.add(status);
 
         status.setText(Strings.START_STATUS);
 
         return panel;
     }
-
-
-    // spodaj so definirani ActionListener-ji za posamezne gumbe
-    ActionListener igralecCrniAL = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            switch ((String) igralecCrni.getSelectedItem()) {//check for a match
-                case Strings.IGRALEC_C:
-                    izbira_igralecCrni = VrstaIgralca.C;
-                    break;
-                case Strings.IGRALEC_R1:
-                    izbira_igralecCrni = VrstaIgralca.R1;
-                    break;
-                case Strings.IGRALEC_R2:
-                    izbira_igralecCrni = VrstaIgralca.R2;
-                    break;
-                case Strings.IGRALEC_R3:
-                    izbira_igralecCrni = VrstaIgralca.R3;
-                    break;
-            }
-        }
-    };
-
-    ActionListener igralecBeliAL = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            switch ((String) igralecBeli.getSelectedItem()) {
-                case Strings.IGRALEC_C:
-                    izbira_igralecBeli = VrstaIgralca.C;
-                    break;
-                case Strings.IGRALEC_R1:
-                    izbira_igralecBeli = VrstaIgralca.R1;
-                    break;
-                case Strings.IGRALEC_R2:
-                    izbira_igralecBeli = VrstaIgralca.R2;
-                    break;
-                case Strings.IGRALEC_R3:
-                    izbira_igralecBeli = VrstaIgralca.R3;
-                    break;
-            }
-        }
-    };
-
-
-    ActionListener namigGumbAL = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            //status.setText("Iščem genialen namig!");
-            //polje.repaint();
-            Vodja.pokaziNamig();
-            polje.repaint();
-        }
-    };
-
-    ActionListener potezeGumbAL = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            Vodja.pokaziPoteze();
-            polje.repaint();
-        }
-    };
-
-    ActionListener razveljaviGumbAL = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // TODO Vodja.razveljaviPotezo()
-			/* Pazimo, da, če igra človek proti računalniku, razveljavi tako človekovo,
-			 kot morebitno potezo, ki jo je že odigral računalnik.
-			 (Če računalnik igra prehitro, bi vseeno radi dali človeku možnost, da si premisli...) */
-        }
-    };
 
     public void osveziGUI() {
         /* Pokliče se v metodi vodja.igramo(). */
@@ -309,8 +344,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
             namig.setVisible(false);
             Stanje stanjeIgre = Vodja.igra.stanje();
             Igralec naPotezi = Vodja.igra.naPotezi();
-            KdoIgra imeNaPotezi = Vodja.kdoIgra.get(naPotezi);
-            KdoIgra imeNasprotnik = Vodja.kdoIgra.get(naPotezi.nasprotnik());
+            String imeNaPotezi = naPotezi.toString();
+            String imeNasprotnik = naPotezi.nasprotnik().toString();
             switch (stanjeIgre) {
                 case BLOKIRANO:
                     System.out.println("Stanje na deski blokirano. Še enkrat je na vrsti nasprotnik!");
@@ -325,26 +360,24 @@ public class GlavnoOkno extends JFrame implements ActionListener {
                             status.setText("To ni možna poteza!");
                             Vodja.neveljavnaPoteza = false;
                         } else {
-                            status.setText("Na potezi je " + naPotezi + " igralec - " + imeNaPotezi + ".");
+                            status.setText("Na potezi je " + naPotezi + " igralec."); //- " + imeNaPotezi + ".");
                         }
                     } else {
-                        status.setText("Potezo izbira " + naPotezi + " igralec - " + imeNaPotezi + ".");
+                        status.setText("Potezo izbira " + naPotezi + " igralec."); //- " + imeNaPotezi + ".");
                     }
                     break;
 
                 case ZMAGA_B:
                     int[] st = Vodja.igra.prestejZetone();
                     status.setText("Igra je zaključena!");
-                    JOptionPane.showMessageDialog(this, "Zmagal je črni - " + Vodja.kdoIgra.get(Igralec.BLACK) +
-                            " - z rezultatom: " + st[0] + " | " + st[1] + ".");
+                    JOptionPane.showMessageDialog(this, "Zmagal je ČRNI igralec z rezultatom: " + st[0] + " | " + st[1] + ".");
                     status.setText(Strings.START_STATUS);
                     break;
 
                 case ZMAGA_W:
                     int[] st1 = Vodja.igra.prestejZetone();
                     status.setText("Igra je zaključena!");
-                    JOptionPane.showMessageDialog(this, "Zmagal je beli - " + Vodja.kdoIgra.get(Igralec.WHITE) +
-                            " - z rezultatom: " + st1[1] + " | " + st1[0] + ".");
+                    JOptionPane.showMessageDialog(this, "Zmagal je BELI igralec z rezultatom: " + st1[1] + " | " + st1[0] + ".");
                     status.setText(Strings.START_STATUS);
                     break;
 
@@ -362,7 +395,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         this.pack();
         this.setVisible(true);
     }
-
 
     @Override
     public void actionPerformed(ActionEvent arg0) {

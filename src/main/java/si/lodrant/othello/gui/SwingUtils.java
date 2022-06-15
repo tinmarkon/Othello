@@ -1,6 +1,7 @@
 package si.lodrant.othello.gui;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class SwingUtils {
     public static ImageIcon createImageIcon(String path, String description) {
@@ -23,4 +24,5 @@ public class SwingUtils {
             System.out.println("Ne najdem prave teme!");
         }
     }
+
 }
