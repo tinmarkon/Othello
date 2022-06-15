@@ -48,8 +48,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         this.zacetniMeni = ustvariZacetniMeni();
         this.zahtevnostMeni = ustvariZahtevnostMeni();
         this.navodilaMeni = ustvariNavodilaMeni();
-        barvaOzadja = new Color(206, 234, 237);
-        pane.setBackground(new Color(208, 233, 242));
+        barvaOzadja = new Color(44, 144, 169);//new Color(206, 234, 237);
+        pane.setBackground(barvaOzadja);
 
 
         pane.add(igralnoPolje);
@@ -111,7 +111,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         panel.add(p0, panel0_layout);
 
         //ImageIcon naslov = SwingUtils.createImageIcon("images/naslov.png", "naslov");
-        JLabel lab0 = new JLabel("<html><font color=#11aed1><b>" + "Othello" + "</b></font>", JLabel.CENTER);
+        JLabel lab0 = new JLabel("<html><font color=#ffffff><b>" + "Othello" + "</b></font>", JLabel.CENTER); //11aed1
         Font naslovFont = new Font("Dialog", Font.PLAIN, 80);
         lab0.setFont(naslovFont);
 
