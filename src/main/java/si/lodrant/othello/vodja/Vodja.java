@@ -123,7 +123,6 @@ public class Vodja {
 		določeno v IgralnoPolje.java. */
 		namig = namigInteligenca.izberiPotezo(igra);
 	}
-<<<<<<< HEAD
 
 	public static void pokaziPoteze() {
 		/* Kot določeno v IgralnoPolje.java se možne poteze na IgralnemPolju v GlavnemOknu
@@ -138,6 +137,4 @@ public class Vodja {
 	
 	
 	
-=======
->>>>>>> d0224fa41f749005c7e1b222c3cf0e449778e1f0
 }
