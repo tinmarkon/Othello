@@ -3,17 +3,13 @@ package si.lodrant.othello.gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.EnumMap;
 
 import si.lodrant.othello.vodja.Vodja;
 import si.lodrant.othello.vodja.VrstaIgralca;
 import si.lodrant.othello.logika.Igralec;
 import si.lodrant.othello.logika.Stanje;
-import si.lodrant.othello.splosno.KdoIgra;
 
 import javax.swing.*;
-
-import static si.lodrant.othello.gui.SwingUtils.createImageIcon;
 
 /*
  * Glavno okno aplikacije hrani trenutno stanje igre in nadzoruje potek
@@ -26,42 +22,60 @@ import static si.lodrant.othello.gui.SwingUtils.createImageIcon;
 
 public class GlavnoOkno extends JFrame implements ActionListener {
     private final JPanel igralnoPolje, zacetniMeni, zahtevnostMeni, navodilaMeni;
-    private Color barvaOzadja;
-
     private JLabel status;
 
     // Gumbi, ki jim spreminjamo visibility.
     private JButton namig;
     private IgralnoPolje polje;
+
+    // ---------------------- barve ----------------------------
+    private Color barvaOzadja = new Color(44, 144, 169);
+    private final String barvaBesedila1 = "#121480";
+    private final String barvaBesedila2 = "#0c27ad";
+    private final String barvaBesedila3 = "#0c65ad";
+    private final String barvaBesedilaIzhod = "#108fc2";
+    private final String barvaBesedilaStart = "#27c1e8";
+
+    // ---------------------- to posredujemo vodji -------------
+
     protected static VrstaIgralca izbira_igralecCrni;
     protected static VrstaIgralca izbira_igralecBeli;
 
-    Font mojFont = new Font("Dialog", Font.PLAIN, 15);
+    // ---------------------- fonti ----------------------------
+    Font naslovFont = new Font("Dialog", Font.BOLD, 80);
+    Font naslov2Font = new Font("Dialog", Font.PLAIN, 50);
+    Font podnaslovFont = new Font("Dialog", Font.PLAIN, 25);
+    Font mojFont = new Font("Dialog", Font.PLAIN, 18);
+
 
     public GlavnoOkno() {
         this.setTitle(Strings.TITLE);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new GridBagLayout());
         Container pane = this.getContentPane();
+        pane.setBackground(barvaOzadja);
 
         this.igralnoPolje = ustvariIgralnoPolje();
         this.zacetniMeni = ustvariZacetniMeni();
         this.zahtevnostMeni = ustvariZahtevnostMeni();
         this.navodilaMeni = ustvariNavodilaMeni();
-        barvaOzadja = new Color(44, 144, 169);//new Color(206, 234, 237);
-        pane.setBackground(barvaOzadja);
 
+        pane.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.NORTH;
+        c.fill = GridBagConstraints.NONE;
 
         pane.add(igralnoPolje);
-        pane.add(zacetniMeni);
-        pane.add(zahtevnostMeni);
+        pane.add(zacetniMeni, c);
+        pane.add(zahtevnostMeni, c);
+
         pane.add(navodilaMeni);
         izberiPogled(0);
     }
-    /*@Override
+    @Override
     public Dimension getPreferredSize() {
-        return new Dimension(900, 500);
-    } */
+        return new Dimension(1000, 800);
+    }
 
     public static GridBagConstraints EnostavenLayout(int vrstica, int stolpec) {
         GridBagConstraints layout = new GridBagConstraints();
@@ -90,42 +104,23 @@ public class GlavnoOkno extends JFrame implements ActionListener {
                          [Izhod]
         */
         JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(700, 600));
         panel.setBackground(barvaOzadja);
         panel.setLayout(new GridBagLayout());
 
-        // ------------------ naslovna slika ----------------------
-
-        JPanel p0 = new JPanel();
-        p0.setBackground(barvaOzadja);
-
-
-        GridBagConstraints panel0_layout = new GridBagConstraints();
-        panel0_layout.gridx = 0;
-        panel0_layout.gridy = 0;
-        panel0_layout.anchor = GridBagConstraints.NORTH;
-        panel0_layout.fill = GridBagConstraints.CENTER;
-        panel0_layout.gridwidth = 2;
-        
-
-        panel.add(p0, panel0_layout);
-
-        //ImageIcon naslov = SwingUtils.createImageIcon("images/naslov.png", "naslov");
-        JLabel lab0 = new JLabel("<html><font color=#ffffff><b>" + "Othello" + "</b></font>", JLabel.CENTER); //11aed1
-        Font naslovFont = new Font("Dialog", Font.PLAIN, 80);
-        lab0.setFont(naslovFont);
-
-        p0.add(lab0);
-        
-
-        // ------------------ Izberi igralce: ----------------------
-
         GridBagConstraints c = new GridBagConstraints();
-
-        JButton enIgralec = new HoverButton("<html><font color=#2c90a9><b>" + Strings.EN_IGRALEC + "</b></font>", "big");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.ipady = 40;      //make this component tall
-        c.insets = new Insets(5, 5, 5, 0);
-        c.gridwidth = 3;
+        c.ipadx = 40;
+        c.insets = new Insets(5, 5, 5, 5);
+        c.gridy = 0;
+
+        // ------------------ naslov ----------------------
+        JLabel naslov = new JLabel("<html><font color=#ffffff><b>" + "Othello" + "</b></font>", JLabel.CENTER); //11aed1
+        naslov.setFont(naslovFont);
+        panel.add(naslov, c);
+
+        JButton enIgralec = new HoverButton("<html><font color=" + barvaBesedila1 +"<b>" + Strings.EN_IGRALEC + "</b></font>", "big");
         c.gridy = 1;
 
         enIgralec.addActionListener((e) -> {
@@ -133,7 +128,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         });
         panel.add(enIgralec, c);
 
-        JButton dvaIgralca = new HoverButton("<html><font color=#028bb5><b>" + Strings.DVA_IGRALCA + "</b></font>",  "big");
+        JButton dvaIgralca = new HoverButton("<html><font color=" + barvaBesedila2 +"<b>" + Strings.DVA_IGRALCA + "</b></font>",  "big");
         c.gridy = 2;
 
         dvaIgralca.addActionListener((e) -> {
@@ -142,7 +137,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         });
         panel.add(dvaIgralca, c);
 
-        JButton navodila = new HoverButton("<html><font color=#0874c2><b>" + Strings.NAVODILA + "</b></font>",  "big");
+        JButton navodila = new HoverButton("<html><font color=" + barvaBesedila3 +"<b>" + Strings.NAVODILA + "</b></font>",  "big");
         c.gridy = 3;
 
         navodila.addActionListener((e) -> {
@@ -150,7 +145,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         });
         panel.add(navodila, c);
 
-        JButton exit = new HoverButton("<html><font color=#06528a><b>" + Strings.IZHOD + "</b></font>",  "big");
+        JButton exit = new HoverButton("<html><font color=" + barvaBesedilaIzhod +"<b>" + Strings.IZHOD + "</b></font>",  "big");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridy = 4;
 
@@ -168,132 +163,138 @@ public class GlavnoOkno extends JFrame implements ActionListener {
     }
 
     private JPanel ustvariZahtevnostMeni() {
-        /* Igral bom: [Črnega igralca] [Belega igralca]
-           Inteligenca nasprotnika: [Povprečen] [Pameten] [Genialen]
+        /* En igralec
+           Izberi svojo barvo
+           [Črni igralec] [Beli igralec]
+           Izberi inteligenco nasprotnik:
+           [Povprečen] [Pameten] [Genialen]
            [Začni igro]
            [Izhod]
         */
-        JPanel panel = new JPanel(new GridBagLayout());
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(700, 600));
+        panel.setLayout(new GridBagLayout());
         panel.setBackground(barvaOzadja);
-        //panel.setPreferredSize(new Dimension(900, 500));
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.ipady = 20;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.NORTH;
+        c.gridx = 0;
+        int vrstica = 0;
+
+        // ------------------ naslov ----------------------
+        JLabel naslov = new JLabel("<html><font color=#ffffff><b>" + "En igralec" + "</b></font>", JLabel.CENTER);
+        c.ipady = 15;
+        c.gridy = vrstica;
+        naslov.setFont(naslov2Font);
+        panel.add(naslov, c);
 
         // ----------------- izbira igralca ------------------------
-        
-        GridBagConstraints c = new GridBagConstraints();
-        
-        JLabel label1 = new JLabel("Jaz bom: ");
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 1;
-        c.ipady = 40;     
-        c.insets = new Insets(5, 5, 5, 0);
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 6;
+
+        JLabel label1 = new JLabel("<html><font color=#ffffff>" + "Izberi svojo barvo:" + "</font>", JLabel.CENTER);
+        label1.setFont(podnaslovFont);
+        vrstica++;
+        c.gridy = vrstica;
         panel.add(label1, c);
 
-        HoverButton crniIgralec = new HoverButton("<html><font color=#2c90a9><b>" + Strings.CRNI + "</b></font>", "small");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.ipady = 40;     
-        c.insets = new Insets(5, 5, 5, 0);
-        c.gridx = 0;
-        c.gridy = 1;
-        c.gridwidth = 3;
-        panel.add(crniIgralec, c);
+        JPanel izbiraIgralca = new JPanel();
+        izbiraIgralca.setLayout(new GridBagLayout());
+        izbiraIgralca.setBackground(barvaOzadja);
+        c.ipady = 40;
+        vrstica++;
+        c.gridy = vrstica;
+        panel.add(izbiraIgralca, c);
 
-        HoverButton beliIgralec = new HoverButton("<html><font color=#2c90a9><b>" + Strings.BELI + "</b></font>", "small");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.ipady = 40;     
-        c.insets = new Insets(5, 5, 5, 0);
-        c.gridx = 3;
-        c.gridy = 1;
-        c.gridwidth = 3;
-        panel.add(beliIgralec, c);
-        
-       
+        GridBagConstraints g = new GridBagConstraints();
+        g.fill = GridBagConstraints.BOTH;
+        g.anchor = GridBagConstraints.CENTER;
+        g.insets = new Insets(0, 5, 5, 5);
+        g.ipady = 40;
+        g.ipadx = 40;
+
+        MojToggleButton crniIgralec = new MojToggleButton("<html><font color=" + barvaBesedila1 +"<b>" + "ČRNI IGRALEC" + "</b></font>", true, "small");
+        izbiraIgralca.add(crniIgralec, g);
+
+        MojToggleButton beliIgralec = new MojToggleButton("<html><font color=" + barvaBesedila1 +"<b>" + "BELI IGRALEC" + "</b></font>", false, "small");
+        izbiraIgralca.add(beliIgralec, g);
+
         crniIgralec.addActionListener((e) -> {
             beliIgralec.setSelected(!crniIgralec.isSelected());
+            beliIgralec.setAlpha((!crniIgralec.isSelected()) ?  1f : 0.8f);
         });
 
         beliIgralec.addActionListener((e) -> {
             crniIgralec.setSelected(!beliIgralec.isSelected());
+            crniIgralec.setAlpha((!beliIgralec.isSelected()) ?  1f : 0.8f);
         });
 
-
-
         // ----------------- izbira tezavnosti ------------------------
-        
-        JLabel label2 = new JLabel("Inteligenca nasprotnika: ");
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 1;
-        c.ipady = 40;     
-        c.insets = new Insets(5, 5, 5, 0);
-        c.gridx = 0;
-        c.gridy = 2;
-        c.gridwidth = 6;
+
+        JLabel label2 = new JLabel("<html><font color=#ffffff>" + "Izberi inteligenco nasprotnika:" + "</font>", JLabel.CENTER);
+        label2.setFont(podnaslovFont);
+        c.ipady = 15;
+        vrstica++;
+        c.gridy = vrstica;
         panel.add(label2, c);
-        
-        HoverButton tezavnost1 = new HoverButton("<html><font color=#2c90a9><b>" + Strings.IGRALEC_R1 + "</b></font>", "small");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1/3;
-        c.ipady = 40;     
-        c.insets = new Insets(5, 5, 5, 0);
-        c.gridx = 0;
-        c.gridy = 3;
-        c.gridwidth = 2;
-        panel.add(tezavnost1, c);
-        
-        HoverButton tezavnost2 = new HoverButton("<html><font color=#2c90a9><b>" + Strings.IGRALEC_R2 + "</b></font>", "small");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1/3;
-        c.ipady = 40;     
-        c.insets = new Insets(5, 5, 5, 0);
-        c.gridx = 2;
-        c.gridy = 3;
-        c.gridwidth = 2;
-        panel.add(tezavnost2, c);
-        
-        HoverButton tezavnost3 = new HoverButton("<html><font color=#2c90a9><b>" + Strings.IGRALEC_R3 + "</b></font>", "small");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1/3;
-        c.ipady = 40;     
-        c.insets = new Insets(5, 5, 5, 0);
-        c.gridx = 4;
-        c.gridy = 3;
-        c.gridwidth = 2;
-        panel.add(tezavnost3, c);
-        
-        tezavnost1.setSelected(true);
+
+        JPanel izbiraTezavnosti = new JPanel();
+        izbiraTezavnosti.setLayout(new GridBagLayout());
+        izbiraTezavnosti.setBackground(barvaOzadja);
+        c.ipady = 40;
+        vrstica++;
+        c.gridy = vrstica;
+        panel.add(izbiraTezavnosti, c);
+
+        g.ipadx = 0;
+        MojToggleButton tezavnost1 = new MojToggleButton("<html><font color=" + barvaBesedila2 +"<b>" + Strings.IGRALEC_R1 + "</b></font>", true, "small");
+        izbiraTezavnosti.add(tezavnost1, g);
+
+        MojToggleButton tezavnost2 = new MojToggleButton("<html><font color=" + barvaBesedila2 +"<b>" + Strings.IGRALEC_R2 + "</b></font>", false, "small");
+        izbiraTezavnosti.add(tezavnost2, g);
+
+        MojToggleButton tezavnost3 = new MojToggleButton("<html><font color=" + barvaBesedila2 +"<b>" + Strings.IGRALEC_R3 + "</b></font>", false, "small");
+        izbiraTezavnosti.add(tezavnost3, g);
 
         tezavnost1.addActionListener((e) -> {
             tezavnost1.setSelected(true);
             tezavnost2.setSelected(false);
             tezavnost3.setSelected(false);
+            tezavnost1.setAlpha(1f);
+            tezavnost2.setAlpha(0.8f);
+            tezavnost3.setAlpha(0.8f);
+
+
         });
 
         tezavnost2.addActionListener((e) -> {
             tezavnost1.setSelected(false);
             tezavnost2.setSelected(true);
             tezavnost3.setSelected(false);
+            tezavnost1.setAlpha(0.8f);
+            tezavnost2.setAlpha(1f);
+            tezavnost3.setAlpha(0.8f);
         });
 
         tezavnost3.addActionListener((e) -> {
             tezavnost1.setSelected(false);
             tezavnost2.setSelected(false);
             tezavnost3.setSelected(true);
+            tezavnost1.setAlpha(0.8f);
+            tezavnost2.setAlpha(0.8f);
+            tezavnost3.setAlpha(1f);
         });
 
 
         // ----------------- zacni igro ------------------------
-        
-        HoverButton zacniIgro = new HoverButton("<html><font color=#2c90a9><b>" + Strings.START_GUMB + "</b></font>", "small");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
-        c.ipady = 40;     
+
+        HoverButton zacniIgro = new HoverButton("<html><font color=" + barvaBesedilaStart + "<b>" + Strings.START_GUMB + "</b></font>", "medium");
         c.insets = new Insets(5, 5, 5, 0);
-        c.gridx = 0;
-        c.gridy = 4;
-        c.gridwidth = 6;
-        
+        c.ipady = 40;
+        c.ipadx = 11;
+        vrstica++;
+        c.gridy = vrstica;
+
         zacniIgro.addActionListener((e) -> {
             VrstaIgralca vrstaRacunalnika = VrstaIgralca.R1;
             if (tezavnost2.isSelected()) vrstaRacunalnika = VrstaIgralca.R2;
@@ -309,15 +310,10 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 
         // ----------------- izhod ------------------------
         
-        HoverButton izhod = new HoverButton("<html><font color=#2c90a9><b>" + Strings.IZHOD + "</b></font>", "small");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
-        c.ipady = 40;     
-        c.insets = new Insets(5, 5, 5, 0);
-        c.gridx = 0;
-        c.gridy = 5;
-        c.gridwidth = 6;
-        
+        HoverButton izhod = new HoverButton("<html><font color=" + barvaBesedilaIzhod + "<b>" + Strings.IZHOD + "</b></font>", "medium");
+        vrstica++;
+        c.gridy = vrstica;
+
         izhod.addActionListener((e) -> {
             izberiPogled(0);
         });
@@ -357,8 +353,11 @@ public class GlavnoOkno extends JFrame implements ActionListener {
            [namig][razveljavi][izhod] oz.. [ustavi igro][izhod]
            [statusna vrstica]
         */
-        JPanel panel = new JPanel(new GridBagLayout());
-        JPanel statusIgralci = new JPanel(new BorderLayout());
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridBagLayout());
+
+        // --------------------------------- igralno polje ----------------------------------------------
+        
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
