@@ -38,9 +38,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 
     // ---------------------- to posredujemo vodji -------------
 
-    protected static VrstaIgralca izbira_igralecCrni;
-    protected static VrstaIgralca izbira_igralecBeli;
-
+    protected static VrstaIgralca izbira_igralecCrni; 
+    protected static VrstaIgralca izbira_igralecBeli; 
     // ---------------------- fonti ----------------------------
     Font naslovFont = new Font("Dialog", Font.BOLD, 80);
     Font naslov2Font = new Font("Dialog", Font.PLAIN, 50);
@@ -54,6 +53,9 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         this.setLayout(new GridBagLayout());
         Container pane = this.getContentPane();
         pane.setBackground(barvaOzadja);
+        
+        izbira_igralecCrni = VrstaIgralca.C;
+        izbira_igralecBeli = VrstaIgralca.C;
 
         this.igralnoPolje = ustvariIgralnoPolje();
         this.zacetniMeni = ustvariZacetniMeni();
@@ -71,6 +73,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 
         pane.add(navodilaMeni);
         izberiPogled(0);
+        
+        
     }
     @Override
     public Dimension getPreferredSize() {
@@ -301,7 +305,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
             else if (tezavnost3.isSelected()) vrstaRacunalnika = VrstaIgralca.R3;
             izbira_igralecCrni = (crniIgralec.isSelected() ? VrstaIgralca.C : vrstaRacunalnika);
             izbira_igralecBeli = (!crniIgralec.isSelected() ? VrstaIgralca.C : vrstaRacunalnika);
-
+            
             Vodja.igramoNovoIgro(izbira_igralecCrni, izbira_igralecBeli);
             izberiPogled(3);
         });
@@ -353,38 +357,39 @@ public class GlavnoOkno extends JFrame implements ActionListener {
            [namig][razveljavi][izhod] oz.. [ustavi igro][izhod]
            [statusna vrstica]
         */
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridBagLayout());
-
-        // --------------------------------- igralno polje ----------------------------------------------
-        
+        JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 12;
-        panel.add(statusIgralci, c);
         
         // --------------------------------- status igralcev  ----------------------------------------------
         
         JPanel crniIgralec = new JPanel(new BorderLayout());
+        crniIgralec.setBackground(barvaOzadja);
         ImageIcon icon_crni = SwingUtils.createImageIcon("images/crni_small.png", "crni zeton");
-        JLabel lab1 = new JLabel("Črni igralec:", icon_crni, JLabel.LEFT);
+        JLabel lab1 = new JLabel("Črni igralec:" + izbira_igralecCrni.toString(), icon_crni, JLabel.LEFT);
         crniIgralec.add(lab1, BorderLayout.LINE_START);
         
-        JTextField igralec1 = new JTextField("Igralec 1");
-        crniIgralec.add(igralec1, BorderLayout.LINE_END);
+        // JTextField igralec1 = new JTextField("Igralec 1");
+        //crniIgralec.add(igralec1, BorderLayout.LINE_END);
+        //c.gridx = 0;
+        //c.gridy = 0;
+        // c.gridwidth = 4;
+        panel.add(crniIgralec, c);
         
+        // TODO rezultat na sredini?
         
         JPanel beliIgralec = new JPanel(new BorderLayout());
         ImageIcon icon_beli = SwingUtils.createImageIcon("images/beli_small.png", "beli zeton");
-        JLabel lab2 = new JLabel("Beli igralec:", icon_beli, JLabel.LEFT);
-        beliIgralec.add(lab2, BorderLayout.LINE_START);
+        JLabel lab2 = new JLabel("Beli igralec:" + izbira_igralecBeli.toString(), icon_beli, JLabel.RIGHT);
+        beliIgralec.add(new JPanel(), BorderLayout.LINE_START);
+        beliIgralec.add(lab2, BorderLayout.CENTER);
         
-        JTextField igralec2 = new JTextField("Igralec 2");
-        beliIgralec.add(igralec2, BorderLayout.LINE_END);
-        
-        statusIgralci.add(crniIgralec, BorderLayout.LINE_START);
-        //statusIgralci.add(beliIgralec, BorderLayout.LINE_END);
+        // JTextField igralec2 = new JTextField("Igralec 2");
+        // beliIgralec.add(igralec2, BorderLayout.LINE_END);
+        c.gridx = 6;
+        c.gridy = 0;
+        c.gridwidth = 6;
+        panel.add(beliIgralec, c);
+      
 
 
         // --------------------------------- igralno polje ----------------------------------------------
