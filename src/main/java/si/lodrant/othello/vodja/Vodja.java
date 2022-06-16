@@ -134,6 +134,7 @@ public class Vodja {
 		Igralec igralec = igra.naPotezi();
 		VrstaIgralca vrstaNaPotezi = vrstaIgralca.get(igralec);
 		if (vrstaNaPotezi == VrstaIgralca.C) igra.odstraniZadnjoPotezo();
+		okno.osveziGUI();
 		
 	}
 	
