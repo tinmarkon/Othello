@@ -155,6 +155,7 @@ public class Igra {
 			return true;
 		}
 		else if ((poteza.getX() == -10) && (poteza.getY() == -10)){
+			prejsnjeStanje = new Igra(this);
 			naPotezi = naPotezi.nasprotnik();
 			return true;
 		}
