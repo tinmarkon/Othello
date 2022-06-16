@@ -173,8 +173,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
            [Začni igro]
            [Izhod]
         */
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridBagLayout());
+        JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(barvaOzadja);
         //panel.setPreferredSize(new Dimension(900, 500));
 
@@ -329,15 +328,25 @@ public class GlavnoOkno extends JFrame implements ActionListener {
     }
 
     private JPanel ustvariNavodilaMeni() {
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel(new BorderLayout());
         JLabel label = new JLabel(Strings.NAVODILA);
-        panel.add(label);
+        panel.add(label, BorderLayout.NORTH);
+        // --------------------------------- navodila ----------------------------------------------
+        
+        JTextArea navodila = new JTextArea();
+        navodila.setText(Strings.NAVODILA_TEXT);
+        navodila.setColumns(20);
+        navodila.setLineWrap(true);
+        navodila.setRows(5);
+        navodila.setWrapStyleWord(true);
+        navodila.setEditable(false);
+        panel.add(navodila, BorderLayout.CENTER);
 
         JButton izhodGumb = new JButton(Strings.IZHOD);
         izhodGumb.addActionListener((e) -> {
             izberiPogled(0);
         });
-        panel.add(izhodGumb);
+        panel.add(izhodGumb, BorderLayout.SOUTH);
 
         return panel;
     }
@@ -348,51 +357,35 @@ public class GlavnoOkno extends JFrame implements ActionListener {
            [namig][razveljavi][izhod] oz.. [ustavi igro][izhod]
            [statusna vrstica]
         */
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridBagLayout());
-        
-        // --------------------------------- igralno polje ----------------------------------------------
-        
+        JPanel panel = new JPanel(new GridBagLayout());
+        JPanel statusIgralci = new JPanel(new BorderLayout());
         GridBagConstraints c = new GridBagConstraints();
-        
-        ImageIcon icon_crni = SwingUtils.createImageIcon("images/crni_small.png", "crni zeton");
-        JLabel lab1 = new JLabel("Črni igralec:", icon_crni, JLabel.LEFT);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.ipady = 40;     
-        c.insets = new Insets(5, 5, 5, 0);
         c.gridx = 0;
         c.gridy = 0;
-        c.gridwidth = 3;
-        panel.add(lab1, c);
+        c.gridwidth = 12;
+        panel.add(statusIgralci, c);
+        
+        // --------------------------------- status igralcev  ----------------------------------------------
+        
+        JPanel crniIgralec = new JPanel(new BorderLayout());
+        ImageIcon icon_crni = SwingUtils.createImageIcon("images/crni_small.png", "crni zeton");
+        JLabel lab1 = new JLabel("Črni igralec:", icon_crni, JLabel.LEFT);
+        crniIgralec.add(lab1, BorderLayout.LINE_START);
         
         JTextField igralec1 = new JTextField("Igralec 1");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.ipady = 40;     
-        c.insets = new Insets(5, 5, 5, 0);
-        c.gridx = 3;
-        c.gridy = 0;
-        c.gridwidth = 3;
-        panel.add(igralec1, c);
+        crniIgralec.add(igralec1, BorderLayout.LINE_END);
         
         
+        JPanel beliIgralec = new JPanel(new BorderLayout());
         ImageIcon icon_beli = SwingUtils.createImageIcon("images/beli_small.png", "beli zeton");
         JLabel lab2 = new JLabel("Beli igralec:", icon_beli, JLabel.LEFT);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.ipady = 40;     
-        c.insets = new Insets(5, 5, 5, 0);
-        c.gridx = 6;
-        c.gridy = 0;
-        c.gridwidth = 3;
-        panel.add(lab2, c);
-
+        beliIgralec.add(lab2, BorderLayout.LINE_START);
+        
         JTextField igralec2 = new JTextField("Igralec 2");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.ipady = 40;     
-        c.insets = new Insets(5, 5, 5, 0);
-        c.gridx = 9;
-        c.gridy = 0;
-        c.gridwidth = 3;
-        panel.add(igralec2, c);
+        beliIgralec.add(igralec2, BorderLayout.LINE_END);
+        
+        statusIgralci.add(crniIgralec, BorderLayout.LINE_START);
+        //statusIgralci.add(beliIgralec, BorderLayout.LINE_END);
 
 
         // --------------------------------- igralno polje ----------------------------------------------
@@ -405,13 +398,13 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 
         // ------ Spodnja vrstica z gumbi: [namig], [mozne poteze], [razveljavi potezo], [izhod] ----------------
 
-
-        namig = new JButton(Strings.NAMIG_GUMB);
-        c.fill = GridBagConstraints.HORIZONTAL;
+        JPanel gumbi = new JPanel();
         c.gridx = 0;
         c.gridy = 2;
-        c.gridwidth = 4;
-        panel.add(namig, c);
+        panel.add(gumbi, c);
+        
+        namig = new JButton(Strings.NAMIG_GUMB);
+        gumbi.add(namig);
         
        
         namig.addActionListener((e) -> {
@@ -422,11 +415,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
                 "<html><font face=\"sansserif\" color=\"black\" >Prikaži najboljšo možno potezo, kot jo<br>izbere algoritem Monte Carlo Tree Search.<br>Iskanje traja 5 sekund!</font></html>");
 
         JButton razveljavi = new JButton(Strings.RAZVELJAVI_GUMB);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 4;
-        c.gridy = 2;
-        c.gridwidth = 4;
-        panel.add(razveljavi, c);
+        gumbi.add(razveljavi);
         
         razveljavi.addActionListener((e) -> {
             Vodja.razveljaviPotezo();
@@ -434,10 +423,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         });
 
         JButton izhod = new JButton(Strings.IZHOD);
-        c.gridx = 8;
-        c.gridy = 2;
-        c.gridwidth = 4;
-        panel.add(izhod, c);
+        gumbi.add(izhod);
         
         
         izhod.addActionListener((e) -> {
@@ -451,7 +437,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         status.setText(Strings.START_STATUS);
         c.fill = GridBagConstraints.NONE;
         c.gridx = 0;
-        c.gridy = 4;
+        c.gridy = 3;
         c.gridwidth = 12;
         panel.add(status, c);
 
