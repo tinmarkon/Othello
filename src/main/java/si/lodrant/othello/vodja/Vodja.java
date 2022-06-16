@@ -130,7 +130,10 @@ public class Vodja {
 		pokaziPoteze = !pokaziPoteze;
 	}
 	
-	public static void razveljaviPoteze() {
+	public static void razveljaviPotezo() {
+		Igralec igralec = igra.naPotezi();
+		VrstaIgralca vrstaNaPotezi = vrstaIgralca.get(igralec);
+		if (vrstaNaPotezi == VrstaIgralca.C) igra.odstraniZadnjoPotezo();
 		
 	}
 	
