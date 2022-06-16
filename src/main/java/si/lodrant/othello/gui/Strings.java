@@ -5,7 +5,7 @@ public class Strings {
     public final static String IGRALEC_R1 = "Povprečen nasprotnik";
     public final static String IGRALEC_R2 = "Pameten nasprotnik";
     public final static String IGRALEC_R3 = "Genialen nasprotnik";
-    public final static String START_GUMB = "Začni novo igro";
+    public final static String START_GUMB = "ZAČNI NOVO IGRO";
     public final static String EN_IGRALEC = "EN IGRALEC";
     public final static String DVA_IGRALCA = "DVA IGRALCA";
     public final static String NAVODILA = "NAVODILA";
