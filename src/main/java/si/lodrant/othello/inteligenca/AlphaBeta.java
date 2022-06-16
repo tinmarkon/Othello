@@ -53,6 +53,7 @@ public class AlphaBeta extends Inteligenca {
 				break;
 			case BLOKIRANO:
 				ocenap = (jaz == igra.naPotezi() ? -igra.nasprotnikovePoteze().size() : +igra.nasprotnikovePoteze().size());
+				break;
 			default:
 				if (globina == 0)
 					ocenap = OceniPozicijo.oceniPozicijo(kopijaIgre, jaz);
