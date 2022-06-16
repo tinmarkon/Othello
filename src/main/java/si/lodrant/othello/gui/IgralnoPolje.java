@@ -31,7 +31,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(900, 500);
+		return new Dimension(600, 400);
 	}
 
 	// Relativna širina črte
@@ -49,7 +49,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		return (getHeight() - squareWidth()*8)/2;
 	}
 	// Relativni prostor okoli žetona
-	private final static double PADDING = 0.17;
+	private final static double PADDING = 0.13;
 	
 	private void paintZeton(Graphics2D g2, int j, int i, Color barvaZetona, Boolean senca) {
 		/* Nariše žeton barve barvaZetona na polje i, j na deski. Premaknjeno v center zaslona X, Y. */
