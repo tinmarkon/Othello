@@ -26,8 +26,7 @@ Ob vsakem zagonu `igramo()` v `Vodja.java` se na `igri` požene `.stanje()`. Gle
 To ni bila najboljša rešitev, saj funkcija kot je `igra.stanje()` ne bi smela posegati v igro - naj le vrača stanje. Zato smo uvedli novo stanje igre `Stanje.BLOKIRANO`. V primeru, da `igra.stanje()` vrne `Stanje.BLOKIRANO` se v `Vodja.java` pokliče metoda `igra.odigraj(new Poteza(-10, -10))`, kjer smo argument `Poteza(-10, -10)` definirali kot *dummy* potezo, ki le spremeni igralca na potezi v nasprotnika, stanje na deski pa ohrani.
 
 ### Status projekta
-Uporabniški vmesnik in inteligenten igralec delujeta, a nista izpopolnjena - projekt še ni
-zaključen.
+Projekt je zaključen in oddan. Vedno bi lahko spremenili še nešteto detajlov.
 
 **Naslednji koraki:**
 2. Izpopolniti Monte Carlo Tree Search algoritem:
