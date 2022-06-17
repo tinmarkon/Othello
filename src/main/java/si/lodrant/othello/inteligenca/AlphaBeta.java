@@ -28,6 +28,7 @@ public class AlphaBeta extends Inteligenca {
 	}
 
 	public OcenjenaPoteza alphabetaPoteze(Igra igra, int globina, int alpha, int beta, Igralec jaz) {
+		
 		int ocena;
 		if (igra.naPotezi() == jaz) {
 			ocena = PORAZ;
@@ -77,9 +78,9 @@ public class AlphaBeta extends Inteligenca {
 		}
 		return new OcenjenaPoteza(kandidat, ocena);
 	}
-	
+		
 
-	public OcenjenaPoteza minimax(Igra igra, int globina, Igralec jaz) {
+	public OcenjenaPoteza alphabetaPoteze2(Igra igra, int globina, int alpha, int beta, Igralec jaz) {
 		boolean maksimiziramo = (jaz == igra.naPotezi() ? true : false);
 		if (igra.jeZakljucena()) {
 			switch (igra.stanje()) {
@@ -93,7 +94,7 @@ public class AlphaBeta extends Inteligenca {
 				ocena = NEODLOCENO;
 				return new OcenjenaPoteza(null, ocena);
 			default:
-				break;
+				return new OcenjenaPoteza(null, 0);
 			}
 		}
 		else {
@@ -101,35 +102,44 @@ public class AlphaBeta extends Inteligenca {
 				return new OcenjenaPoteza(null, OceniPozicijo.oceniPozicijo(igra, jaz));
 			}
 			else {
-				Poteza ocenjenaPoteza = null;
-				int najboljsaPoteza = -NESKONCNO;
-				
+				Poteza ocenjenaPoteza;
+				int najboljsaPoteza;
 				if (maksimiziramo) {
+					ocenjenaPoteza = null;
+					najboljsaPoteza = -NESKONCNO;
 					for (Poteza p : igra.poteze()) {
 						Igra kopijaIgre = new Igra(igra);
 						kopijaIgre.odigraj(p);
 						int ocenap;
-						ocenap = minimax(kopijaIgre, globina - 1, jaz).ocena;
+						ocenap = alphabetaPoteze2(kopijaIgre, globina - 1, alpha, beta, jaz).ocena;
 						if (ocenap > najboljsaPoteza) {
 							najboljsaPoteza = ocenap;
+							alpha = Math.max(alpha, najboljsaPoteza);
 							ocenjenaPoteza = p;
+							if (beta <= alpha) break;
 						}
 					}
 				}
 				else {
+					ocenjenaPoteza = null;
+					najboljsaPoteza = NESKONCNO;
 					for (Poteza p : igra.poteze()) {
 						Igra kopijaIgre = new Igra(igra);
 						kopijaIgre.odigraj(p);
 						int ocenap;
-						ocenap = minimax(kopijaIgre, globina - 1, jaz).ocena;
+						ocenap = alphabetaPoteze2(kopijaIgre, globina - 1, alpha, beta, jaz).ocena;
 						if (ocenap < najboljsaPoteza) {
 							najboljsaPoteza = ocenap;
 							ocenjenaPoteza = p;
+							beta = Math.min(beta, najboljsaPoteza);
+							if (beta <= alpha) break;
 							}
 					}
+					
 				}
 				return new OcenjenaPoteza(ocenjenaPoteza, najboljsaPoteza);
 			}
 		}
 	}
+	
 }
