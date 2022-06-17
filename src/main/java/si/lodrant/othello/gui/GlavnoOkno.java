@@ -52,7 +52,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
     Font mojFont = new Font("Dialog", Font.PLAIN, 15);
 
     // osnovna dimenzija okna
-    Dimension dimenzijaOkna = new Dimension(1000, 800);
+    Dimension dimenzijaOkna = new Dimension(1000, 900);
     Dimension dimenzijaPolja = new Dimension(400, 400);
 
     public GlavnoOkno() {
@@ -602,7 +602,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         beliLabel.setText("<html><b>" + izbira_igralecBeli.toString() + "</b>");
         beliZetoni.setText("št. žetonov: " + st[1] + poravnava2);
 
-        razveljavi.setEnabled((st[0] + st[1] > 4) && (Vodja.igra.jeVeljavnaZadnjaPoteza()));
+        razveljavi.setEnabled((st[0] + st[1] > 4) && (Vodja.igra.jeVeljavnaZgodovina()));
 
         if (Vodja.igra == null) {
             status.setText("Igra ni v teku.");
@@ -614,7 +614,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
             String imeNasprotnik = naPotezi.nasprotnik().toString();
             switch (stanjeIgre) {
                 case BLOKIRANO:
-                    System.out.println("Stanje na deski blokirano. Še enkrat je na vrsti nasprotnik!");
                     status.setText(imeNaPotezi.toString().substring(0, 1).toUpperCase()
                             + imeNaPotezi.toString().substring(1) +"igralec nima možnih potez. Še enkrat je na vrsti " + imeNasprotnik + "!");
                     break;
@@ -629,23 +628,29 @@ public class GlavnoOkno extends JFrame implements ActionListener {
                             status.setText("Na potezi je " + naPotezi + " igralec."); //- " + imeNaPotezi + ".");
                         }
                     } else {
-                        status.setText("Potezo izbira " + naPotezi + " igralec. To lahko traja nekaj sekund."); //- " + imeNaPotezi + ".");
+                        status.setText("Počakaj, potezo izbira " + naPotezi + " igralec."); //- " + imeNaPotezi + ".");
                     }
                     break;
 
                 case ZMAGA_B:
                     status.setText("Igra je zaključena!");
                     JOptionPane.showMessageDialog(this, "Zmagal je ČRNI igralec z rezultatom: " + st[0] + " | " + st[1] + ".");
+                    razveljavi.setEnabled(false);
+                    namig.setEnabled(false);
                     break;
 
                 case ZMAGA_W:
                     status.setText("Igra je zaključena!");
                     JOptionPane.showMessageDialog(this, "Zmagal je BELI igralec z rezultatom: " + st[1] + " | " + st[0] + ".");
+                    razveljavi.setEnabled(false);
+                    namig.setEnabled(false);
                     break;
 
                 case NEODLOCENO:
                     status.setText("Igra je zaključena!");
                     JOptionPane.showMessageDialog(this, stanjeIgre.toString());
+                    razveljavi.setEnabled(false);
+                    namig.setEnabled(false);
                     break;
             }
         }
