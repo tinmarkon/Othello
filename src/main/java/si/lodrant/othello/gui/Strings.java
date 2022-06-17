@@ -27,7 +27,7 @@ public class Strings {
 
     public final static String NAVODILA_TEXT_NAMIG = "S klikom na gumb \"Namig\" poženemo algoritem Monte Carlo Tree Search, ki izbere najboljšo možno potezo. Ta se na plošči obarva z rumeno oz. zeleno barvo.";
 
-    public final static String NAVODILA_TEXT_RAZVELJAVI = "S klikom na gumb \"Razveljavi potezo!\" lahko v igri za dva igralca (človek proti človeku) razveljavimo poljubno število potez.";
+    public final static String NAVODILA_TEXT_RAZVELJAVI = "S klikom na gumb \"Razveljavi potezo!\" lahko v igri za dva igralca (človek proti človeku) razveljavimo največ eno potezo.";
 
 
 }
