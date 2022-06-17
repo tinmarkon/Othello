@@ -59,6 +59,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         this.setTitle(Strings.NASLOV);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new GridBagLayout());
+        this.setIconImage(SwingUtils.createImageIcon("images/zacetek.png", "Othello").getImage());
 
         izbira_igralecCrni = VrstaIgralca.C;
         izbira_igralecBeli = VrstaIgralca.C;
@@ -94,9 +95,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         this.zahtevnostMeni.setVisible(i == 1);
         this.navodilaMeni.setVisible(i == 2);
         this.igralnoPolje.setVisible(i == 3);
-        this.pack();
     }
-
 
     private JPanel ustvariZacetniMeni() {
         /* Štirje gumbi: OTHELLO
@@ -152,7 +151,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         });
         panel.add(navodila, c);
 
-        HoverButton exit = new HoverButton("<html><font color=" + barvaBesedilaIzhod + "<b>" + Strings.IZHOD + "</b></font>", "big");
+        HoverButton exit = new HoverButton("<html><font color=" + barvaBesedilaIzhod + "<b>" + Strings.EXIT + "</b></font>", "big");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridy = 4;
 
@@ -570,7 +569,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         panel.add(status, c);
 
         // -------------------------------- [izhod] -----------------------------------------
-        HoverButton izhod = new HoverButton("<html><font color=" + barvaBesedilaIzhod + "<b>" + Strings.IZHOD + "</b></font>", "small");
+        HoverButton izhod = new HoverButton("<html><font color=" + barvaBesedilaIzhod + "<b>" + Strings.BACKTOSTART + "</b></font>", "small");
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.CENTER;
         c.ipady = 20;
@@ -615,20 +614,24 @@ public class GlavnoOkno extends JFrame implements ActionListener {
             switch (stanjeIgre) {
                 case BLOKIRANO:
                     status.setText(imeNaPotezi.toString().substring(0, 1).toUpperCase()
-                            + imeNaPotezi.toString().substring(1) +"igralec nima možnih potez. Še enkrat je na vrsti " + imeNasprotnik + "!");
+                            + imeNaPotezi.toString().substring(1) + "igralec nima možnih potez. Še enkrat je na vrsti " + imeNasprotnik + "!");
                     break;
 
                 case V_TEKU:
                     if (Vodja.vrstaIgralca.get(naPotezi) == VrstaIgralca.C) {
+                        Vodja.pokaziPoteze();
                         namig.setEnabled(true);
                         if (Vodja.neveljavnaPoteza) {
                             status.setText("To ni možna poteza!");
                             Vodja.neveljavnaPoteza = false;
                         } else {
-                            status.setText("Na potezi je " + naPotezi + " igralec."); //- " + imeNaPotezi + ".");
+                            if (igraClovekClovek) {
+                                status.setText("Na potezi je " + naPotezi + " igralec."); //- " + imeNaPotezi + ".");
+                            } else status.setText("Na potezi si ti!"); //- " + imeNaPotezi + ".");
                         }
                     } else {
-                        status.setText("Počakaj, potezo izbira " + naPotezi + " igralec."); //- " + imeNaPotezi + ".");
+                        Vodja.skrijPoteze();
+                        status.setText("Počakaj, potezo izbira računalnik."); //- " + imeNaPotezi + ".");
                     }
                     break;
 
@@ -660,6 +663,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
     public void prikazi() {
         // S tem prikažemo cel JFrame v metodi main
         this.pack();
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
