@@ -20,18 +20,24 @@ import si.lodrant.othello.splosno.Poteza;
 /**
  * Pravokotno območje, v katerem je narisano igralno polje.
  */
-@SuppressWarnings("serial")
 public class IgralnoPolje extends JPanel implements MouseListener {
-	
+
 	public IgralnoPolje() {
 		Color barvaOzadja = new Color(44, 144, 169);
 		setBackground(barvaOzadja);
 		this.addMouseListener(this);
 	}
 
+	public IgralnoPolje(Dimension preferredSize) {
+		Color barvaOzadja = new Color(44, 144, 169);
+		setBackground(barvaOzadja);
+		this.addMouseListener(this);
+		this.setPreferredSize(preferredSize);
+	}
+
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(600, 400);
+		return new Dimension(300, 300);
 	}
 
 	// Relativna širina črte
@@ -59,10 +65,10 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		double w = squareWidth();
 		// ----- senca -------
 		if (senca) {
-		Color barvaSence = new Color(44, 144, 169); 
+		Color barvaSence = new Color(38, 124, 145);
 		double ds = w * (1.0 - LINE_WIDTH - 2.0 * PADDING); // premer O
-		double xs = w * (i + 1.5 * LINE_WIDTH + PADDING);
-		double ys = w * (j + 1.2 * LINE_WIDTH + PADDING);
+		double xs = w * (i + 0.5 * LINE_WIDTH + PADDING) + 0.05*w;
+		double ys = w * (j + 0.5 * LINE_WIDTH + PADDING) + 0.03*w;
 		g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
 		g2.setColor(barvaSence);
 		//g2.drawOval((int)xs, (int)ys, (int)ds, (int)ds);
@@ -121,74 +127,42 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		g2.drawLine((int)(X), (int)(Y), (int)(X + 8 * w), (int)(Y));
 		g2.drawLine((int)(X + 8 * w), (int)(Y), (int)(X + 8 * w), (int)(Y + 8 * w));
 		g2.drawLine((int)(X), (int)(Y + 8 * w), (int)(X + 8 * w), (int)(Y + 8 * w));
-		
-		// ----------- narisi zetone glede na stanje igre ------------
-		Polje[][] deska;;
+
 		if (Vodja.igra != null) {
+			// ----------- narisi zetone glede na stanje igre ------------
+			Polje[][] deska;
 			deska = Vodja.igra.getDeska();
 			for (int i = 0; i < 8; i++) {
 				for (int j = 0; j < 8; j++) {
-					switch(deska[i][j]) {
-					case WHITE: paintZeton(g2, i, j, Color.WHITE, true); break;
-					case BLACK: paintZeton(g2, i, j, Color.BLACK, true); break;
-					default: break;
+					switch (deska[i][j]) {
+						case WHITE:
+							paintZeton(g2, i, j, Color.WHITE, true);
+							break;
+						case BLACK:
+							paintZeton(g2, i, j, Color.BLACK, true);
+							break;
+						default:
+							break;
 					}
 				}
 			}
-		}	
 
-		/* Nariše možne poteze za igralca naPotezi. */
-		ArrayList<Poteza> moznePoteze = Vodja.igra.poteze();
-		Color barvaPoteze = new Color(255, 255, 255, 100);
-		if (Vodja.igra.naPotezi() == Igralec.BLACK) barvaPoteze = new Color(0, 0, 0, 80);
-		for (Poteza p: moznePoteze) {
-			paintZeton(g2, p.getX(), p.getY(), barvaPoteze, false);
+			// -------- Nariše možne poteze za igralca naPotezi.----------
+			ArrayList<Poteza> moznePoteze = Vodja.igra.poteze();
+			Color barvaPoteze = new Color(255, 255, 255, 100);
+			if (Vodja.igra.naPotezi() == Igralec.BLACK) barvaPoteze = new Color(0, 0, 0, 80);
+			for (Poteza p : moznePoteze) {
+				paintZeton(g2, p.getX(), p.getY(), barvaPoteze, false);
+			}
+
+			if (Vodja.namig != null) {
+				/* Nariše potezo, ki jo je namigInteligenca iz razreda Vodja izbrala kot najboljšo. */
+				Poteza namig = Vodja.namig;
+				Color barvaNamiga = new Color(79, 223, 142);
+				if (Vodja.igra.naPotezi() == Igralec.BLACK) barvaNamiga = new Color(255, 237, 117);
+				paintZeton(g2, namig.getX(), namig.getY(), barvaNamiga, false);
+			}
 		}
-
-		if (Vodja.namig != null) {
-			/* Nariše potezo, ki jo je namigInteligenca iz razreda Vodja izbrala kot najboljšo. */
-			Poteza namig = Vodja.namig;
-			Color barvaNamiga = new Color(79, 223, 142);
-			if (Vodja.igra.naPotezi() == Igralec.BLACK) barvaNamiga = new Color(255, 237, 117);
-			paintZeton(g2, namig.getX(), namig.getY(), barvaNamiga, false);
-		}
-
-		// ----------------------- števec žetonov in ime igralcev ------------------------
-		// PO PREMISLEKU SE MI ZDI DA ZGLEDA BOLJŠE BREZ. Kvečjemu lahko števec dodama v zgornji
-		// ali spodnji vrstici.
-		/*
-		g2.setColor(barvaPolja);
-		int height = (int) w;
-		int width = (int) (2*w);
-		g2.drawRect(0, getHeight()/2 - height, width, height); 
-        g2.fillRect(0, getHeight()/2 - height, width, height); 
-
-		g2.setColor(Color.BLACK);
-		g2.setFont(new Font("Dialog", Font.PLAIN, 15)); 
-		g2.drawString("Ime igralca", width/8, getHeight()/2 - height/4);
-
-		g2.setColor(barvaPolja);
-		g2.drawRect(getWidth() - width, getHeight()/2 - height, width, height); 
-		g2.fillRect(getWidth() - width, getHeight()/2 - height, width, height); 
-
-	
-		int d = (int)squareWidth();
-		int krog1_x = (int)(width/4);
-		int krog1_y = (int)(getHeight()/2 - 1.5*height);
-
-		g2.setColor(Color.BLACK);
-		g2.drawOval((int)(width/4), (int)(getHeight()/2 - 1.5*height), d, d);
-        g2.fillOval((int)(width/4), (int)(getHeight()/2 - 1.5*height), d, d);
-		g2.setColor(Color.WHITE); 
-		g2.drawOval((int)( getWidth() - 3*width/4), (int)(getHeight()/2 - 1.5*height), d, d);
-        g2.fillOval((int)( getWidth() - 3*width/4), (int)(getHeight()/2 - 1.5*height), d, d);
-
-		int[] stevec = Vodja.igra.prestejZetone();
-		g2.setFont(new Font("Dialog", Font.BOLD, 20)); 
-		g2.drawString(Integer.toString(stevec[0]), (int)(krog1_x + 2*d/5), (int)(krog1_y + 2*d/3));
-
-		g2.drawString(Integer.toString(stevec[0]), (int)(krog1_x + 2*d/5), (int)(krog1_y + 2*d/3));
-		 */
 	}
 	
 	@Override
