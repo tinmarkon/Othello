@@ -82,29 +82,58 @@ public class AlphaBeta extends Inteligenca {
 		return new OcenjenaPoteza(kandidat, ocena);
 	}
 	
-/*	
-	public OcenjenaPoteza alphabetaPoteze2(Poteza poteza, Igra igra, int globina, int alpha, int beta, Igralec jaz) {
-		boolean maksimiziramo = ()
-		if (globina == 0 || igra.jeZakljucena()) {
+
+	public OcenjenaPoteza minimax(Igra igra, int globina, Igralec jaz) {
+		boolean maksimiziramo = (jaz == igra.naPotezi() ? true : false);
+		if (igra.jeZakljucena()) {
 			switch (igra.stanje()) {
 			case ZMAGA_B:
-				ocena = (jaz == Igralec.BLACK ? ZMAGA : PORAZ);
-				return ocena;
+				int ocena = (jaz == Igralec.BLACK ? ZMAGA : PORAZ);
+				return new OcenjenaPoteza(null, ocena);
 			case ZMAGA_W:
 				ocena = (jaz == Igralec.WHITE ? ZMAGA : PORAZ);
-				return ocena;
+				return new OcenjenaPoteza(null, ocena);
 			case NEODLOCENO:
 				ocena = NEODLOCENO;
-				return ocena;
-			case BLOKIRANO:
-				ocena = (jaz == igra.naPotezi() ? -igra.nasprotnikovePoteze().size() : +igra.nasprotnikovePoteze().size());
-				return ocena;
+				return new OcenjenaPoteza(null, ocena);
+			default:
+				break;
 			}
-			
-			
-			
+		}
+		else {
+			if (globina == 0) {
+				return new OcenjenaPoteza(null, OceniPozicijo.oceniPozicijo(igra, jaz));
+			}
+			else {
+				Poteza ocenjenaPoteza = null;
+				int najboljsaPoteza = -NESKONCNO;
+				if (maksimiziramo) {
+					for (Poteza p : igra.poteze()) {
+						Igra kopijaIgre = new Igra(igra);
+						kopijaIgre.odigraj(p);
+						int ocenap;
+						ocenap = minimax(kopijaIgre, globina - 1, jaz).ocena;
+						if (ocenap > najboljsaPoteza) {
+							najboljsaPoteza = ocenap;
+							ocenjenaPoteza = p;
+						}
+					}
+				}
+				else {
+					for (Poteza p : igra.poteze()) {
+						Igra kopijaIgre = new Igra(igra);
+						kopijaIgre.odigraj(p);
+						int ocenap;
+						ocenap = minimax(kopijaIgre, globina - 1, jaz).ocena;
+						if (ocenap < najboljsaPoteza) {
+							najboljsaPoteza = ocenap;
+							ocenjenaPoteza = p;
+						}
+				}
+		}
+			return new OcenjenaPoteza(ocenjenaPoteza, najboljsaPoteza);	
 	}
+			
+		}
 	}
-	*/
-
 }
