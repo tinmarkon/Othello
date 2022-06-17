@@ -132,8 +132,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         naslov.setFont(naslovFont);
         panel.add(naslov, c);
         
-        // HoverButton ? 
-        JButton enIgralec = new HoverButton("<html><font color=" + barvaBesedila1 +"<b>" + Strings.EN_IGRALEC + "</b></font>", "big");
+        HoverButton enIgralec = new HoverButton("<html><font color=" + barvaBesedila1 +"<b>" + Strings.EN_IGRALEC + "</b></font>", "big");
         c.gridy = 1;
 
         enIgralec.addActionListener((e) -> {
@@ -142,7 +141,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         });
         panel.add(enIgralec, c);
 
-        JButton dvaIgralca = new HoverButton("<html><font color=" + barvaBesedila2 +"<b>" + Strings.DVA_IGRALCA + "</b></font>",  "big");
+        HoverButton dvaIgralca = new HoverButton("<html><font color=" + barvaBesedila2 +"<b>" + Strings.DVA_IGRALCA + "</b></font>",  "big");
         c.gridy = 2;
 
         dvaIgralca.addActionListener((e) -> {
@@ -154,7 +153,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         });
         panel.add(dvaIgralca, c);
 
-        JButton navodila = new HoverButton("<html><font color=" + barvaBesedila3 +"<b>" + Strings.NAVODILA + "</b></font>",  "big");
+        HoverButton navodila = new HoverButton("<html><font color=" + barvaBesedila3 +"<b>" + Strings.NAVODILA + "</b></font>",  "big");
         c.gridy = 3;
 
         navodila.addActionListener((e) -> {
@@ -162,7 +161,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         });
         panel.add(navodila, c);
 
-        JButton exit = new HoverButton("<html><font color=" + barvaBesedilaIzhod +"<b>" + Strings.IZHOD + "</b></font>",  "big");
+        HoverButton exit = new HoverButton("<html><font color=" + barvaBesedilaIzhod +"<b>" + Strings.IZHOD + "</b></font>",  "big");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridy = 4;
 
@@ -505,7 +504,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         tekstCrni.setText("<html><b>" + izbira_igralecCrni.toString()+ "</b>" + " ima " + st[0] + " " + zeton1 + ".");
         tekstBeli.setText("<html><b>" + izbira_igralecBeli.toString()+ "</b>" + " ima " + st[1] + " " + zeton2 + ".");
         
-        if (st[0] + st[1] > 4 && Vodja.igra.jeVeljavnaZadnjaPoteza()) razveljavi.setEnabled(true);
+        if (st[0] + st[1] > 4 && Vodja.igra.jeVeljavnaZgodovina()) razveljavi.setEnabled(true);
         else razveljavi.setEnabled(false);
         
         
