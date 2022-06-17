@@ -23,11 +23,7 @@ public class AlphaBeta extends Inteligenca {
 
 	@Override
 	public Poteza izberiPotezo(Igra igra) {
-		System.out.println("Izbiram ALPHABETA potezo.");
-		//System.out.print(igra.naPotezi() + " Izbiram ALFABETA potezo. ");
-		long startTime = System.currentTimeMillis();  
 		OcenjenaPoteza najboljsaPoteza = alphabetaPoteze(igra, this.globina, this.alpha, this.beta, igra.naPotezi());
-		System.out.println("Total time [ms]: " + (System.currentTimeMillis() - startTime)); 
 		return najboljsaPoteza.poteza;
 	}
 
@@ -107,6 +103,7 @@ public class AlphaBeta extends Inteligenca {
 			else {
 				Poteza ocenjenaPoteza = null;
 				int najboljsaPoteza = -NESKONCNO;
+				
 				if (maksimiziramo) {
 					for (Poteza p : igra.poteze()) {
 						Igra kopijaIgre = new Igra(igra);
@@ -128,12 +125,11 @@ public class AlphaBeta extends Inteligenca {
 						if (ocenap < najboljsaPoteza) {
 							najboljsaPoteza = ocenap;
 							ocenjenaPoteza = p;
-						}
+							}
+					}
 				}
-		}
-			return new OcenjenaPoteza(ocenjenaPoteza, najboljsaPoteza);	
-	}
-			
+				return new OcenjenaPoteza(ocenjenaPoteza, najboljsaPoteza);
+			}
 		}
 	}
 }
