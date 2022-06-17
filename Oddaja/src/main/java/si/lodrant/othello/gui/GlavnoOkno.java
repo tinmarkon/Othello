@@ -3,7 +3,6 @@ package si.lodrant.othello.gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
 
 import si.lodrant.othello.vodja.Vodja;
 import si.lodrant.othello.vodja.VrstaIgralca;

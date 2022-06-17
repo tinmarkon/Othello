@@ -1,7 +1,6 @@
 package si.lodrant.othello.gui;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class SwingUtils {
     public static ImageIcon createImageIcon(String path, String description) {

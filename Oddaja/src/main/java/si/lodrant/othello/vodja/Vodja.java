@@ -1,7 +1,6 @@
 package si.lodrant.othello.vodja;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.swing.SwingWorker;
