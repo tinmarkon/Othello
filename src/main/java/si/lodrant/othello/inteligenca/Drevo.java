@@ -6,6 +6,7 @@ public class Drevo {
     public Drevo() {
         deblo = new Vozlisce();
     }
+
     public Drevo(Vozlisce deblo) {
         this.deblo = deblo;
     }

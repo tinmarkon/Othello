@@ -35,8 +35,7 @@ public class MojToggleButton extends JToggleButton {
         repaint();
     }
 
-    public void paintComponent(java.awt.Graphics g)
-    {
+    public void paintComponent(java.awt.Graphics g) {
         java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
         super.paintComponent(g2);
@@ -49,8 +48,7 @@ public class MojToggleButton extends JToggleButton {
                     setAlpha(i);
                     try {
                         Thread.sleep(10);
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                     }
                 }
             }

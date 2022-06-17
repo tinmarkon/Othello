@@ -1,20 +1,20 @@
 package si.lodrant.othello.logika;
 
 public enum Igralec {
-	BLACK, WHITE;
-	
-	public Igralec nasprotnik() {
-		return (this == BLACK ? WHITE : BLACK);
-	}
+    BLACK, WHITE;
 
-	public Polje getPolje() {
-		return (this == BLACK ? Polje.BLACK : Polje.WHITE);
-	}
+    public Igralec nasprotnik() {
+        return (this == BLACK ? WHITE : BLACK);
+    }
 
-	@Override
-	public String toString() {
-		// Izpiši kateri igralec je na potezi.
-		return (this == BLACK ? "črni" : "beli");
-	}
+    public Polje getPolje() {
+        return (this == BLACK ? Polje.BLACK : Polje.WHITE);
+    }
+
+    @Override
+    public String toString() {
+        // Izpiši kateri igralec je na potezi.
+        return (this == BLACK ? "črni" : "beli");
+    }
 
 }

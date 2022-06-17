@@ -18,7 +18,6 @@ public class Status {
     private double zmage; //kolikokrat smo v naključnih igrah iz tega vozlišča zmagali
     private static final Poteza[] zeloSlabePoteze = {new Poteza(1, 1), new Poteza(6, 1), new Poteza(1, 6), new Poteza(6, 6)};
 
-
     public Status() {
         this.gamePosition = new Igra();
     }
@@ -65,11 +64,12 @@ public class Status {
         /* Za dano vozlišče vrne slovar možnih stanj vozlišč povezanih s potezami. */
         Map<Status, Poteza> mozniStatusi = new HashMap<Status, Poteza>();
         ArrayList<Poteza> moznePoteze = this.gamePosition.poteze();
-        for (Poteza p: moznePoteze) {
+        for (Poteza p : moznePoteze) {
             Status newStatus = new Status(this.gamePosition);
             newStatus.getGamePosition().odigraj(p);
             mozniStatusi.put(newStatus, p);
-        };
+        }
+        ;
         return mozniStatusi;
     }
 
@@ -112,7 +112,7 @@ public class Status {
         this.gamePosition.odigraj(poteza);
     }
 
-    public void printVozlisce(){
+    public void printVozlisce() {
         gamePosition.printIgra();
         System.out.println("Zmage: " + zmage);
         System.out.println("Obiski: " + obiski);

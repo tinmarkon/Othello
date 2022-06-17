@@ -7,14 +7,13 @@ import java.awt.event.MouseEvent;
 
 public class HoverButton extends JButton
     /* Gumb, ki se spremeni iz delno prosojnega v neprosojnega, ko se čezenj zapeljemo s kurzorjem.
-    Razred povzet po tem: https://stackoverflow.com/a/22639355 odgovoru na StackOverflowu.*/
-{
+    Razred povzet po tem: https://stackoverflow.com/a/22639355 odgovoru na StackOverflowu.*/ {
     float alpha = 0.8f;
 
     public HoverButton(String text, String size) {
         super(text);
         setFocusPainted(false);
-        addMouseListener(new ML());
+        //addMouseListener(new ML());
         Font buttonFont = new Font("Dialog", Font.PLAIN, 40);
         if (size.equals("small")) buttonFont = new Font("Dialog", Font.PLAIN, 15);
         else if (size.equals("medium")) buttonFont = new Font("Dialog", Font.PLAIN, 30);
@@ -45,8 +44,7 @@ public class HoverButton extends JButton
                         setAlpha(i);
                         try {
                             Thread.sleep(10);
-                        }
-                        catch (Exception e) {
+                        } catch (Exception e) {
                         }
                     }
                 }
@@ -60,8 +58,7 @@ public class HoverButton extends JButton
                         setAlpha(i);
                         try {
                             Thread.sleep(10);
-                        }
-                        catch (Exception e) {
+                        } catch (Exception e) {
                         }
                     }
                 }
@@ -75,8 +72,7 @@ public class HoverButton extends JButton
                         setAlpha(i);
                         try {
                             Thread.sleep(1);
-                        }
-                        catch (Exception e) {
+                        } catch (Exception e) {
                         }
                     }
                 }
