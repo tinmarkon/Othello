@@ -59,7 +59,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         this.setTitle(Strings.NASLOV);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new GridBagLayout());
-        this.setIconImage(SwingUtils.createImageIcon("images/zacetek.png", "Othello").getImage());
+        this.setIconImage(SwingUtils.createImageIcon("images/logo.png", "Othello").getImage());
 
         izbira_igralecCrni = VrstaIgralca.C;
         izbira_igralecBeli = VrstaIgralca.C;
