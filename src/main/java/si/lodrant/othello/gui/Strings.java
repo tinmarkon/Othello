@@ -12,7 +12,6 @@ public class Strings {
     public final static String NAVODILA = "NAVODILA";
     public final static String NAMIG_GUMB = "Namig";
     public final static String IZHOD = "IZHOD";
-    public final static String POTEZE_GUMB = "Možne poteze";
     public final static String RAZVELJAVI_GUMB = "Razveljavi potezo!";
     public final static String START_STATUS = "Izberite igralca in začnite igro!";
     public final static String CRNI = "Črni igralec";

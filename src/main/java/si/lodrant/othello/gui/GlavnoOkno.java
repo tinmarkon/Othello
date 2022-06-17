@@ -636,19 +636,16 @@ public class GlavnoOkno extends JFrame implements ActionListener {
                 case ZMAGA_B:
                     status.setText("Igra je zaključena!");
                     JOptionPane.showMessageDialog(this, "Zmagal je ČRNI igralec z rezultatom: " + st[0] + " | " + st[1] + ".");
-                    status.setText(Strings.START_STATUS);
                     break;
 
                 case ZMAGA_W:
                     status.setText("Igra je zaključena!");
                     JOptionPane.showMessageDialog(this, "Zmagal je BELI igralec z rezultatom: " + st[1] + " | " + st[0] + ".");
-                    status.setText(Strings.START_STATUS);
                     break;
 
                 case NEODLOCENO:
                     status.setText("Igra je zaključena!");
                     JOptionPane.showMessageDialog(this, stanjeIgre.toString());
-                    status.setText(Strings.START_STATUS);
                     break;
             }
         }
