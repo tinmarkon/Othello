@@ -2,6 +2,7 @@ package si.lodrant.othello.logika;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import si.lodrant.othello.splosno.Poteza;
 
@@ -10,6 +11,7 @@ public class Igra {
 	private Set<Poteza> naMeji = new HashSet<Poteza>(); //sem shranjujemo prazna polja, ki mejijo na vsaj eno polno
 	private Igralec naPotezi;
 	private Igra prejsnjeStanje;
+	private boolean igraJeZakljucena;
 
 	public final int[][] smeri = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 	public final int[][] zacetnaMeja = {{2, 2}, {2, 3}, {2, 4}, {2, 5}, {3, 2}, {3, 5}, {4, 2}, {4, 5}, {5, 2}, {5, 3}, {5, 4}, {5, 5}};
@@ -32,6 +34,7 @@ public class Igra {
 			Poteza trenutnaPoteza = new Poteza(koordinate[0], koordinate[1]);
 			naMeji.add(trenutnaPoteza);
 		}
+		igraJeZakljucena = false;
 		prejsnjeStanje = null;
 	}
 
@@ -68,11 +71,20 @@ public class Igra {
 		return deska[i][j] == Polje.PRAZNO;
 	}
 	
-	public void odstraniZadnjoPotezo() {
-		Igra predZadnjoPotezo = prejsnjeStanje;
-		this.deska = predZadnjoPotezo.deska;
-		this.naPotezi = predZadnjoPotezo.naPotezi;
-		this.naMeji = predZadnjoPotezo.naMeji;
+	public boolean jeVeljavnaZadnjaPoteza() {
+		if (Objects.isNull(prejsnjeStanje)) return false;
+		else return true;
+	}
+	
+	public boolean jeZakljucena() {
+		return igraJeZakljucena;
+	}
+	
+	public void odstraniZadnjoPotezo() {		
+		this.deska = prejsnjeStanje.deska;
+		this.naPotezi = prejsnjeStanje.naPotezi;
+		this.naMeji = prejsnjeStanje.naMeji;
+		prejsnjeStanje = null;
 	}
 
 	private void posodobiMejo(Poteza poteza) {
@@ -205,13 +217,19 @@ public class Igra {
 				int white = st[1];
 				if (black > white) {
 					//System.out.println("Slavo in cast crnemu igralcu.");
+					igraJeZakljucena = true;
 					return Stanje.ZMAGA_B;
 				}
 				else if (black < white) {
 					//System.out.println("Slavo in cast belemu igralcu.");
+					igraJeZakljucena = true;
 					return Stanje.ZMAGA_W;
 				}
-				else return Stanje.NEODLOCENO;
+				else {
+					igraJeZakljucena = true;
+					return Stanje.NEODLOCENO;
+				}
+				
 			}
 			else return Stanje.BLOKIRANO;
 		}
