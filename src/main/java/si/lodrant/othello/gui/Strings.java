@@ -18,7 +18,7 @@ public class Strings {
     public final static String CRNI = "Črni igralec";
     public final static String BELI = "Beli igralec";
     public final static String NAVODILA_TEXT = "Othello je preprosta igra za dva igralca na 8x8 igralni deski. Cilj je postaviti žeton na desko tako, da ujameš nasprotnikove žetone med svoje in jih tako obrneš v svojo barvo. "
-    		+ "Vsak žeton je na eni strani črn, na drugi strani pa bel. Vsak igralec je ene barve. Igra se začne z dvema žetonoma vsake barve na deski. V vsaki potezi mora igralec položiti žeton na desko tako, da obrne vsaj en nasprotni žeton. "
-    		+ "V spodnji poziciji lahko črni igralec igra na eno iz med petih možnih potez, označenih z rumeno barvo. čCe bo igral na kvardat označen s rdečim krogom, bo obrnil dva bela žetona.";
+    		+ "Vsak žeton je na eni strani črn, na drugi strani pa bel. Vsak igralec je ene barve. Igra se začne z dvema žetonoma vsake barve na deski. V vsaki potezi mora igralec položiti žeton na desko tako, da obrne vsaj en nasprotni žeton.";
+
 
 }
