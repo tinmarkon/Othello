@@ -35,7 +35,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
     private Boolean igraClovekClovek; //za prikaz funkcij, ki so specificne igri clovek-clovek oz. clovek-racunalnik
 
     // ---------------------- barve ----------------------------
-    private Color barvaOzadja = new Color(44, 144, 169);
+    private final Color barvaOzadja = new Color(44, 144, 169);
     private final String barvaBesedila1 = "#121480";
     private final String barvaBesedila2 = "#0c27ad";
     private final String barvaBesedila3 = "#0c65ad";
@@ -593,7 +593,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         String poravnava1 = "";
         String poravnava2 = "";
         if (st[0] < 10) poravnava1 = " ";
-        else poravnava2 = "";
+        else poravnava1 = "";
         if (st[1] < 10) poravnava2 = " ";
         else poravnava2 = "";
 
@@ -602,8 +602,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         beliLabel.setText("<html><b>" + izbira_igralecBeli.toString() + "</b>");
         beliZetoni.setText("št. žetonov: " + st[1] + poravnava2);
 
-        if (st[0] + st[1] > 4 && Vodja.igra.jeVeljavnaZadnjaPoteza()) razveljavi.setEnabled(true);
-        else razveljavi.setEnabled(false);
+        razveljavi.setEnabled((st[0] + st[1] > 4) && (Vodja.igra.jeVeljavnaZadnjaPoteza()));
 
         if (Vodja.igra == null) {
             status.setText("Igra ni v teku.");
