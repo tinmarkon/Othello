@@ -26,7 +26,7 @@ public class Vodja {
 	public static boolean pokaziPoteze;
 	public static boolean neveljavnaPoteza = false;
 
-	public static void igramoNovoIgro(VrstaIgralca vrstaIgralecBeli, VrstaIgralca vrstaIgralecCrni) {
+	public static void igramoNovoIgro(VrstaIgralca vrstaIgralecCrni, VrstaIgralca vrstaIgralecBeli) {
 		Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 		vrstaIgralca.put(Igralec.BLACK, vrstaIgralecCrni);
 		vrstaIgralca.put(Igralec.WHITE, vrstaIgralecBeli);
