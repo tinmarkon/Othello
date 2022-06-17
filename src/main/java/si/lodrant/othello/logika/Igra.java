@@ -71,7 +71,7 @@ public class Igra {
 		return deska[i][j] == Polje.PRAZNO;
 	}
 	
-	public boolean jeVeljavnaZadnjaPoteza() {
+	public boolean jeVeljavnaZgodovina() {
 		if (Objects.isNull(prejsnjeStanje)) return false;
 		else return true;
 	}
