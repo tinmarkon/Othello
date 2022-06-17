@@ -3,6 +3,7 @@ package si.lodrant.othello.gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 import si.lodrant.othello.vodja.Vodja;
 import si.lodrant.othello.vodja.VrstaIgralca;
@@ -23,9 +24,13 @@ import javax.swing.*;
 public class GlavnoOkno extends JFrame implements ActionListener {
     private final JPanel igralnoPolje, zacetniMeni, zahtevnostMeni, navodilaMeni;
     private JLabel status;
+    private JLabel tekstCrni;
+    private JLabel tekstBeli;
 
     // Gumbi, ki jim spreminjamo visibility.
-    private JButton namig;
+    private HoverButton namig;
+    private HoverButton razveljavi;
+ 
     private IgralnoPolje polje;
 
     // ---------------------- barve ----------------------------
@@ -35,6 +40,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
     private final String barvaBesedila3 = "#0c65ad";
     private final String barvaBesedilaIzhod = "#108fc2";
     private final String barvaBesedilaStart = "#27c1e8";
+   
 
     // ---------------------- to posredujemo vodji -------------
 
@@ -45,7 +51,9 @@ public class GlavnoOkno extends JFrame implements ActionListener {
     Font naslov2Font = new Font("Dialog", Font.PLAIN, 50);
     Font podnaslovFont = new Font("Dialog", Font.PLAIN, 25);
     Font mojFont = new Font("Dialog", Font.PLAIN, 18);
+    Font navodilaFont = new Font("Dialog", Font.PLAIN, 20);
 
+    private Boolean igraClovekClovek;
 
     public GlavnoOkno() {
         this.setTitle(Strings.TITLE);
@@ -56,7 +64,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         
         izbira_igralecCrni = VrstaIgralca.C;
         izbira_igralecBeli = VrstaIgralca.C;
-
+        
         this.igralnoPolje = ustvariIgralnoPolje();
         this.zacetniMeni = ustvariZacetniMeni();
         this.zahtevnostMeni = ustvariZahtevnostMeni();
@@ -123,11 +131,13 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         JLabel naslov = new JLabel("<html><font color=#ffffff><b>" + "Othello" + "</b></font>", JLabel.CENTER); //11aed1
         naslov.setFont(naslovFont);
         panel.add(naslov, c);
-
+        
+        // HoverButton ? 
         JButton enIgralec = new HoverButton("<html><font color=" + barvaBesedila1 +"<b>" + Strings.EN_IGRALEC + "</b></font>", "big");
         c.gridy = 1;
 
         enIgralec.addActionListener((e) -> {
+        	igraClovekClovek = false;
             izberiPogled(1);
         });
         panel.add(enIgralec, c);
@@ -136,7 +146,10 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         c.gridy = 2;
 
         dvaIgralca.addActionListener((e) -> {
-            Vodja.igramoNovoIgro(VrstaIgralca.C, VrstaIgralca.C);
+        	igraClovekClovek = true;
+            izbira_igralecCrni = VrstaIgralca.C;
+            izbira_igralecBeli = VrstaIgralca.C;
+            Vodja.igramoNovoIgro(izbira_igralecCrni, izbira_igralecBeli);
             izberiPogled(3);
         });
         panel.add(dvaIgralca, c);
@@ -176,7 +189,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
            [Izhod]
         */
         JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(700, 600));
+        //panel.setPreferredSize(new Dimension(700, 600));
         panel.setLayout(new GridBagLayout());
         panel.setBackground(barvaOzadja);
 
@@ -328,25 +341,37 @@ public class GlavnoOkno extends JFrame implements ActionListener {
     }
 
     private JPanel ustvariNavodilaMeni() {
-        JPanel panel = new JPanel(new BorderLayout());
-        JLabel label = new JLabel(Strings.NAVODILA);
-        panel.add(label, BorderLayout.NORTH);
+        JPanel panel = new JPanel(new BorderLayout(0, 50));
+        panel.setBackground(barvaOzadja);
+        
         // --------------------------------- navodila ----------------------------------------------
+        
+        JLabel naslovNavodila = new JLabel("<html><font color=#ffffff><b>" + Strings.NAVODILA + "</b></font>", JLabel.CENTER);
+        naslovNavodila.setFont(naslov2Font);
+        panel.add(naslovNavodila, BorderLayout.PAGE_START);
         
         JTextArea navodila = new JTextArea();
         navodila.setText(Strings.NAVODILA_TEXT);
+        navodila.setFont(navodilaFont);
+        navodila.setBackground(barvaOzadja);
+        navodila.setForeground(Color.WHITE);
+        navodila.setPreferredSize(new Dimension(400, 400));
         navodila.setColumns(20);
         navodila.setLineWrap(true);
         navodila.setRows(5);
         navodila.setWrapStyleWord(true);
         navodila.setEditable(false);
+        
+        
+        
         panel.add(navodila, BorderLayout.CENTER);
+       
 
-        JButton izhodGumb = new JButton(Strings.IZHOD);
+        HoverButton izhodGumb = new HoverButton("<html><font color=" + barvaBesedila2 + "<b>" + Strings.IZHOD + "</b></font>", "small");
         izhodGumb.addActionListener((e) -> {
             izberiPogled(0);
         });
-        panel.add(izhodGumb, BorderLayout.SOUTH);
+        panel.add(izhodGumb, BorderLayout.PAGE_END);
 
         return panel;
     }
@@ -358,36 +383,33 @@ public class GlavnoOkno extends JFrame implements ActionListener {
            [statusna vrstica]
         */
         JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBackground(barvaOzadja);
         GridBagConstraints c = new GridBagConstraints();
         
         // --------------------------------- status igralcev  ----------------------------------------------
         
-        JPanel crniIgralec = new JPanel(new BorderLayout());
+        JPanel crniIgralec = new JPanel();
         crniIgralec.setBackground(barvaOzadja);
-        ImageIcon icon_crni = SwingUtils.createImageIcon("images/crni_small.png", "crni zeton");
-        JLabel lab1 = new JLabel("Črni igralec:" + izbira_igralecCrni.toString(), icon_crni, JLabel.LEFT);
-        crniIgralec.add(lab1, BorderLayout.LINE_START);
         
-        // JTextField igralec1 = new JTextField("Igralec 1");
-        //crniIgralec.add(igralec1, BorderLayout.LINE_END);
-        //c.gridx = 0;
-        //c.gridy = 0;
-        // c.gridwidth = 4;
+        ImageIcon icon_crni = SwingUtils.createImageIcon("images/crni_small.png", "crni zeton");
+        tekstCrni = new JLabel("Črni igralec:" + izbira_igralecCrni.toString(), icon_crni, JLabel.LEFT);
+        crniIgralec.add(tekstCrni);
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 12;
         panel.add(crniIgralec, c);
         
-        // TODO rezultat na sredini?
         
-        JPanel beliIgralec = new JPanel(new BorderLayout());
+        JPanel beliIgralec = new JPanel();
+        beliIgralec.setBackground(barvaOzadja);
         ImageIcon icon_beli = SwingUtils.createImageIcon("images/beli_small.png", "beli zeton");
-        JLabel lab2 = new JLabel("Beli igralec:" + izbira_igralecBeli.toString(), icon_beli, JLabel.RIGHT);
-        beliIgralec.add(new JPanel(), BorderLayout.LINE_START);
-        beliIgralec.add(lab2, BorderLayout.CENTER);
-        
-        // JTextField igralec2 = new JTextField("Igralec 2");
-        // beliIgralec.add(igralec2, BorderLayout.LINE_END);
-        c.gridx = 6;
-        c.gridy = 0;
-        c.gridwidth = 6;
+        tekstBeli = new JLabel("Beli igralec:" + izbira_igralecBeli.toString(), icon_beli, JLabel.RIGHT);
+        tekstBeli.setForeground(Color.WHITE);
+        beliIgralec.add(tekstBeli);
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 12;
         panel.add(beliIgralec, c);
       
 
@@ -396,21 +418,30 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         polje = new IgralnoPolje();
         c.fill = GridBagConstraints.NONE;
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 2;
         c.gridwidth = 12;
         panel.add(polje, c);
 
-        // ------ Spodnja vrstica z gumbi: [namig], [mozne poteze], [razveljavi potezo], [izhod] ----------------
-
+     // ------ Spodnja vrstica z gumbi: [namig], [mozne poteze], [razveljavi potezo], [izhod] ----------------
         JPanel gumbi = new JPanel();
+        gumbi.setLayout(new GridBagLayout());
+        gumbi.setBackground(barvaOzadja);
+        c.ipady = 40;
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 3;
         panel.add(gumbi, c);
-        
-        namig = new JButton(Strings.NAMIG_GUMB);
-        gumbi.add(namig);
-        
-       
+
+        GridBagConstraints g = new GridBagConstraints();
+        g.fill = GridBagConstraints.HORIZONTAL;
+        g.anchor = GridBagConstraints.CENTER;
+        g.insets = new Insets(0, 5, 0, 5);
+        g.ipady = 20;
+        g.ipadx = 20;
+        g.gridx = 0;
+
+        namig = new HoverButton("<html><font color=" + barvaBesedila2 + "<b>" + Strings.NAMIG_GUMB + "</b></font>", "small");
+        gumbi.add(namig, g);
+
         namig.addActionListener((e) -> {
             Vodja.pokaziNamig();
             polje.repaint();
@@ -418,32 +449,41 @@ public class GlavnoOkno extends JFrame implements ActionListener {
         namig.setToolTipText(
                 "<html><font face=\"sansserif\" color=\"black\" >Prikaži najboljšo možno potezo, kot jo<br>izbere algoritem Monte Carlo Tree Search.<br>Iskanje traja 5 sekund!</font></html>");
 
-        JButton razveljavi = new JButton(Strings.RAZVELJAVI_GUMB);
-        gumbi.add(razveljavi);
+        razveljavi = new HoverButton("<html><font color=" + barvaBesedila3 + "<b>" + Strings.RAZVELJAVI_GUMB + "</b></font>", "small");
+        razveljavi.setEnabled(false);
+        g.gridx = 1;
+        gumbi.add(razveljavi, g);
+        razveljavi.setVisible(false);
         
         razveljavi.addActionListener((e) -> {
             Vodja.razveljaviPotezo();
             polje.repaint();
         });
 
-        JButton izhod = new JButton(Strings.IZHOD);
-        gumbi.add(izhod);
-        
-        
-        izhod.addActionListener((e) -> {
-                    izberiPogled(0);
-                });
-
         // ------- statusna vrstica za sporočila ------------
         
         status = new JLabel();
         status.setFont(mojFont);
+        status.setForeground(Color.WHITE);
         status.setText(Strings.START_STATUS);
         c.fill = GridBagConstraints.NONE;
         c.gridx = 0;
-        c.gridy = 3;
+        c.ipady = 40;
+        c.gridy = 4;
         c.gridwidth = 12;
         panel.add(status, c);
+
+        HoverButton izhod = new HoverButton("<html><font color=" + barvaBesedilaIzhod + "<b>" + Strings.IZHOD + "</b></font>", "small");
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.CENTER;
+        c.ipady = 20;
+        c.ipadx = 20;
+        c.gridy = 5;
+        panel.add(izhod, c);
+
+        izhod.addActionListener((e) -> {
+            izberiPogled(0);
+        });
 
       
         return panel;
@@ -451,10 +491,28 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 
     public void osveziGUI() {
         /* Pokliče se v metodi vodja.igramo(). */
+    	razveljavi.setVisible(igraClovekClovek);
+        int[] st = Vodja.igra.prestejZetone();
+        String zeton1 = "žeton";
+        if (st[0] == 2) zeton1 = "žetona";
+        else if ((st[0] < 5) && (st[0] > 2)) zeton1 = "žetone";
+        else if (st[0] > 4) zeton1 = "žetonov";
+        String zeton2 = "žeton";
+        if (st[1] == 2) zeton2 = "žetona";
+        else if ((st[1] < 5) && (st[1] > 2)) zeton2 = "žetone";
+        else if (st[1] > 4) zeton2 = "žetonov";
+
+        tekstCrni.setText("<html><b>" + izbira_igralecCrni.toString()+ "</b>" + " ima " + st[0] + " " + zeton1 + ".");
+        tekstBeli.setText("<html><b>" + izbira_igralecBeli.toString()+ "</b>" + " ima " + st[1] + " " + zeton2 + ".");
+        
+        if (st[0] + st[1] > 4 && Vodja.igra.jeVeljavnaZadnjaPoteza()) razveljavi.setEnabled(true);
+        else razveljavi.setEnabled(false);
+        
+        
         if (Vodja.igra == null) {
             status.setText("Igra ni v teku.");
         } else {
-            namig.setVisible(false);
+            namig.setEnabled(false);
             Stanje stanjeIgre = Vodja.igra.stanje();
             Igralec naPotezi = Vodja.igra.naPotezi();
             String imeNaPotezi = naPotezi.toString();
@@ -468,7 +526,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 
                 case V_TEKU:
                     if (Vodja.vrstaIgralca.get(naPotezi) == VrstaIgralca.C) {
-                        namig.setVisible(true);
+                        namig.setEnabled(true);
                         if (Vodja.neveljavnaPoteza) {
                             status.setText("To ni možna poteza!");
                             Vodja.neveljavnaPoteza = false;
@@ -481,16 +539,14 @@ public class GlavnoOkno extends JFrame implements ActionListener {
                     break;
 
                 case ZMAGA_B:
-                    int[] st = Vodja.igra.prestejZetone();
                     status.setText("Igra je zaključena!");
                     JOptionPane.showMessageDialog(this, "Zmagal je ČRNI igralec z rezultatom: " + st[0] + " | " + st[1] + ".");
                     status.setText(Strings.START_STATUS);
                     break;
 
                 case ZMAGA_W:
-                    int[] st1 = Vodja.igra.prestejZetone();
                     status.setText("Igra je zaključena!");
-                    JOptionPane.showMessageDialog(this, "Zmagal je BELI igralec z rezultatom: " + st1[1] + " | " + st1[0] + ".");
+                    JOptionPane.showMessageDialog(this, "Zmagal je BELI igralec z rezultatom: " + st[1] + " | " + st[0] + ".");
                     status.setText(Strings.START_STATUS);
                     break;
 
