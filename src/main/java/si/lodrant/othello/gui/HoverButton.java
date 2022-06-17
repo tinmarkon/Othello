@@ -13,7 +13,7 @@ public class HoverButton extends JButton
     public HoverButton(String text, String size) {
         super(text);
         setFocusPainted(false);
-        //addMouseListener(new ML());
+        addMouseListener(new ML());
         Font buttonFont = new Font("Dialog", Font.PLAIN, 40);
         if (size.equals("small")) buttonFont = new Font("Dialog", Font.PLAIN, 15);
         else if (size.equals("medium")) buttonFont = new Font("Dialog", Font.PLAIN, 30);
