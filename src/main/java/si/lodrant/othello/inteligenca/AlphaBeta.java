@@ -9,6 +9,7 @@ public class AlphaBeta extends Inteligenca {
 	private static final int ZMAGA = 100;
 	private static final int PORAZ = -ZMAGA;
 	private static final int NEODLOCENO = 0;
+	private static final int NESKONCNO = ZMAGA + 1;
 
 	private int globina;
 	private int alpha;
@@ -16,15 +17,17 @@ public class AlphaBeta extends Inteligenca {
 
 	public AlphaBeta(int globina) {
 		this.globina = globina;
-		this.alpha = PORAZ;
-		this.beta = ZMAGA;
+		this.alpha = -NESKONCNO;
+		this.beta = NESKONCNO;
 	}
 
 	@Override
 	public Poteza izberiPotezo(Igra igra) {
 		System.out.println("Izbiram ALPHABETA potezo.");
 		//System.out.print(igra.naPotezi() + " Izbiram ALFABETA potezo. ");
+		long startTime = System.currentTimeMillis();  
 		OcenjenaPoteza najboljsaPoteza = alphabetaPoteze(igra, this.globina, this.alpha, this.beta, igra.naPotezi());
+		System.out.println("Total time [ms]: " + (System.currentTimeMillis() - startTime)); 
 		return najboljsaPoteza.poteza;
 	}
 
@@ -78,4 +81,30 @@ public class AlphaBeta extends Inteligenca {
 		}
 		return new OcenjenaPoteza(kandidat, ocena);
 	}
+	
+/*	
+	public OcenjenaPoteza alphabetaPoteze2(Poteza poteza, Igra igra, int globina, int alpha, int beta, Igralec jaz) {
+		boolean maksimiziramo = ()
+		if (globina == 0 || igra.jeZakljucena()) {
+			switch (igra.stanje()) {
+			case ZMAGA_B:
+				ocena = (jaz == Igralec.BLACK ? ZMAGA : PORAZ);
+				return ocena;
+			case ZMAGA_W:
+				ocena = (jaz == Igralec.WHITE ? ZMAGA : PORAZ);
+				return ocena;
+			case NEODLOCENO:
+				ocena = NEODLOCENO;
+				return ocena;
+			case BLOKIRANO:
+				ocena = (jaz == igra.naPotezi() ? -igra.nasprotnikovePoteze().size() : +igra.nasprotnikovePoteze().size());
+				return ocena;
+			}
+			
+			
+			
+	}
+	}
+	*/
+
 }
