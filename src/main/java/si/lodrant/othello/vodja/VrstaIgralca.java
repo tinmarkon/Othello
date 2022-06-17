@@ -6,10 +6,10 @@ public enum VrstaIgralca {
 	@Override
 	public String toString() {
 		switch (this) {
-		case C: return "človek";
-		case R1: return "povprečen nasprotnik";
-		case R2: return "pameten nasprotnik";
-		case R3: return "genialen nasprotnik";
+		case C: return "Človek";
+		case R1: return "Povprečen nasprotnik";
+		case R2: return "Pameten nasprotnik";
+		case R3: return "Genialen nasprotnik";
 		default: assert false; return "";
 		}
 	}
